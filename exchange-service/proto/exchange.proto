@@ -1,0 +1,57 @@
+syntax = "proto3";
+package exchange;
+option go_package = "exchangepb";
+
+service ExchangeService {
+    rpc CreateExchange(CreateExchangeReq) returns (CreateExchangeRes);
+    rpc ReadExchange(ReadExchangeReq) returns (ReadExchangeRes);
+    rpc UpdateExchange(UpdateExchangeReq) returns (UpdateExchangeRes);
+    rpc DeleteExchange(DeleteExchangeReq) returns (DeleteExchangeRes);
+    rpc ListExchanges(ListExchangeReq) returns (stream ListExchangeRes);
+}
+
+message Exchange {
+    string id = 1;
+    string name = 2;
+    string display_name = 3;
+    string api_key = 4;
+    string api_secret= 5;
+}
+
+message CreateExchangeReq {
+    Exchange exchange = 1; 
+}
+
+message CreateExchangeRes {
+    Exchange exchange = 1;
+}
+
+message UpdateExchangeReq {
+    Exchange exchange = 1;
+}
+
+message UpdateExchangeRes {
+    Exchange exchange = 1;
+}
+
+message ReadExchangeReq {
+    string id = 1;
+}
+
+message ReadExchangeRes {
+    Exchange exchange = 1;
+}
+
+message DeleteExchangeReq {
+    string id = 1;
+}
+
+message DeleteExchangeRes {
+    bool success = 1;
+}
+
+message ListExchangeReq{}
+
+message ListExchangeRes{
+    Exchange exchange = 1;
+}
