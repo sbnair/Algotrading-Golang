@@ -110,7 +110,7 @@ func (s *ExchangeServiceServer) UpdateExchange(ctx context.Context, req *exchang
 
 	// Convert the data to be updated into an unordered Bson document
 	update := bson.M{
-		"selected_exchange": exchange.SelectedExchange(),
+		"selected_exchange": exchange.GetSelectedExchange(),
 		"exchange_name":     exchange.GetExchangeName(),
 		"exchange_type":     exchange.GetExchangeType(),
 		"user_id":           exchange.GetUserId(),
