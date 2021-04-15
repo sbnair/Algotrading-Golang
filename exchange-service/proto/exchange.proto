@@ -8,6 +8,7 @@ service ExchangeService {
     rpc UpdateExchange(UpdateExchangeReq) returns (UpdateExchangeRes);
     rpc DeleteExchange(DeleteExchangeReq) returns (DeleteExchangeRes);
     rpc ListExchanges(ListExchangeReq) returns (stream ListExchangeRes);
+    rpc ListExchangesByUser(ListExchangesByUserReq) returns (stream ListExchangesByUserRes);
 }
 
 message Exchange {
@@ -55,5 +56,13 @@ message DeleteExchangeRes {
 message ListExchangeReq{}
 
 message ListExchangeRes{
+    Exchange exchange = 1;
+}
+
+message ListExchangesByUserReq {
+    string user_id = 1;
+}
+
+message ListExchangesByUserRes {
     Exchange exchange = 1;
 }

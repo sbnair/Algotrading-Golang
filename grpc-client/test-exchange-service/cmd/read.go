@@ -48,7 +48,7 @@ var readCmd = &cobra.Command{
 }
 
 func init() {
-	readCmd.Flags().StringP("id", "i", "", "The id of the blog")
+	readCmd.Flags().StringP("id", "i", "", "The id of the exchange")
 	readCmd.MarkFlagRequired("id")
 	rootCmd.AddCommand(readCmd)
 

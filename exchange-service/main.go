@@ -165,8 +165,47 @@ func (s *ExchangeServiceServer) ListExchanges(req *exchangepb.ListExchangeReq, s
 		if err != nil {
 			return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
 		}
-		// If no error is found send blog over stream
+		// If no error is found send exchange over stream
 		stream.Send(&exchangepb.ListExchangeRes{
+			Exchange: &exchangepb.Exchange{
+				Id:               data.ID.Hex(),
+				SelectedExchange: data.SelectedExchange,
+				ExchangeName:     data.ExchangeName,
+				ExchangeType:     data.ExchangeType,
+				UserId:           data.UserId,
+				ApiKey:           data.ApiKey,
+				ApiSecret:        data.ApiSecret,
+			},
+		})
+	}
+	// Check if the cursor has any errors
+	if err := cursor.Err(); err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unkown cursor error: %v", err))
+	}
+	return nil
+}
+
+func (s *ExchangeServiceServer) ListExchangesByUser(req *exchangepb.ListExchangesByUserReq, stream exchangepb.ExchangeService_ListExchangesByUserServer) error {
+	userIdQuery := req.GetUserId()
+	if len(userIdQuery) == 0 {
+		return status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not find UserId in Req"))
+	}
+	data := &ExchangeItem{}
+
+	cursor, err := exchangedb.Find(context.Background(), bson.M{"user_id": userIdQuery})
+	if err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unknown internal error: %v", err))
+	}
+	defer cursor.Close(context.Background())
+	for cursor.Next(context.Background()) {
+		// Decode the data at the current pointer and write it to data
+		err := cursor.Decode(data)
+		// check error
+		if err != nil {
+			return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
+		}
+		// If no error is found send exchange over stream
+		stream.Send(&exchangepb.ListExchangesByUserRes{
 			Exchange: &exchangepb.Exchange{
 				Id:               data.ID.Hex(),
 				SelectedExchange: data.SelectedExchange,
