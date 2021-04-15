@@ -12,10 +12,12 @@ service ExchangeService {
 
 message Exchange {
     string id = 1;
-    string name = 2;
-    string display_name = 3;
-    string api_key = 4;
-    string api_secret= 5;
+    string exchange = 2;
+    string exchange_name = 3;
+    string exchange_type = 4;
+    string user_id = 5;
+    string api_key = 6;
+    string api_secret= 7;
 }
 
 message CreateExchangeReq {
