@@ -12,7 +12,7 @@ service ExchangeService {
 
 message Exchange {
     string id = 1;
-    string exchange = 2;
+    string selected_exchange = 2;
     string exchange_name = 3;
     string exchange_type = 4;
     string user_id = 5;

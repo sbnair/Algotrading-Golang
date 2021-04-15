@@ -25,12 +25,12 @@ func (s *ExchangeServiceServer) CreateExchange(ctx context.Context, req *exchang
 	// Now we have to convert this into a ExchangeItem type to convert into BSON
 	data := ExchangeItem{
 		// ID:       primitive.NilObjectID,
-		Exchange:     exchange.GetExchange(),
-		ExchangeName: exchange.GetExchangeName(),
-		ExchangeType: exchange.GetExchangeType(),
-		UserId:       exchange.GetUserId(),
-		ApiKey:       exchange.GetApiKey(),
-		ApiSecret:    exchange.GetApiSecret(),
+		SelectedExchange: exchange.GetSelectedExchange(),
+		ExchangeName:     exchange.GetExchangeName(),
+		ExchangeType:     exchange.GetExchangeType(),
+		UserId:           exchange.GetUserId(),
+		ApiKey:           exchange.GetApiKey(),
+		ApiSecret:        exchange.GetApiSecret(),
 	}
 
 	// Insert the data into the database
@@ -67,13 +67,13 @@ func (s *ExchangeServiceServer) ReadExchange(ctx context.Context, req *exchangep
 	// Cast to ReadExchangeRes type
 	response := &exchangepb.ReadExchangeRes{
 		Exchange: &exchangepb.Exchange{
-			Id:           oid.Hex(),
-			Exchange:     data.Exchange,
-			ExchangeName: data.ExchangeName,
-			ExchangeType: data.ExchangeType,
-			UserId:       data.UserId,
-			ApiKey:       data.ApiKey,
-			ApiSecret:    data.ApiSecret,
+			Id:               oid.Hex(),
+			SelectedExchange: data.SelectedExchange,
+			ExchangeName:     data.ExchangeName,
+			ExchangeType:     data.ExchangeType,
+			UserId:           data.UserId,
+			ApiKey:           data.ApiKey,
+			ApiSecret:        data.ApiSecret,
 		},
 	}
 	return response, nil
@@ -110,12 +110,12 @@ func (s *ExchangeServiceServer) UpdateExchange(ctx context.Context, req *exchang
 
 	// Convert the data to be updated into an unordered Bson document
 	update := bson.M{
-		"exchange":      exchange.GetExchange(),
-		"exchange_name": exchange.GetExchangeName(),
-		"exchange_type": exchange.GetExchangeType(),
-		"user_id":       exchange.GetUserId(),
-		"api_key":       exchange.GetApiKey(),
-		"api_secret":    exchange.GetApiSecret(),
+		"selected_exchange": exchange.SelectedExchange(),
+		"exchange_name":     exchange.GetExchangeName(),
+		"exchange_type":     exchange.GetExchangeType(),
+		"user_id":           exchange.GetUserId(),
+		"api_key":           exchange.GetApiKey(),
+		"api_secret":        exchange.GetApiSecret(),
 	}
 
 	// Convert the oid into an unordered bson document to search by id
@@ -136,13 +136,13 @@ func (s *ExchangeServiceServer) UpdateExchange(ctx context.Context, req *exchang
 	}
 	return &exchangepb.UpdateExchangeRes{
 		Exchange: &exchangepb.Exchange{
-			Id:           decoded.ID.Hex(),
-			Exchange:     decoded.Exchange,
-			ExchangeName: decoded.ExchangeName,
-			ExchangeType: decoded.ExchangeType,
-			UserId:       decoded.UserId,
-			ApiKey:       decoded.ApiKey,
-			ApiSecret:    decoded.ApiSecret,
+			Id:               decoded.ID.Hex(),
+			SelectedExchange: decoded.SelectedExchange,
+			ExchangeName:     decoded.ExchangeName,
+			ExchangeType:     decoded.ExchangeType,
+			UserId:           decoded.UserId,
+			ApiKey:           decoded.ApiKey,
+			ApiSecret:        decoded.ApiSecret,
 		},
 	}, nil
 }
@@ -168,13 +168,13 @@ func (s *ExchangeServiceServer) ListExchanges(req *exchangepb.ListExchangeReq, s
 		// If no error is found send blog over stream
 		stream.Send(&exchangepb.ListExchangeRes{
 			Exchange: &exchangepb.Exchange{
-				Id:           data.ID.Hex(),
-				Exchange:     data.Exchange,
-				ExchangeName: data.ExchangeName,
-				ExchangeType: data.ExchangeType,
-				UserId:       data.UserId,
-				ApiKey:       data.ApiKey,
-				ApiSecret:    data.ApiSecret,
+				Id:               data.ID.Hex(),
+				SelectedExchange: data.SelectedExchange,
+				ExchangeName:     data.ExchangeName,
+				ExchangeType:     data.ExchangeType,
+				UserId:           data.UserId,
+				ApiKey:           data.ApiKey,
+				ApiSecret:        data.ApiSecret,
 			},
 		})
 	}
@@ -188,13 +188,13 @@ func (s *ExchangeServiceServer) ListExchanges(req *exchangepb.ListExchangeReq, s
 type ExchangeServiceServer struct{}
 
 type ExchangeItem struct {
-	ID           primitive.ObjectID `bson:"_id,omitempty"`
-	Exchange     string             `bson:"exchange"`
-	ExchangeName string             `bson:"exchange_name"`
-	ExchangeType string             `bson:"exchange_type"`
-	UserId       string             `bson:"user_id"`
-	ApiKey       string             `bson:"api_key"`
-	ApiSecret    string             `bson:"api_secret"`
+	ID               primitive.ObjectID `bson:"_id,omitempty"`
+	SelectedExchange string             `bson:"selected_exchange"`
+	ExchangeName     string             `bson:"exchange_name"`
+	ExchangeType     string             `bson:"exchange_type"`
+	UserId           string             `bson:"user_id"`
+	ApiKey           string             `bson:"api_key"`
+	ApiSecret        string             `bson:"api_secret"`
 }
 
 var db *mongo.Client
