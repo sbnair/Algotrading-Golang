@@ -24,6 +24,7 @@ func (s *ExchangeServiceServer) CreateExchange(ctx context.Context, req *exchang
 	// Get the protobuf exchange type from the protobuf request type
 	// Essentially doing req.Exchange to access the struct with a nil check
 	exchange := req.GetExchange()
+	fmt.Println(exchange)
 	// Now we have to convert this into a ExchangeItem type to convert into BSON
 	data := ExchangeItem{
 		// ID:       primitive.NilObjectID,
@@ -51,6 +52,7 @@ func (s *ExchangeServiceServer) CreateExchange(ctx context.Context, req *exchang
 	exchange.Id = oid.Hex()
 	exchangeAccount := &exchangepb.ExchangeAccountInfo{}
 
+	//println(exchangeAccount)
 	if exchange.SelectedExchange == "Alpaca" && exchange.ExchangeType == "paper_trading" {
 		os.Setenv(common.EnvApiKeyID, exchange.ApiKey)
 		os.Setenv(common.EnvApiSecretKey, exchange.ApiSecret)
@@ -60,22 +62,31 @@ func (s *ExchangeServiceServer) CreateExchange(ctx context.Context, req *exchang
 		if err != nil {
 			panic(err)
 		}
+		println(acct)
 		exchangeAccount.AccountNumber = acct.AccountNumber
 		exchangeAccount.Status = acct.Status
-		exchangeAccount.Currency = acct.Currency
-		exchangeAccount.BuyingPower = fmt.Sprint(acct.BuyingPower)
-		exchangeAccount.Cash = fmt.Sprint(acct.Cash)
-		exchangeAccount.PortfolioValue = fmt.Sprint(acct.PortfolioValue)
-		exchangeAccount.Equity = fmt.Sprint(acct.Equity)
-		exchangeAccount.LastEquity = fmt.Sprint(acct.LastEquity)
-		exchangeAccount.LongMarketValue = fmt.Sprint(acct.LongMarketValue)
-		exchangeAccount.ShortMarketValue = fmt.Sprint(acct.ShortMarketValue)
-		exchangeAccount.InitialMargin = fmt.Sprint(acct.InitialMargin)
+		/*
+			exchangeAccount.AccountNumber = acct.AccountNumber
+			exchangeAccount.Status = acct.Status
+			exchangeAccount.Currency = acct.Currency
+			exchangeAccount.BuyingPower = fmt.Sprint(acct.BuyingPower)
+			exchangeAccount.Cash = fmt.Sprint(acct.Cash)
+			exchangeAccount.PortfolioValue = fmt.Sprint(acct.PortfolioValue)
+			exchangeAccount.Equity = fmt.Sprint(acct.Equity)
+			exchangeAccount.LastEquity = fmt.Sprint(acct.LastEquity)
+			exchangeAccount.LongMarketValue = fmt.Sprint(acct.LongMarketValue)
+			exchangeAccount.ShortMarketValue = fmt.Sprint(acct.ShortMarketValue)
+			exchangeAccount.InitialMargin = fmt.Sprint(acct.InitialMargin)
+		*/
+		//jsonpb.Unmarshal(acct, &exchangeAccount)
 	}
 	// return the blog in a CreateBlogRes type
-	return &exchangepb.CreateExchangeRes{
+	createExchangeResponse := &exchangepb.CreateExchangeRes{
 		Exchange:            exchange,
-		ExchangeAccountInfo: exchangeAccount}, nil
+		ExchangeAccountInfo: exchangeAccount,
+	}
+	fmt.Println(createExchangeResponse)
+	return createExchangeResponse, nil
 }
 
 func (s *ExchangeServiceServer) ReadExchange(ctx context.Context, req *exchangepb.ReadExchangeReq) (*exchangepb.ReadExchangeRes, error) {
@@ -261,20 +272,6 @@ type ExchangeItem struct {
 	UserId           string             `bson:"user_id"`
 	ApiKey           string             `bson:"api_key"`
 	ApiSecret        string             `bson:"api_secret"`
-}
-
-type ExchangeAccountInfoItem struct {
-	AccountNumber    string `bson:"account_number"`
-	Status           string `bson:"status"`
-	Currency         string `bson:"currency"`
-	BuyingPower      string `bson:"buying_power"`
-	Cash             string `bson:"cash"`
-	PortfolioValue   string `bson:"portfolio_value"`
-	Equity           string `bson:"equity"`
-	LastEquity       string `bson:"last_equity"`
-	LongMarketValue  string `bson:"long_market_value"`
-	ShortMarketValue string `bson:"short_market_value"`
-	InitialMargin    string `bson:"initial_margin"`
 }
 
 var db *mongo.Client

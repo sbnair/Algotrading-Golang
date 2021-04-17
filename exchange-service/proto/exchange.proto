@@ -24,15 +24,6 @@ message Exchange {
 message ExchangeAccountInfo {
     string account_number = 1;
     string status = 2;
-    string currency = 3;
-    string buying_power = 4;
-    string cash = 5;
-    string portfolio_value = 6;
-    string equity = 7;
-    string last_equity = 8;
-    string long_market_value = 9;
-    string short_market_value = 10;
-    string initial_margin = 11;
 }
 
 message CreateExchangeReq {
