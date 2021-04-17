@@ -50,7 +50,7 @@ var createCmd = &cobra.Command{
 		}
 		// RPC call
 		res, err := client.CreateExchange(
-			context.TODO(),
+			context.Background(),
 			// wrap the blog message in a CreateBlog request message
 			&exchangepb.CreateExchangeReq{
 				Exchange: exchange,
@@ -60,6 +60,8 @@ var createCmd = &cobra.Command{
 			return err
 		}
 		fmt.Printf("Exchange created: %s\n", res.Exchange.Id)
+		fmt.Println(res.ExchangeAccountInfo)
+		fmt.Println(res)
 		return nil
 	},
 }

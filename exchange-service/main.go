@@ -7,6 +7,8 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"strconv"
+	"time"
 
 	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
 	"github.com/alpacahq/alpaca-trade-api-go/common"
@@ -53,31 +55,42 @@ func (s *ExchangeServiceServer) CreateExchange(ctx context.Context, req *exchang
 	exchangeAccount := &exchangepb.ExchangeAccountInfo{}
 
 	//println(exchangeAccount)
-	if exchange.SelectedExchange == "Alpaca" && exchange.ExchangeType == "paper_trading" {
+	if exchange.SelectedExchange == "Alpaca" {
 		os.Setenv(common.EnvApiKeyID, exchange.ApiKey)
 		os.Setenv(common.EnvApiSecretKey, exchange.ApiSecret)
-		alpaca.SetBaseUrl("https://paper-api.alpaca.markets")
+		if exchange.ExchangeType == "paper_trading" {
+			alpaca.SetBaseUrl("https://paper-api.alpaca.markets")
+		} else if exchange.ExchangeType == "live_trading" {
+			alpaca.SetBaseUrl("https://api.alpaca.markets")
+		}
+
 		alpacaClient := alpaca.NewClient(common.Credentials())
 		acct, err := alpacaClient.GetAccount()
 		if err != nil {
 			panic(err)
 		}
 		println(acct)
+		exchangeAccount.Id = acct.ID
 		exchangeAccount.AccountNumber = acct.AccountNumber
+		exchangeAccount.CreatedAt = acct.CreatedAt.Format(time.RFC3339)
 		exchangeAccount.Status = acct.Status
-		/*
-			exchangeAccount.AccountNumber = acct.AccountNumber
-			exchangeAccount.Status = acct.Status
-			exchangeAccount.Currency = acct.Currency
-			exchangeAccount.BuyingPower = fmt.Sprint(acct.BuyingPower)
-			exchangeAccount.Cash = fmt.Sprint(acct.Cash)
-			exchangeAccount.PortfolioValue = fmt.Sprint(acct.PortfolioValue)
-			exchangeAccount.Equity = fmt.Sprint(acct.Equity)
-			exchangeAccount.LastEquity = fmt.Sprint(acct.LastEquity)
-			exchangeAccount.LongMarketValue = fmt.Sprint(acct.LongMarketValue)
-			exchangeAccount.ShortMarketValue = fmt.Sprint(acct.ShortMarketValue)
-			exchangeAccount.InitialMargin = fmt.Sprint(acct.InitialMargin)
-		*/
+		exchangeAccount.Currency = acct.Currency
+		exchangeAccount.Cash, err = strconv.ParseFloat(acct.Cash.String(), 64)
+		exchangeAccount.CashWithdrawable, err = strconv.ParseFloat(acct.CashWithdrawable.String(), 64)
+		exchangeAccount.TradingBlocked = acct.TradingBlocked
+		exchangeAccount.TransfersBlocked = acct.TransfersBlocked
+		exchangeAccount.AccountBlocked = acct.AccountBlocked
+		exchangeAccount.BuyingPower, err = strconv.ParseFloat(acct.BuyingPower.String(), 64)
+		exchangeAccount.PatternDayTrader = acct.PatternDayTrader
+		exchangeAccount.DaytradeCount = acct.DaytradeCount
+		exchangeAccount.DaytradingBuyingPower, err = strconv.ParseFloat(acct.DaytradingBuyingPower.String(), 64)
+		exchangeAccount.RegtBuyingPower, err = strconv.ParseFloat(acct.RegTBuyingPower.String(), 64)
+		exchangeAccount.Equity, err = strconv.ParseFloat(acct.Equity.String(), 64)
+		exchangeAccount.LastEquity, err = strconv.ParseFloat(acct.LastEquity.String(), 64)
+		exchangeAccount.InitialMargin, err = strconv.ParseFloat(acct.InitialMargin.String(), 64)
+		exchangeAccount.LongMarketValue, err = strconv.ParseFloat(acct.LongMarketValue.String(), 64)
+		exchangeAccount.ShortMarketValue, err = strconv.ParseFloat(acct.ShortMarketValue.String(), 64)
+
 		//jsonpb.Unmarshal(acct, &exchangeAccount)
 	}
 	// return the blog in a CreateBlogRes type

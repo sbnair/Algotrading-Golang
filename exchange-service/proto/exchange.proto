@@ -22,8 +22,26 @@ message Exchange {
 }
 
 message ExchangeAccountInfo {
-    string account_number = 1;
-    string status = 2;
+    string id = 1;
+    string account_number = 2;
+    string created_at = 3;
+    string status = 4;
+    string currency = 5;
+    double cash = 6;
+    double cash_withdrawable = 7;
+    bool trading_blocked = 8;
+    bool transfers_blocked = 9;
+    bool account_blocked = 10;
+    double buying_power = 11;
+    bool pattern_day_trader = 12;
+    int64 daytrade_count = 13;
+    double daytrading_buying_power = 14;
+    double regt_buying_power = 15;
+    double equity = 16;
+    double last_equity = 17;
+    double initial_margin = 18;
+    double long_market_value = 19;
+    double short_market_value = 20;
 }
 
 message CreateExchangeReq {
