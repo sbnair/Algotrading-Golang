@@ -338,7 +338,7 @@ func main() {
 		fmt.Println("Connected to Mongodb")
 	}
 	// Bind our collection to our global variable for use in other methods
-	exchangedb = db.Database("mydb").Collection("exchange")
+	exchangedb = db.Database("hedgina_algobot").Collection("exchange")
 
 	// Start the server in a child routine
 	go func() {
