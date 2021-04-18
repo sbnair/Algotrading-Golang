@@ -56,6 +56,7 @@ var updateCmd = &cobra.Command{
 		max_price_to_open_deal, err := cmd.Flags().GetFloat64("max_price_to_open_deal")
 		cooldown_bewtween_deals, err := cmd.Flags().GetString("cooldown_bewtween_deals")
 		open_deal_stop, err := cmd.Flags().GetString("open_deal_stop")
+		user_id, err := cmd.Flags().GetString("user_id")
 
 		// Create an UpdateExchangeReq
 		strategy := &strategypb.Strategy{
@@ -85,6 +86,7 @@ var updateCmd = &cobra.Command{
 			MaxPriceToOpenDeal:            max_price_to_open_deal,
 			CooldownBewtweenDeals:         cooldown_bewtween_deals,
 			OpenDealStop:                  open_deal_stop,
+			UserId:                        user_id,
 		}
 
 		res, err := client.UpdateStrategy(context.Background(),
@@ -129,6 +131,7 @@ func init() {
 	updateCmd.Flags().Float64P("max_price_to_open_deal", "x", 0.0, "Add max price to open deal")
 	updateCmd.Flags().StringP("cooldown_bewtween_deals", "y", "", "Add cooldown bewtween deals")
 	updateCmd.Flags().StringP("open_deal_stop", "z", "", "Add open deal stop")
+	updateCmd.Flags().StringP("user_id", "2", "", "Add user id")
 	rootCmd.AddCommand(updateCmd)
 
 	// Here you will define your flags and configuration settings.

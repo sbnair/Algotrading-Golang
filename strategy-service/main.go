@@ -49,6 +49,7 @@ func (s *StrategyServiceServer) CreateStrategy(ctx context.Context, req *strateg
 		MaxPriceToOpenDeal:            strategy.GetMaxPriceToOpenDeal(),
 		CooldownBewtweenDeals:         strategy.GetCooldownBewtweenDeals(),
 		OpenDealStop:                  strategy.GetOpenDealStop(),
+		UserId:                        strategy.GetUserId(),
 	}
 
 	// Insert the data into the database
@@ -75,10 +76,14 @@ func (s *StrategyServiceServer) CreateStrategy(ctx context.Context, req *strateg
 }
 
 func (s *StrategyServiceServer) ListStrategies(req *strategypb.ListStrategyReq, stream strategypb.StrategyService_ListStrategiesServer) error {
+	userIdQuery := req.GetUserId()
+	if len(userIdQuery) == 0 {
+		return status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not find UserId in Req"))
+	}
 	// Initiate a BlogItem type to write decoded data to
 	data := &StrategyItem{}
 	// collection.Find returns a cursor for our (empty) query
-	cursor, err := strategydb.Find(context.Background(), bson.M{})
+	cursor, err := strategydb.Find(context.Background(), bson.M{"user_id": userIdQuery})
 	if err != nil {
 		return status.Errorf(codes.Internal, fmt.Sprintf("Unknown internal error: %v", err))
 	}
@@ -121,6 +126,7 @@ func (s *StrategyServiceServer) ListStrategies(req *strategypb.ListStrategyReq, 
 				MaxPriceToOpenDeal:            data.MaxPriceToOpenDeal,
 				CooldownBewtweenDeals:         data.CooldownBewtweenDeals,
 				OpenDealStop:                  data.OpenDealStop,
+				UserId:                        data.UserId,
 			},
 		})
 	}
@@ -173,6 +179,7 @@ func (s *StrategyServiceServer) ReadStrategy(ctx context.Context, req *strategyp
 			MaxPriceToOpenDeal:            data.MaxPriceToOpenDeal,
 			CooldownBewtweenDeals:         data.CooldownBewtweenDeals,
 			OpenDealStop:                  data.OpenDealStop,
+			UserId:                        data.UserId,
 		},
 	}
 	return response, nil
@@ -233,6 +240,7 @@ func (s *StrategyServiceServer) UpdateStrategy(ctx context.Context, req *strateg
 		"max_price_to_open_deal":               strategy.GetMaxPriceToOpenDeal(),
 		"cooldown_bewtween_deals":              strategy.GetCooldownBewtweenDeals(),
 		"open_deal_stop":                       strategy.GetOpenDealStop(),
+		"user_id":                              strategy.GetUserId(),
 	}
 
 	// Convert the oid into an unordered bson document to search by id
@@ -279,6 +287,7 @@ func (s *StrategyServiceServer) UpdateStrategy(ctx context.Context, req *strateg
 			MaxPriceToOpenDeal:            decoded.MaxPriceToOpenDeal,
 			CooldownBewtweenDeals:         decoded.CooldownBewtweenDeals,
 			OpenDealStop:                  decoded.OpenDealStop,
+			UserId:                        decoded.UserId,
 		},
 	}, nil
 }
@@ -312,6 +321,7 @@ type StrategyItem struct {
 	MaxPriceToOpenDeal            float64            `bson:"max_price_to_open_deal"`
 	CooldownBewtweenDeals         string             `bson:"cooldown_bewtween_deals"`
 	OpenDealStop                  string             `bson:"open_deal_stop"`
+	UserId                        string             `bson:"user_id"`
 }
 
 var db *mongo.Client

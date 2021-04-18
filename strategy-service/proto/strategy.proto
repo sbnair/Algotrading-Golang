@@ -37,6 +37,7 @@ message Strategy {
     double max_price_to_open_deal = 24;
     string cooldown_bewtween_deals = 25;
     string open_deal_stop = 26;
+    string user_id = 27;
 }
 
 message CreateStrategyReq {
@@ -71,7 +72,9 @@ message DeleteStrategyRes {
     bool success = 1;
 }
 
-message ListStrategyReq{}
+message ListStrategyReq{
+    string user_id = 1;
+}
 
 message ListStrategyRes{
     Strategy Strategy = 1;

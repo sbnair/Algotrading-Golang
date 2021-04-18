@@ -55,6 +55,7 @@ var createCmd = &cobra.Command{
 		max_price_to_open_deal, err := cmd.Flags().GetFloat64("max_price_to_open_deal")
 		cooldown_bewtween_deals, err := cmd.Flags().GetString("cooldown_bewtween_deals")
 		open_deal_stop, err := cmd.Flags().GetString("open_deal_stop")
+		user_id, err := cmd.Flags().GetString("user_id")
 
 		if err != nil {
 			return err
@@ -86,6 +87,7 @@ var createCmd = &cobra.Command{
 			MaxPriceToOpenDeal:            max_price_to_open_deal,
 			CooldownBewtweenDeals:         cooldown_bewtween_deals,
 			OpenDealStop:                  open_deal_stop,
+			UserId:                        user_id,
 		}
 		// RPC call
 		res, err := client.CreateStrategy(
@@ -133,6 +135,7 @@ func init() {
 	createCmd.Flags().Float64P("max_price_to_open_deal", "x", 0.0, "Add max price to open deal")
 	createCmd.Flags().StringP("cooldown_bewtween_deals", "y", "", "Add cooldown bewtween deals")
 	createCmd.Flags().StringP("open_deal_stop", "z", "", "Add open deal stop")
+	createCmd.Flags().StringP("user_id", "2", "", "Add user id")
 	rootCmd.AddCommand(createCmd)
 
 	// Here you will define your flags and configuration settings.

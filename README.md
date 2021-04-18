@@ -18,6 +18,7 @@ Add some records by connecting to MongoDB Shell:
 :/# mongo
 use mydb
 db.availableExchanges.insert({ "name": "Alpaca"})
+db.users.insert({"name":"Vikash"})
 ```
 
 ## To compile your proto file to Go stubs in exchange service
@@ -54,11 +55,11 @@ go run main.go update -i "607815df7f51e077fd7ac87a" -e "Alpaca" -n "Alpaca Excha
 ### For Strategy Service
 1. To create a Strategy
 ```
-go run main.go create -a "bot1" -b "alpaca" -c "simple" -d "BTC/USDT" -e "Long" -f "USD" -g 10.00 -i 5.00 -j "Market"
+go run main.go create -a "bot1" -b "alpaca" -c "simple" -d "BTC/USDT" -e "Long" -f "USD" -g 10.00 -i 5.00 -j "Market" -2 "user1"
 ```
-2. To list all the Strategies
+2. To list all the Strategies by User Id
 ```
-go run main.go list
+go run main.go list -u "user1"
 ```
 3. To read a Strategy
 ```
@@ -70,5 +71,5 @@ go run main.go delete -i "607c2d01ca735a091de58254"
 ```
 5. To update a Strategy
 ```
-go run main.go update -1 "607c3a6bca735a091de58255" -a "bot2" -b "alpaca" -c "simple" -d "BTC/SDT" -e "Long" -f "USD" -g 10.00 -i 5.00 -j "Market"
+go run main.go update -1 "607c3a6bca735a091de58255" -a "bot2" -b "alpaca" -c "simple" -d "BTC/SDT" -e "Long" -f "USD" -g 10.00 -i 5.00 -j "Market" -2 "user1"
 ```

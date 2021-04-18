@@ -27,11 +27,17 @@ import (
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "List all Strategies",
-	Long:  `List all Strategies in the DB`,
+	Short: "List all Strategies by user id",
+	Long:  `List all Strategies in the DB by UserId`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		user_id, err := cmd.Flags().GetString("user_id")
+		if err != nil {
+			return err
+		}
 		// Create the request (this can be inline below too)
-		req := &strategypb.ListStrategyReq{}
+		req := &strategypb.ListStrategyReq{
+			UserId: user_id,
+		}
 		// Call ListBlogs that returns a stream
 		stream, err := client.ListStrategies(context.Background(), req)
 		// Check for errors
@@ -58,6 +64,8 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
+	listCmd.Flags().StringP("user_id", "u", "", "The user id of the User")
+	listCmd.MarkFlagRequired("user_id")
 	rootCmd.AddCommand(listCmd)
 
 	// Here you will define your flags and configuration settings.
