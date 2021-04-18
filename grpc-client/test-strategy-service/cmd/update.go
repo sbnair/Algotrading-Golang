@@ -18,6 +18,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/spf13/cobra"
 	strategypb "github.com/vikjdk7/Algotrading-Golang/strategy-service/proto"
@@ -89,6 +90,9 @@ var updateCmd = &cobra.Command{
 			UserId:                        user_id,
 		}
 
+		//record starttime of request
+		startTime := time.Now()
+
 		res, err := client.UpdateStrategy(context.Background(),
 			&strategypb.UpdateStrategyReq{
 				Strategy: strategy,
@@ -98,6 +102,10 @@ var updateCmd = &cobra.Command{
 		}
 
 		fmt.Println(res)
+
+		diff := time.Since(startTime)
+		fmt.Println("Time taken for the operation: ")
+		fmt.Println(diff)
 		return nil
 	},
 }

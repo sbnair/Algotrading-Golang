@@ -18,6 +18,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/spf13/cobra"
 	strategypb "github.com/vikjdk7/Algotrading-Golang/strategy-service/proto"
@@ -35,6 +36,9 @@ var readCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		//record starttime of request
+		startTime := time.Now()
+
 		req := &strategypb.ReadStrategyReq{
 			Id: id,
 		}
@@ -42,7 +46,13 @@ var readCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+
 		fmt.Println(res)
+
+		diff := time.Since(startTime)
+		fmt.Println("Time taken for the operation: ")
+		fmt.Println(diff)
+
 		return nil
 	},
 }

@@ -18,6 +18,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/spf13/cobra"
 	strategypb "github.com/vikjdk7/Algotrading-Golang/strategy-service/proto"
@@ -89,6 +90,10 @@ var createCmd = &cobra.Command{
 			OpenDealStop:                  open_deal_stop,
 			UserId:                        user_id,
 		}
+
+		//record starttime of request
+		startTime := time.Now()
+
 		// RPC call
 		res, err := client.CreateStrategy(
 			context.Background(),
@@ -103,6 +108,10 @@ var createCmd = &cobra.Command{
 		fmt.Printf("Strategy created: %s\n", res.Strategy.Id)
 
 		fmt.Println(res)
+
+		diff := time.Since(startTime)
+		fmt.Println("Time taken for the operation: ")
+		fmt.Println(diff)
 		return nil
 	},
 }

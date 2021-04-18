@@ -19,6 +19,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"time"
 
 	"github.com/spf13/cobra"
 	strategypb "github.com/vikjdk7/Algotrading-Golang/strategy-service/proto"
@@ -38,6 +39,10 @@ var listCmd = &cobra.Command{
 		req := &strategypb.ListStrategyReq{
 			UserId: user_id,
 		}
+
+		//record starttime of request
+		startTime := time.Now()
+
 		// Call ListBlogs that returns a stream
 		stream, err := client.ListStrategies(context.Background(), req)
 		// Check for errors
@@ -59,6 +64,10 @@ var listCmd = &cobra.Command{
 			// If everything went well use the generated getter to print the blog message
 			fmt.Println(res.GetStrategy())
 		}
+
+		diff := time.Since(startTime)
+		fmt.Println("Time taken for the operation: ")
+		fmt.Println(diff)
 		return nil
 	},
 }

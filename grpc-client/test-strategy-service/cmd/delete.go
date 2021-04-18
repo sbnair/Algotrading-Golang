@@ -18,6 +18,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/spf13/cobra"
 	strategypb "github.com/vikjdk7/Algotrading-Golang/strategy-service/proto"
@@ -38,6 +39,10 @@ var deleteCmd = &cobra.Command{
 		req := &strategypb.DeleteStrategyReq{
 			Id: id,
 		}
+
+		//record starttime of request
+		startTime := time.Now()
+
 		// We only return true upon success for other cases an error is thrown
 		// We can thus omit the response variable for now and just print something to console
 		_, err = client.DeleteStrategy(context.Background(), req)
@@ -45,6 +50,10 @@ var deleteCmd = &cobra.Command{
 			return err
 		}
 		fmt.Printf("Succesfully deleted the strategy with id %s\n", id)
+
+		diff := time.Since(startTime)
+		fmt.Println("Time taken for the operation: ")
+		fmt.Println(diff)
 		return nil
 	},
 }
