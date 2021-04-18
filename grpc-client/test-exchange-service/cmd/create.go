@@ -60,7 +60,6 @@ var createCmd = &cobra.Command{
 			return err
 		}
 		fmt.Printf("Exchange created: %s\n", res.Exchange.Id)
-		fmt.Println(res.ExchangeAccountInfo)
 		fmt.Println(res)
 		return nil
 	},

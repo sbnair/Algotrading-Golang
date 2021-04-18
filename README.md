@@ -23,7 +23,9 @@ db.availableExchanges.insert({ "name": "Alpaca"})
 ## To compile your proto file to Go stubs in exchange service
 ```protoc -I. proto/exchange.proto --go_out=plugins=grpc:.```
 
-## To run gRPC Client
+## Run the gRPC Client
+
+### For Exchange Service
 1. To create an exchange
 ```
 go run 
@@ -48,4 +50,26 @@ go run main.go delete -i "607815df7f51e077fd7ac87a"
 6. To update an Exchange
 ```
 go run main.go update -i "607815df7f51e077fd7ac87a" -e "Alpaca" -n "Alpaca Exchange" -t "paper_trading" -u "user1" -k "1234trewpoiuyhfjdksa" -s "ertyertyuiolkjhgfdhjkl,mnbvcxdsfghjk"
+```
+
+### For Strategy Service
+1. To create a Strategy
+```
+go run main.go create -a "bot1" -b "alpaca" -c "simple" -d "BTC/USDT" -e "Long" -f "USD" -g 10.00 -i 5.00 -j "Market"
+```
+2. To list all the Strategies
+```
+go run main.go list
+```
+3. To read a Strategy
+```
+go run main.go read -i "607c2d01ca735a091de58254"
+```
+4. To Delete a Strategy
+```
+go run main.go delete -i "607c2d01ca735a091de58254"
+```
+5. To update a Strategy
+```
+go run main.go update -1 "607c3a6bca735a091de58255" -a "bot2" -b "alpaca" -c "simple" -d "BTC/SDT" -e "Long" -f "USD" -g 10.00 -i 5.00 -j "Market"
 ```
