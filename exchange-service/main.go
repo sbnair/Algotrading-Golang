@@ -38,20 +38,6 @@ func (s *ExchangeServiceServer) CreateExchange(ctx context.Context, req *exchang
 		ApiSecret:        exchange.GetApiSecret(),
 	}
 
-	// Insert the data into the database
-	// *InsertOneResult contains the oid
-	result, err := exchangedb.InsertOne(mongoCtx, data)
-	// check error
-	if err != nil {
-		// return internal gRPC error to be handled later
-		return nil, status.Errorf(
-			codes.Internal,
-			fmt.Sprintf("Internal error: %v", err),
-		)
-	}
-	// add the id to blog
-	oid := result.InsertedID.(primitive.ObjectID)
-	exchange.Id = oid.Hex()
 	exchangeAccount := &exchangepb.ExchangeAccountInfo{}
 
 	//println(exchangeAccount)
@@ -67,7 +53,10 @@ func (s *ExchangeServiceServer) CreateExchange(ctx context.Context, req *exchang
 		alpacaClient := alpaca.NewClient(common.Credentials())
 		acct, err := alpacaClient.GetAccount()
 		if err != nil {
-			panic(err)
+			return nil, status.Errorf(
+				codes.Internal,
+				fmt.Sprintf("Internal error: %v", err),
+			)
 		}
 		println(acct)
 		exchangeAccount.Id = acct.ID
@@ -93,6 +82,21 @@ func (s *ExchangeServiceServer) CreateExchange(ctx context.Context, req *exchang
 
 		//jsonpb.Unmarshal(acct, &exchangeAccount)
 	}
+
+	// Insert the data into the database
+	// *InsertOneResult contains the oid
+	result, err := exchangedb.InsertOne(mongoCtx, data)
+	// check error
+	if err != nil {
+		// return internal gRPC error to be handled later
+		return nil, status.Errorf(
+			codes.Internal,
+			fmt.Sprintf("Internal error: %v", err),
+		)
+	}
+	// add the id to blog
+	oid := result.InsertedID.(primitive.ObjectID)
+	exchange.Id = oid.Hex()
 	// return the blog in a CreateBlogRes type
 	createExchangeResponse := &exchangepb.CreateExchangeRes{
 		Exchange:            exchange,

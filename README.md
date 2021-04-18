@@ -28,8 +28,7 @@ db.availableExchanges.insert({ "name": "Alpaca"})
 ### For Exchange Service
 1. To create an exchange
 ```
-go run 
-main.go create -e "Alpaca" -n "Alpaca Exchange" -t "paper_trading" -u "user2" -k "PKOP7ALK9WCI4BH5OX4R" -s "S0NuGhDTNXZ1wp3z9TmuUWhst53ydKAtZ7dtsYhI"
+go run main.go create -e "Alpaca" -n "Alpaca Exchange" -t "paper_trading" -u "user2" -k "PKOP7ALK9WCI4BH5OX4R" -s "S0NuGhDTNXZ1wp3z9TmuUWhst53ydKAtZ7dtsYhI"
 ```
 2. To read an exchange by Exchange Id
 ```
