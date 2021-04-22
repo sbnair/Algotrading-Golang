@@ -9,7 +9,6 @@ import (
 	"os/signal"
 
 	strategypb "github.com/vikjdk7/Algotrading-Golang/strategy-service/proto"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -24,34 +23,26 @@ func (s *StrategyServiceServer) CreateStrategy(ctx context.Context, req *strateg
 
 	data := StrategyItem{
 		// ID:       primitive.NilObjectID,
-		BotName:                       strategy.GetBotName(),
-		SelectedStrategy:              strategy.GetSelectedStrategy(),
-		BotType:                       strategy.GetBotType(),
-		Pairs:                         strategy.GetPairs(),
-		StrategyType:                  strategy.GetStrategyType(),
-		ProfitCurrency:                strategy.GetProfitCurrency(),
-		BaseOrderSize:                 strategy.GetBaseOrderSize(),
-		SafetyOrderSize:               strategy.GetSafetyOrderSize(),
-		OrderType:                     strategy.GetOrderType(),
-		TargetProfit:                  strategy.GetTargetProfit(),
-		ProfitType:                    strategy.GetProfitType(),
-		TrailingDeviation:             strategy.GetTrailingDeviation(),
-		StopLoss:                      strategy.GetStopLoss(),
-		StopLossAction:                strategy.GetStopLossAction(),
-		MaxSafetyTradeAcc:             strategy.GetMaxSafetyTradeAcc(),
-		MaxActiveSafetyTradeAcc:       strategy.GetMaxActiveSafetyTradeAcc(),
-		PriceDevation:                 strategy.GetPriceDevation(),
-		SafetyOrderVolumeScale:        strategy.GetSafetyOrderVolumeScale(),
-		SafetyOrderStepScale:          strategy.GetSafetyOrderStepScale(),
-		Active:                        strategy.GetActive(),
-		NoDealIfDailyVolumeIsLessThan: strategy.GetNoDealIfDailyVolumeIsLessThan(),
-		MinPriceToOpenDeal:            strategy.GetMinPriceToOpenDeal(),
-		MaxPriceToOpenDeal:            strategy.GetMaxPriceToOpenDeal(),
-		CooldownBewtweenDeals:         strategy.GetCooldownBewtweenDeals(),
-		OpenDealStop:                  strategy.GetOpenDealStop(),
-		UserId:                        strategy.GetUserId(),
+		StrategyName:            strategy.GetStrategyName(),
+		SelectedExchange:        strategy.GetSelectedExchange(),
+		StrategyType:            strategy.GetStrategyType(),
+		StartOrderType:          strategy.GetStartOrderType(),
+		DealStartCondition:      strategy.GetDealStartCondition(),
+		BaseOrderSize:           strategy.GetBaseOrderSize(),
+		SafetyOrderSize:         strategy.GetSafetyOrderSize(),
+		MaxSafetyTradeAcc:       strategy.GetMaxSafetyTradeAcc(),
+		PriceDevation:           strategy.GetPriceDevation(),
+		SafetyOrderVolumeScale:  strategy.GetSafetyOrderVolumeScale(),
+		SafetyOrderStepScale:    strategy.GetSafetyOrderStepScale(),
+		TakeProfit:              strategy.GetTakeProfit(),
+		TargetProfit:            strategy.GetTargetProfit(),
+		AllocateFundsToStrategy: strategy.GetAllocateFundsToStrategy(),
+		UserId:                  strategy.GetUserId(),
+		Version:                 strategy.GetVersion(),
+		Stock:                   strategy.GetStock(),
 	}
 
+	fmt.Println(data)
 	// Insert the data into the database
 	// *InsertOneResult contains the oid
 	result, err := strategydb.InsertOne(mongoCtx, data)
@@ -74,6 +65,13 @@ func (s *StrategyServiceServer) CreateStrategy(ctx context.Context, req *strateg
 	fmt.Println(createStrategyResponse)
 	return createStrategyResponse, nil
 }
+
+/* ---------------------------------------
+
+
+
+
+
 
 func (s *StrategyServiceServer) ListStrategies(req *strategypb.ListStrategyReq, stream strategypb.StrategyService_ListStrategiesServer) error {
 	userIdQuery := req.GetUserId()
@@ -292,36 +290,34 @@ func (s *StrategyServiceServer) UpdateStrategy(ctx context.Context, req *strateg
 	}, nil
 }
 
+
+/* ---------------------------------------*/
+
 type StrategyServiceServer struct{}
 
 type StrategyItem struct {
-	Id                            primitive.ObjectID `bson:"_id,omitempty"`
-	BotName                       string             `bson:"bot_name"`
-	SelectedStrategy              string             `bson:"selected_strategy"`
-	BotType                       string             `bson:"bot_type"`
-	Pairs                         string             `bson:"pairs"`
-	StrategyType                  string             `bson:"strategy_type"`
-	ProfitCurrency                string             `bson:"profit_currency"`
-	BaseOrderSize                 float64            `bson:"base_order_size"`
-	SafetyOrderSize               float64            `bson:"safety_order_size"`
-	OrderType                     string             `bson:"order_type"`
-	TargetProfit                  string             `bson:"target_profit"`
-	ProfitType                    string             `bson:"profit_type"`
-	TrailingDeviation             string             `bson:"trailing_deviation"`
-	StopLoss                      string             `bson:"stop_loss"`
-	StopLossAction                string             `bson:"stop_loss_action"`
-	MaxSafetyTradeAcc             string             `bson:"max_safety_trade_acc"`
-	MaxActiveSafetyTradeAcc       string             `bson:"max_active_safety_trade_acc"`
-	PriceDevation                 string             `bson:"price_devation"`
-	SafetyOrderVolumeScale        string             `bson:"safety_order_volume_scale"`
-	SafetyOrderStepScale          string             `bson:"safety_order_step_scale"`
-	Active                        bool               `bson:"active"`
-	NoDealIfDailyVolumeIsLessThan string             `bson:"no_deal_if_daily_volume_is_less_than"`
-	MinPriceToOpenDeal            float64            `bson:"min_price_to_open_deal"`
-	MaxPriceToOpenDeal            float64            `bson:"max_price_to_open_deal"`
-	CooldownBewtweenDeals         string             `bson:"cooldown_bewtween_deals"`
-	OpenDealStop                  string             `bson:"open_deal_stop"`
-	UserId                        string             `bson:"user_id"`
+	Id                      primitive.ObjectID  `bson:"_id,omitempty"`
+	StrategyName            string              `bson:"strategy_name"`
+	SelectedExchange        string              `bson:"selected_exchange"`
+	StrategyType            string              `bson:"strategy_type"`
+	StartOrderType          string              `bson:"start_order_type"`
+	DealStartCondition      string              `bson:"deal_start_condition"`
+	BaseOrderSize           float64             `bson:"base_order_size"`
+	SafetyOrderSize         float64             `bson:"safety_order_size"`
+	MaxSafetyTradeAcc       string              `bson:"max_safety_trade_acc"`
+	PriceDevation           string              `bson:"price_devation"`
+	SafetyOrderVolumeScale  string              `bson:"safety_order_volume_scale"`
+	SafetyOrderStepScale    string              `bson:"safety_order_step_scale"`
+	TakeProfit              string              `bson:"take_profit"`
+	TargetProfit            string              `bson:"target_profit"`
+	AllocateFundsToStrategy string              `bson:"allocate_funds_to_strategy"`
+	UserId                  string              `bson:"user_id"`
+	Version                 int64               `bson:"version"`
+	Stock                   []*strategypb.Stock `bson:"stock"`
+}
+
+type Stock struct {
+	StockName string `bson:"stock_name"`
 }
 
 var db *mongo.Client

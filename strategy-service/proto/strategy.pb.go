@@ -24,37 +24,54 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+type Strategy_Status int32
+
+const (
+	Strategy_STOPPED Strategy_Status = 0
+	Strategy_STARTED Strategy_Status = 1
+)
+
+var Strategy_Status_name = map[int32]string{
+	0: "STOPPED",
+	1: "STARTED",
+}
+
+var Strategy_Status_value = map[string]int32{
+	"STOPPED": 0,
+	"STARTED": 1,
+}
+
+func (x Strategy_Status) String() string {
+	return proto.EnumName(Strategy_Status_name, int32(x))
+}
+
+func (Strategy_Status) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_8a9cfd4cb1c623bb, []int{0, 0}
+}
+
 type Strategy struct {
-	Id                            string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	BotName                       string   `protobuf:"bytes,2,opt,name=bot_name,json=botName,proto3" json:"bot_name,omitempty"`
-	SelectedStrategy              string   `protobuf:"bytes,3,opt,name=selected_strategy,json=selectedStrategy,proto3" json:"selected_strategy,omitempty"`
-	BotType                       string   `protobuf:"bytes,4,opt,name=bot_type,json=botType,proto3" json:"bot_type,omitempty"`
-	Pairs                         string   `protobuf:"bytes,5,opt,name=pairs,proto3" json:"pairs,omitempty"`
-	StrategyType                  string   `protobuf:"bytes,6,opt,name=strategy_type,json=strategyType,proto3" json:"strategy_type,omitempty"`
-	ProfitCurrency                string   `protobuf:"bytes,7,opt,name=profit_currency,json=profitCurrency,proto3" json:"profit_currency,omitempty"`
-	BaseOrderSize                 float64  `protobuf:"fixed64,8,opt,name=base_order_size,json=baseOrderSize,proto3" json:"base_order_size,omitempty"`
-	SafetyOrderSize               float64  `protobuf:"fixed64,9,opt,name=safety_order_size,json=safetyOrderSize,proto3" json:"safety_order_size,omitempty"`
-	OrderType                     string   `protobuf:"bytes,10,opt,name=order_type,json=orderType,proto3" json:"order_type,omitempty"`
-	TargetProfit                  string   `protobuf:"bytes,11,opt,name=target_profit,json=targetProfit,proto3" json:"target_profit,omitempty"`
-	ProfitType                    string   `protobuf:"bytes,12,opt,name=profit_type,json=profitType,proto3" json:"profit_type,omitempty"`
-	TrailingDeviation             string   `protobuf:"bytes,13,opt,name=trailing_deviation,json=trailingDeviation,proto3" json:"trailing_deviation,omitempty"`
-	StopLoss                      string   `protobuf:"bytes,14,opt,name=stop_loss,json=stopLoss,proto3" json:"stop_loss,omitempty"`
-	StopLossAction                string   `protobuf:"bytes,15,opt,name=stop_loss_action,json=stopLossAction,proto3" json:"stop_loss_action,omitempty"`
-	MaxSafetyTradeAcc             string   `protobuf:"bytes,16,opt,name=max_safety_trade_acc,json=maxSafetyTradeAcc,proto3" json:"max_safety_trade_acc,omitempty"`
-	MaxActiveSafetyTradeAcc       string   `protobuf:"bytes,17,opt,name=max_active_safety_trade_acc,json=maxActiveSafetyTradeAcc,proto3" json:"max_active_safety_trade_acc,omitempty"`
-	PriceDevation                 string   `protobuf:"bytes,18,opt,name=price_devation,json=priceDevation,proto3" json:"price_devation,omitempty"`
-	SafetyOrderVolumeScale        string   `protobuf:"bytes,19,opt,name=safety_order_volume_scale,json=safetyOrderVolumeScale,proto3" json:"safety_order_volume_scale,omitempty"`
-	SafetyOrderStepScale          string   `protobuf:"bytes,20,opt,name=safety_order_step_scale,json=safetyOrderStepScale,proto3" json:"safety_order_step_scale,omitempty"`
-	Active                        bool     `protobuf:"varint,21,opt,name=active,proto3" json:"active,omitempty"`
-	NoDealIfDailyVolumeIsLessThan string   `protobuf:"bytes,22,opt,name=no_deal_if_daily_volume_is_less_than,json=noDealIfDailyVolumeIsLessThan,proto3" json:"no_deal_if_daily_volume_is_less_than,omitempty"`
-	MinPriceToOpenDeal            float64  `protobuf:"fixed64,23,opt,name=min_price_to_open_deal,json=minPriceToOpenDeal,proto3" json:"min_price_to_open_deal,omitempty"`
-	MaxPriceToOpenDeal            float64  `protobuf:"fixed64,24,opt,name=max_price_to_open_deal,json=maxPriceToOpenDeal,proto3" json:"max_price_to_open_deal,omitempty"`
-	CooldownBewtweenDeals         string   `protobuf:"bytes,25,opt,name=cooldown_bewtween_deals,json=cooldownBewtweenDeals,proto3" json:"cooldown_bewtween_deals,omitempty"`
-	OpenDealStop                  string   `protobuf:"bytes,26,opt,name=open_deal_stop,json=openDealStop,proto3" json:"open_deal_stop,omitempty"`
-	UserId                        string   `protobuf:"bytes,27,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	XXX_NoUnkeyedLiteral          struct{} `json:"-"`
-	XXX_unrecognized              []byte   `json:"-"`
-	XXX_sizecache                 int32    `json:"-"`
+	Id                      string          `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	StrategyName            string          `protobuf:"bytes,2,opt,name=strategy_name,json=strategyName,proto3" json:"strategy_name,omitempty"`
+	SelectedExchange        string          `protobuf:"bytes,3,opt,name=selected_exchange,json=selectedExchange,proto3" json:"selected_exchange,omitempty"`
+	StrategyType            string          `protobuf:"bytes,4,opt,name=strategy_type,json=strategyType,proto3" json:"strategy_type,omitempty"`
+	StartOrderType          string          `protobuf:"bytes,5,opt,name=start_order_type,json=startOrderType,proto3" json:"start_order_type,omitempty"`
+	DealStartCondition      string          `protobuf:"bytes,6,opt,name=deal_start_condition,json=dealStartCondition,proto3" json:"deal_start_condition,omitempty"`
+	BaseOrderSize           float64         `protobuf:"fixed64,7,opt,name=base_order_size,json=baseOrderSize,proto3" json:"base_order_size,omitempty"`
+	SafetyOrderSize         float64         `protobuf:"fixed64,8,opt,name=safety_order_size,json=safetyOrderSize,proto3" json:"safety_order_size,omitempty"`
+	MaxSafetyTradeAcc       string          `protobuf:"bytes,9,opt,name=max_safety_trade_acc,json=maxSafetyTradeAcc,proto3" json:"max_safety_trade_acc,omitempty"`
+	PriceDevation           string          `protobuf:"bytes,10,opt,name=price_devation,json=priceDevation,proto3" json:"price_devation,omitempty"`
+	SafetyOrderVolumeScale  string          `protobuf:"bytes,11,opt,name=safety_order_volume_scale,json=safetyOrderVolumeScale,proto3" json:"safety_order_volume_scale,omitempty"`
+	SafetyOrderStepScale    string          `protobuf:"bytes,12,opt,name=safety_order_step_scale,json=safetyOrderStepScale,proto3" json:"safety_order_step_scale,omitempty"`
+	TakeProfit              string          `protobuf:"bytes,13,opt,name=take_profit,json=takeProfit,proto3" json:"take_profit,omitempty"`
+	TargetProfit            string          `protobuf:"bytes,14,opt,name=target_profit,json=targetProfit,proto3" json:"target_profit,omitempty"`
+	AllocateFundsToStrategy string          `protobuf:"bytes,15,opt,name=allocate_funds_to_strategy,json=allocateFundsToStrategy,proto3" json:"allocate_funds_to_strategy,omitempty"`
+	UserId                  string          `protobuf:"bytes,16,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Version                 int64           `protobuf:"varint,17,opt,name=version,proto3" json:"version,omitempty"`
+	Status                  Strategy_Status `protobuf:"varint,18,opt,name=status,proto3,enum=strategy.Strategy_Status" json:"status,omitempty"`
+	Stock                   []*Stock        `protobuf:"bytes,19,rep,name=stock,proto3" json:"stock,omitempty"`
+	XXX_NoUnkeyedLiteral    struct{}        `json:"-"`
+	XXX_unrecognized        []byte          `json:"-"`
+	XXX_sizecache           int32           `json:"-"`
 }
 
 func (m *Strategy) Reset()         { *m = Strategy{} }
@@ -89,30 +106,16 @@ func (m *Strategy) GetId() string {
 	return ""
 }
 
-func (m *Strategy) GetBotName() string {
+func (m *Strategy) GetStrategyName() string {
 	if m != nil {
-		return m.BotName
+		return m.StrategyName
 	}
 	return ""
 }
 
-func (m *Strategy) GetSelectedStrategy() string {
+func (m *Strategy) GetSelectedExchange() string {
 	if m != nil {
-		return m.SelectedStrategy
-	}
-	return ""
-}
-
-func (m *Strategy) GetBotType() string {
-	if m != nil {
-		return m.BotType
-	}
-	return ""
-}
-
-func (m *Strategy) GetPairs() string {
-	if m != nil {
-		return m.Pairs
+		return m.SelectedExchange
 	}
 	return ""
 }
@@ -124,9 +127,16 @@ func (m *Strategy) GetStrategyType() string {
 	return ""
 }
 
-func (m *Strategy) GetProfitCurrency() string {
+func (m *Strategy) GetStartOrderType() string {
 	if m != nil {
-		return m.ProfitCurrency
+		return m.StartOrderType
+	}
+	return ""
+}
+
+func (m *Strategy) GetDealStartCondition() string {
+	if m != nil {
+		return m.DealStartCondition
 	}
 	return ""
 }
@@ -145,58 +155,9 @@ func (m *Strategy) GetSafetyOrderSize() float64 {
 	return 0
 }
 
-func (m *Strategy) GetOrderType() string {
-	if m != nil {
-		return m.OrderType
-	}
-	return ""
-}
-
-func (m *Strategy) GetTargetProfit() string {
-	if m != nil {
-		return m.TargetProfit
-	}
-	return ""
-}
-
-func (m *Strategy) GetProfitType() string {
-	if m != nil {
-		return m.ProfitType
-	}
-	return ""
-}
-
-func (m *Strategy) GetTrailingDeviation() string {
-	if m != nil {
-		return m.TrailingDeviation
-	}
-	return ""
-}
-
-func (m *Strategy) GetStopLoss() string {
-	if m != nil {
-		return m.StopLoss
-	}
-	return ""
-}
-
-func (m *Strategy) GetStopLossAction() string {
-	if m != nil {
-		return m.StopLossAction
-	}
-	return ""
-}
-
 func (m *Strategy) GetMaxSafetyTradeAcc() string {
 	if m != nil {
 		return m.MaxSafetyTradeAcc
-	}
-	return ""
-}
-
-func (m *Strategy) GetMaxActiveSafetyTradeAcc() string {
-	if m != nil {
-		return m.MaxActiveSafetyTradeAcc
 	}
 	return ""
 }
@@ -222,44 +183,23 @@ func (m *Strategy) GetSafetyOrderStepScale() string {
 	return ""
 }
 
-func (m *Strategy) GetActive() bool {
+func (m *Strategy) GetTakeProfit() string {
 	if m != nil {
-		return m.Active
-	}
-	return false
-}
-
-func (m *Strategy) GetNoDealIfDailyVolumeIsLessThan() string {
-	if m != nil {
-		return m.NoDealIfDailyVolumeIsLessThan
+		return m.TakeProfit
 	}
 	return ""
 }
 
-func (m *Strategy) GetMinPriceToOpenDeal() float64 {
+func (m *Strategy) GetTargetProfit() string {
 	if m != nil {
-		return m.MinPriceToOpenDeal
-	}
-	return 0
-}
-
-func (m *Strategy) GetMaxPriceToOpenDeal() float64 {
-	if m != nil {
-		return m.MaxPriceToOpenDeal
-	}
-	return 0
-}
-
-func (m *Strategy) GetCooldownBewtweenDeals() string {
-	if m != nil {
-		return m.CooldownBewtweenDeals
+		return m.TargetProfit
 	}
 	return ""
 }
 
-func (m *Strategy) GetOpenDealStop() string {
+func (m *Strategy) GetAllocateFundsToStrategy() string {
 	if m != nil {
-		return m.OpenDealStop
+		return m.AllocateFundsToStrategy
 	}
 	return ""
 }
@@ -267,6 +207,66 @@ func (m *Strategy) GetOpenDealStop() string {
 func (m *Strategy) GetUserId() string {
 	if m != nil {
 		return m.UserId
+	}
+	return ""
+}
+
+func (m *Strategy) GetVersion() int64 {
+	if m != nil {
+		return m.Version
+	}
+	return 0
+}
+
+func (m *Strategy) GetStatus() Strategy_Status {
+	if m != nil {
+		return m.Status
+	}
+	return Strategy_STOPPED
+}
+
+func (m *Strategy) GetStock() []*Stock {
+	if m != nil {
+		return m.Stock
+	}
+	return nil
+}
+
+type Stock struct {
+	StockName            string   `protobuf:"bytes,1,opt,name=stock_name,json=stockName,proto3" json:"stock_name,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Stock) Reset()         { *m = Stock{} }
+func (m *Stock) String() string { return proto.CompactTextString(m) }
+func (*Stock) ProtoMessage()    {}
+func (*Stock) Descriptor() ([]byte, []int) {
+	return fileDescriptor_8a9cfd4cb1c623bb, []int{1}
+}
+
+func (m *Stock) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Stock.Unmarshal(m, b)
+}
+func (m *Stock) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Stock.Marshal(b, m, deterministic)
+}
+func (m *Stock) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Stock.Merge(m, src)
+}
+func (m *Stock) XXX_Size() int {
+	return xxx_messageInfo_Stock.Size(m)
+}
+func (m *Stock) XXX_DiscardUnknown() {
+	xxx_messageInfo_Stock.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Stock proto.InternalMessageInfo
+
+func (m *Stock) GetStockName() string {
+	if m != nil {
+		return m.StockName
 	}
 	return ""
 }
@@ -282,7 +282,7 @@ func (m *CreateStrategyReq) Reset()         { *m = CreateStrategyReq{} }
 func (m *CreateStrategyReq) String() string { return proto.CompactTextString(m) }
 func (*CreateStrategyReq) ProtoMessage()    {}
 func (*CreateStrategyReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8a9cfd4cb1c623bb, []int{1}
+	return fileDescriptor_8a9cfd4cb1c623bb, []int{2}
 }
 
 func (m *CreateStrategyReq) XXX_Unmarshal(b []byte) error {
@@ -321,7 +321,7 @@ func (m *CreateStrategyRes) Reset()         { *m = CreateStrategyRes{} }
 func (m *CreateStrategyRes) String() string { return proto.CompactTextString(m) }
 func (*CreateStrategyRes) ProtoMessage()    {}
 func (*CreateStrategyRes) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8a9cfd4cb1c623bb, []int{2}
+	return fileDescriptor_8a9cfd4cb1c623bb, []int{3}
 }
 
 func (m *CreateStrategyRes) XXX_Unmarshal(b []byte) error {
@@ -360,7 +360,7 @@ func (m *UpdateStrategyReq) Reset()         { *m = UpdateStrategyReq{} }
 func (m *UpdateStrategyReq) String() string { return proto.CompactTextString(m) }
 func (*UpdateStrategyReq) ProtoMessage()    {}
 func (*UpdateStrategyReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8a9cfd4cb1c623bb, []int{3}
+	return fileDescriptor_8a9cfd4cb1c623bb, []int{4}
 }
 
 func (m *UpdateStrategyReq) XXX_Unmarshal(b []byte) error {
@@ -399,7 +399,7 @@ func (m *UpdateStrategyRes) Reset()         { *m = UpdateStrategyRes{} }
 func (m *UpdateStrategyRes) String() string { return proto.CompactTextString(m) }
 func (*UpdateStrategyRes) ProtoMessage()    {}
 func (*UpdateStrategyRes) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8a9cfd4cb1c623bb, []int{4}
+	return fileDescriptor_8a9cfd4cb1c623bb, []int{5}
 }
 
 func (m *UpdateStrategyRes) XXX_Unmarshal(b []byte) error {
@@ -438,7 +438,7 @@ func (m *ReadStrategyReq) Reset()         { *m = ReadStrategyReq{} }
 func (m *ReadStrategyReq) String() string { return proto.CompactTextString(m) }
 func (*ReadStrategyReq) ProtoMessage()    {}
 func (*ReadStrategyReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8a9cfd4cb1c623bb, []int{5}
+	return fileDescriptor_8a9cfd4cb1c623bb, []int{6}
 }
 
 func (m *ReadStrategyReq) XXX_Unmarshal(b []byte) error {
@@ -477,7 +477,7 @@ func (m *ReadStrategyRes) Reset()         { *m = ReadStrategyRes{} }
 func (m *ReadStrategyRes) String() string { return proto.CompactTextString(m) }
 func (*ReadStrategyRes) ProtoMessage()    {}
 func (*ReadStrategyRes) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8a9cfd4cb1c623bb, []int{6}
+	return fileDescriptor_8a9cfd4cb1c623bb, []int{7}
 }
 
 func (m *ReadStrategyRes) XXX_Unmarshal(b []byte) error {
@@ -516,7 +516,7 @@ func (m *DeleteStrategyReq) Reset()         { *m = DeleteStrategyReq{} }
 func (m *DeleteStrategyReq) String() string { return proto.CompactTextString(m) }
 func (*DeleteStrategyReq) ProtoMessage()    {}
 func (*DeleteStrategyReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8a9cfd4cb1c623bb, []int{7}
+	return fileDescriptor_8a9cfd4cb1c623bb, []int{8}
 }
 
 func (m *DeleteStrategyReq) XXX_Unmarshal(b []byte) error {
@@ -555,7 +555,7 @@ func (m *DeleteStrategyRes) Reset()         { *m = DeleteStrategyRes{} }
 func (m *DeleteStrategyRes) String() string { return proto.CompactTextString(m) }
 func (*DeleteStrategyRes) ProtoMessage()    {}
 func (*DeleteStrategyRes) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8a9cfd4cb1c623bb, []int{8}
+	return fileDescriptor_8a9cfd4cb1c623bb, []int{9}
 }
 
 func (m *DeleteStrategyRes) XXX_Unmarshal(b []byte) error {
@@ -594,7 +594,7 @@ func (m *ListStrategyReq) Reset()         { *m = ListStrategyReq{} }
 func (m *ListStrategyReq) String() string { return proto.CompactTextString(m) }
 func (*ListStrategyReq) ProtoMessage()    {}
 func (*ListStrategyReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8a9cfd4cb1c623bb, []int{9}
+	return fileDescriptor_8a9cfd4cb1c623bb, []int{10}
 }
 
 func (m *ListStrategyReq) XXX_Unmarshal(b []byte) error {
@@ -633,7 +633,7 @@ func (m *ListStrategyRes) Reset()         { *m = ListStrategyRes{} }
 func (m *ListStrategyRes) String() string { return proto.CompactTextString(m) }
 func (*ListStrategyRes) ProtoMessage()    {}
 func (*ListStrategyRes) Descriptor() ([]byte, []int) {
-	return fileDescriptor_8a9cfd4cb1c623bb, []int{10}
+	return fileDescriptor_8a9cfd4cb1c623bb, []int{11}
 }
 
 func (m *ListStrategyRes) XXX_Unmarshal(b []byte) error {
@@ -662,7 +662,9 @@ func (m *ListStrategyRes) GetStrategy() *Strategy {
 }
 
 func init() {
+	proto.RegisterEnum("strategy.Strategy_Status", Strategy_Status_name, Strategy_Status_value)
 	proto.RegisterType((*Strategy)(nil), "strategy.Strategy")
+	proto.RegisterType((*Stock)(nil), "strategy.Stock")
 	proto.RegisterType((*CreateStrategyReq)(nil), "strategy.CreateStrategyReq")
 	proto.RegisterType((*CreateStrategyRes)(nil), "strategy.CreateStrategyRes")
 	proto.RegisterType((*UpdateStrategyReq)(nil), "strategy.UpdateStrategyReq")
@@ -680,59 +682,49 @@ func init() {
 }
 
 var fileDescriptor_8a9cfd4cb1c623bb = []byte{
-	// 831 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x56, 0x5f, 0x4f, 0x1b, 0x47,
-	0x10, 0x97, 0x49, 0x03, 0x66, 0xc0, 0x36, 0xde, 0x3a, 0x78, 0x31, 0x8a, 0x4a, 0x21, 0x6d, 0x51,
-	0xaa, 0x90, 0x8a, 0xaa, 0x95, 0x2a, 0xf5, 0xc5, 0xc1, 0x0f, 0xa5, 0x45, 0x4d, 0x64, 0xd3, 0x3e,
-	0xf4, 0x65, 0xb5, 0xbe, 0x1b, 0xc8, 0x4a, 0xe7, 0xdb, 0xeb, 0xcd, 0x02, 0x76, 0xde, 0xfb, 0x2d,
-	0xfb, 0x61, 0xaa, 0x9b, 0xbd, 0x33, 0xe7, 0x73, 0xb0, 0x4a, 0x1e, 0xe7, 0xf7, 0xef, 0x66, 0x76,
-	0x56, 0xab, 0x83, 0x4e, 0x92, 0x5a, 0x67, 0x5f, 0x93, 0x4b, 0xb5, 0xc3, 0xeb, 0xd9, 0x09, 0x97,
-	0xa2, 0x5e, 0xd4, 0x87, 0xff, 0xd6, 0xa1, 0x3e, 0xca, 0x0b, 0xd1, 0x84, 0x35, 0x13, 0xca, 0xda,
-	0x41, 0xed, 0x78, 0x73, 0xb8, 0x66, 0x42, 0xb1, 0x07, 0xf5, 0xb1, 0x75, 0x2a, 0xd6, 0x13, 0x94,
-	0x6b, 0x8c, 0x6e, 0x8c, 0xad, 0xfb, 0x5d, 0x4f, 0x50, 0x7c, 0x0b, 0x6d, 0xc2, 0x08, 0x03, 0x87,
-	0xa1, 0x2a, 0xc2, 0xe4, 0x13, 0xd6, 0xec, 0x14, 0xc4, 0x3c, 0x37, 0xcf, 0x71, 0xb3, 0x04, 0xe5,
-	0x67, 0xf3, 0x9c, 0xcb, 0x59, 0x82, 0xa2, 0x03, 0x4f, 0x13, 0x6d, 0x52, 0x92, 0x4f, 0x19, 0xf7,
-	0x85, 0x38, 0x82, 0x46, 0x11, 0xea, 0x5d, 0xeb, 0xcc, 0x6e, 0x17, 0x20, 0x5b, 0xbf, 0x81, 0x56,
-	0x92, 0xda, 0x2b, 0xe3, 0x54, 0x70, 0x93, 0xa6, 0x18, 0x07, 0x33, 0xb9, 0xc1, 0xb2, 0xa6, 0x87,
-	0xcf, 0x72, 0x54, 0x7c, 0x0d, 0xad, 0xb1, 0x26, 0x54, 0x36, 0x0d, 0x31, 0x55, 0x64, 0x3e, 0xa0,
-	0xac, 0x1f, 0xd4, 0x8e, 0x6b, 0xc3, 0x46, 0x06, 0xbf, 0xcd, 0xd0, 0x91, 0xf9, 0x80, 0xe2, 0x25,
-	0xb4, 0x49, 0x5f, 0xa1, 0x9b, 0x95, 0x95, 0x9b, 0xac, 0x6c, 0x79, 0xe2, 0x5e, 0xfb, 0x1c, 0xc0,
-	0x8b, 0xb8, 0x3d, 0xe0, 0xef, 0x6e, 0x32, 0xc2, 0xbd, 0x1d, 0x41, 0xc3, 0xe9, 0xf4, 0x1a, 0x9d,
-	0xf2, 0xbd, 0xc8, 0x2d, 0x3f, 0x80, 0x07, 0xdf, 0x31, 0x26, 0xbe, 0x80, 0xad, 0x7c, 0x00, 0x0e,
-	0xd9, 0x66, 0x09, 0x78, 0x88, 0x53, 0x5e, 0x81, 0x70, 0xa9, 0x36, 0x91, 0x89, 0xaf, 0x55, 0x88,
-	0xb7, 0x46, 0x3b, 0x63, 0x63, 0xd9, 0x60, 0x5d, 0xbb, 0x60, 0x06, 0x05, 0x21, 0xf6, 0x61, 0x93,
-	0x9c, 0x4d, 0x54, 0x64, 0x89, 0x64, 0x93, 0x55, 0xf5, 0x0c, 0xb8, 0xb0, 0x44, 0xe2, 0x18, 0x76,
-	0xe6, 0xa4, 0xd2, 0x01, 0x27, 0xb5, 0xfc, 0x71, 0x15, 0x9a, 0x3e, 0xa3, 0xe2, 0x35, 0x74, 0x26,
-	0x7a, 0xaa, 0xf2, 0xa3, 0x70, 0xa9, 0x0e, 0x51, 0xe9, 0x20, 0x90, 0x3b, 0xfe, 0xbb, 0x13, 0x3d,
-	0x1d, 0x31, 0x75, 0x99, 0x31, 0xfd, 0x20, 0x10, 0x3f, 0xc3, 0x7e, 0x66, 0xc8, 0x42, 0x6f, 0x71,
-	0xd9, 0xd7, 0x66, 0x5f, 0x77, 0xa2, 0xa7, 0x7d, 0x56, 0x54, 0xdc, 0x5f, 0x41, 0x33, 0x49, 0x4d,
-	0x80, 0xd9, 0x84, 0x7e, 0x40, 0xc1, 0x86, 0x06, 0xa3, 0x83, 0x1c, 0x14, 0x3f, 0xc1, 0xde, 0xc2,
-	0x72, 0x6e, 0x6d, 0x74, 0x33, 0x41, 0x45, 0x81, 0x8e, 0x50, 0x7e, 0xce, 0x8e, 0xdd, 0xd2, 0x92,
-	0xfe, 0x64, 0x7a, 0x94, 0xb1, 0xe2, 0x07, 0xe8, 0x2e, 0xee, 0xd5, 0x61, 0x92, 0x1b, 0x3b, 0x6c,
-	0xec, 0x94, 0xb7, 0xeb, 0x30, 0xf1, 0xb6, 0x5d, 0x58, 0xf7, 0x23, 0xc9, 0x67, 0x07, 0xb5, 0xe3,
-	0xfa, 0x30, 0xaf, 0xc4, 0x6f, 0xf0, 0x22, 0xb6, 0x2a, 0x44, 0x1d, 0x29, 0x73, 0xa5, 0x42, 0x6d,
-	0xa2, 0x59, 0xd1, 0x8d, 0x21, 0x15, 0x21, 0x91, 0x72, 0xef, 0x75, 0x2c, 0x77, 0x39, 0xfb, 0x79,
-	0x6c, 0x07, 0xa8, 0xa3, 0xf3, 0xab, 0x41, 0x26, 0xf4, 0x6d, 0x9d, 0xd3, 0x05, 0x12, 0x5d, 0xbe,
-	0xd7, 0xb1, 0x38, 0x85, 0xdd, 0x89, 0x89, 0x95, 0x3f, 0x01, 0x67, 0x95, 0x4d, 0x30, 0xe6, 0x6c,
-	0xd9, 0xe5, 0x8b, 0x27, 0x26, 0x26, 0x7e, 0x97, 0x91, 0x97, 0xf6, 0x6d, 0x82, 0x71, 0x16, 0xc5,
-	0x1e, 0x3d, 0xfd, 0x98, 0x47, 0xe6, 0x1e, 0x3d, 0xad, 0x7a, 0x7e, 0x84, 0x6e, 0x60, 0x6d, 0x14,
-	0xda, 0xbb, 0x58, 0x8d, 0xf1, 0xce, 0xdd, 0x61, 0xee, 0x21, 0xb9, 0xc7, 0x7d, 0x3e, 0x2b, 0xe8,
-	0x37, 0x39, 0x9b, 0xd9, 0x48, 0xbc, 0x80, 0xe6, 0x3c, 0x5e, 0x65, 0x17, 0x45, 0xf6, 0xfc, 0x4d,
-	0xb6, 0x79, 0xf2, 0xc8, 0xd9, 0x44, 0x74, 0x61, 0xe3, 0x86, 0x30, 0x55, 0x26, 0x94, 0xfb, 0x4c,
-	0xaf, 0x67, 0xe5, 0x79, 0x78, 0x78, 0x06, 0xed, 0xb3, 0x14, 0xb5, 0xc3, 0xe2, 0x2d, 0x18, 0xe2,
-	0xdf, 0xe2, 0x04, 0xe6, 0xef, 0x0f, 0x3f, 0x36, 0x5b, 0xa7, 0xe2, 0x64, 0xfe, 0x40, 0xcd, 0x85,
-	0xf7, 0x6f, 0xd4, 0x47, 0x42, 0xe8, 0x53, 0x42, 0xfe, 0x48, 0xc2, 0xe5, 0x4e, 0x46, 0xff, 0x23,
-	0x64, 0xb4, 0x22, 0x84, 0x1e, 0x1d, 0xf2, 0x25, 0xb4, 0x86, 0xa8, 0xc3, 0x72, 0x1f, 0x95, 0x87,
-	0xf7, 0xb0, 0x5f, 0x95, 0x3c, 0xfe, 0x2b, 0x47, 0xd0, 0x1e, 0x60, 0x84, 0x8b, 0xf3, 0x56, 0xbf,
-	0xf3, 0x6a, 0x59, 0x44, 0x42, 0xc2, 0x06, 0xdd, 0x04, 0x01, 0x12, 0xb1, 0xb2, 0x3e, 0x2c, 0xca,
-	0xc3, 0x97, 0xd0, 0xba, 0x30, 0xe4, 0xca, 0x89, 0xa5, 0xcd, 0xd7, 0x16, 0x36, 0xdf, 0xaf, 0x6a,
-	0x1f, 0x3d, 0xc2, 0xe9, 0x3f, 0x4f, 0xa0, 0x55, 0x14, 0x23, 0x4c, 0x6f, 0x4d, 0x80, 0xe2, 0x57,
-	0x68, 0x2e, 0xde, 0x05, 0xb1, 0x7f, 0x9f, 0xb1, 0x74, 0xd5, 0x7a, 0x2b, 0x48, 0x12, 0x03, 0xd8,
-	0x2e, 0x9f, 0xb2, 0xd8, 0xbb, 0x17, 0x57, 0x16, 0xd4, 0x7b, 0x90, 0xa2, 0xac, 0xa3, 0xc5, 0x3b,
-	0x51, 0xee, 0x68, 0xe9, 0xca, 0xf5, 0x56, 0x90, 0x9c, 0xb5, 0xb8, 0x8f, 0x72, 0xd6, 0xd2, 0x3a,
-	0x7b, 0x2b, 0x48, 0x12, 0xbf, 0x40, 0xb3, 0xb4, 0x00, 0x83, 0x54, 0x9e, 0xaf, 0xb2, 0xc6, 0xde,
-	0x83, 0x14, 0x7d, 0x57, 0x7b, 0xb3, 0xfd, 0x17, 0x14, 0x6c, 0x32, 0x1e, 0xaf, 0xf3, 0x2f, 0xc4,
-	0xf7, 0xff, 0x05, 0x00, 0x00, 0xff, 0xff, 0x31, 0xf0, 0x71, 0x90, 0x5a, 0x08, 0x00, 0x00,
+	// 671 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x95, 0x5f, 0x4f, 0xdb, 0x4a,
+	0x10, 0xc5, 0xaf, 0xe1, 0x92, 0x84, 0x09, 0xf9, 0xb7, 0x37, 0xba, 0x2c, 0x5c, 0x5d, 0x35, 0x35,
+	0x02, 0x45, 0x54, 0x85, 0x36, 0x55, 0x1f, 0xaa, 0x3e, 0x51, 0x42, 0xa5, 0x56, 0x55, 0x41, 0x76,
+	0xda, 0x87, 0x4a, 0x95, 0xb5, 0xac, 0x07, 0x6a, 0xe1, 0xc4, 0xae, 0x77, 0x13, 0x11, 0xbe, 0x5c,
+	0xbf, 0x5a, 0xb5, 0x63, 0x9b, 0xd8, 0xa4, 0x42, 0xa5, 0x6f, 0x9e, 0x73, 0x7e, 0x73, 0x3c, 0x8b,
+	0x67, 0x09, 0x74, 0xe3, 0x24, 0xd2, 0xd1, 0xa1, 0xd2, 0x89, 0xd0, 0x78, 0x39, 0x3f, 0xa0, 0x92,
+	0xd5, 0xf2, 0xda, 0xfe, 0x51, 0x81, 0x9a, 0x9b, 0x15, 0xac, 0x09, 0x2b, 0x81, 0xcf, 0xad, 0x9e,
+	0xd5, 0x5f, 0x77, 0x56, 0x02, 0x9f, 0xed, 0x40, 0x23, 0x07, 0xbd, 0x89, 0x18, 0x23, 0x5f, 0x21,
+	0x6b, 0x23, 0x17, 0x3f, 0x8a, 0x31, 0xb2, 0x27, 0xd0, 0x51, 0x18, 0xa2, 0xd4, 0xe8, 0x7b, 0x78,
+	0x2d, 0xbf, 0x89, 0xc9, 0x25, 0xf2, 0x55, 0x02, 0xdb, 0xb9, 0x71, 0x92, 0xe9, 0xa5, 0x44, 0x3d,
+	0x8f, 0x91, 0xff, 0x5d, 0x4e, 0x1c, 0xcd, 0x63, 0x64, 0x7d, 0x68, 0x2b, 0x2d, 0x12, 0xed, 0x45,
+	0x89, 0x8f, 0x49, 0xca, 0xad, 0x11, 0xd7, 0x24, 0xfd, 0xd4, 0xc8, 0x44, 0x3e, 0x83, 0xae, 0x8f,
+	0x22, 0xf4, 0x52, 0x5c, 0x46, 0x13, 0x3f, 0xd0, 0x41, 0x34, 0xe1, 0x15, 0xa2, 0x99, 0xf1, 0x5c,
+	0x63, 0x1d, 0xe7, 0x0e, 0xdb, 0x83, 0xd6, 0xb9, 0x50, 0x98, 0x45, 0xab, 0xe0, 0x06, 0x79, 0xb5,
+	0x67, 0xf5, 0x2d, 0xa7, 0x61, 0x64, 0x4a, 0x76, 0x83, 0x1b, 0x64, 0xfb, 0xd0, 0x51, 0xe2, 0x02,
+	0xf5, 0xbc, 0x48, 0xd6, 0x88, 0x6c, 0xa5, 0xc6, 0x82, 0x3d, 0x84, 0xee, 0x58, 0x5c, 0x7b, 0x19,
+	0xaf, 0x13, 0xe1, 0xa3, 0x27, 0xa4, 0xe4, 0xeb, 0x34, 0x45, 0x67, 0x2c, 0xae, 0x5d, 0xb2, 0x46,
+	0xc6, 0x39, 0x92, 0x92, 0xed, 0x42, 0x33, 0x4e, 0x02, 0x89, 0x9e, 0x8f, 0x33, 0x41, 0x03, 0x03,
+	0xa1, 0x0d, 0x52, 0x87, 0x99, 0xc8, 0x5e, 0xc1, 0x56, 0x69, 0x86, 0x59, 0x14, 0x4e, 0xc7, 0xe8,
+	0x29, 0x29, 0x42, 0xe4, 0x75, 0xea, 0xf8, 0xb7, 0x30, 0xcb, 0x67, 0xb2, 0x5d, 0xe3, 0xb2, 0x97,
+	0xb0, 0x59, 0x1e, 0x5f, 0x63, 0x9c, 0x35, 0x6e, 0x50, 0x63, 0xb7, 0x78, 0x08, 0x8d, 0x71, 0xda,
+	0xf6, 0x08, 0xea, 0x5a, 0x5c, 0xa1, 0x17, 0x27, 0xd1, 0x45, 0xa0, 0x79, 0x83, 0x50, 0x30, 0xd2,
+	0x19, 0x29, 0xe6, 0xfb, 0x69, 0x91, 0x5c, 0xa2, 0xce, 0x91, 0x66, 0xfa, 0xfd, 0x52, 0x31, 0x83,
+	0x5e, 0xc3, 0xb6, 0x08, 0xc3, 0x48, 0x0a, 0x8d, 0xde, 0xc5, 0x74, 0xe2, 0x2b, 0x4f, 0x47, 0x5e,
+	0xfe, 0x85, 0x79, 0x8b, 0x3a, 0x36, 0x73, 0xe2, 0xad, 0x01, 0x46, 0xd1, 0xed, 0x0e, 0x6e, 0x42,
+	0x75, 0xaa, 0x30, 0xf1, 0x02, 0x9f, 0xb7, 0x89, 0xac, 0x98, 0xf2, 0x9d, 0xcf, 0x38, 0x54, 0x67,
+	0x98, 0x28, 0xf3, 0xd7, 0xea, 0xf4, 0xac, 0xfe, 0xaa, 0x93, 0x97, 0xec, 0x39, 0x54, 0x94, 0x16,
+	0x7a, 0xaa, 0x38, 0xeb, 0x59, 0xfd, 0xe6, 0x60, 0xeb, 0xe0, 0x76, 0xdd, 0xdd, 0xc5, 0x83, 0x01,
+	0x9c, 0x0c, 0x64, 0xbb, 0xb0, 0xa6, 0x74, 0x24, 0xaf, 0xf8, 0x3f, 0xbd, 0xd5, 0x7e, 0x7d, 0xd0,
+	0x2a, 0x76, 0x44, 0xf2, 0xca, 0x49, 0x5d, 0xdb, 0x86, 0x4a, 0xda, 0xc8, 0xea, 0x50, 0x75, 0x47,
+	0xa7, 0x67, 0x67, 0x27, 0xc3, 0xf6, 0x5f, 0x69, 0x71, 0xe4, 0x8c, 0x4e, 0x86, 0x6d, 0xcb, 0xde,
+	0x83, 0x35, 0xea, 0x61, 0xff, 0x03, 0x50, 0x57, 0x7a, 0x55, 0xd2, 0x5b, 0xb4, 0x4e, 0x8a, 0xb9,
+	0x27, 0xf6, 0x31, 0x74, 0x8e, 0x13, 0x14, 0x1a, 0xf3, 0x99, 0x1c, 0xfc, 0xce, 0x0e, 0xe0, 0xf6,
+	0x2a, 0x52, 0x47, 0x7d, 0xc0, 0x96, 0x87, 0x77, 0x16, 0xd7, 0xf5, 0x17, 0x21, 0xea, 0x4f, 0x42,
+	0x3e, 0xc5, 0xfe, 0xf2, 0x24, 0xee, 0x6f, 0x84, 0xb8, 0xf7, 0x84, 0xa8, 0x07, 0x87, 0x3c, 0x86,
+	0x96, 0x83, 0xc2, 0x2f, 0xce, 0x71, 0xe7, 0x7f, 0x90, 0x7d, 0x74, 0x17, 0x79, 0xf8, 0x5b, 0x76,
+	0xa0, 0x33, 0xc4, 0x10, 0xcb, 0xe7, 0xbd, 0xfb, 0x9e, 0xa7, 0xcb, 0x90, 0x32, 0x3b, 0xa7, 0xa6,
+	0x52, 0xa2, 0x52, 0x44, 0xd6, 0x9c, 0xbc, 0xb4, 0xf7, 0xa1, 0xf5, 0x21, 0x50, 0xba, 0x98, 0x58,
+	0xd8, 0x5c, 0xab, 0xb8, 0xb9, 0xe6, 0x08, 0x65, 0xf6, 0xc1, 0x47, 0x18, 0x7c, 0x85, 0x56, 0xfe,
+	0xec, 0x62, 0x32, 0x0b, 0x24, 0xb2, 0xf7, 0xd0, 0x2c, 0xaf, 0x02, 0xfb, 0x6f, 0x11, 0xb1, 0xb4,
+	0x69, 0xdb, 0xf7, 0x98, 0xea, 0xcd, 0xc6, 0x17, 0xc8, 0xdd, 0xf8, 0xfc, 0xbc, 0x42, 0x3f, 0x12,
+	0x2f, 0x7e, 0x06, 0x00, 0x00, 0xff, 0xff, 0x70, 0xec, 0x0c, 0xa6, 0x3c, 0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -748,10 +740,6 @@ const _ = grpc.SupportPackageIsVersion6
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type StrategyServiceClient interface {
 	CreateStrategy(ctx context.Context, in *CreateStrategyReq, opts ...grpc.CallOption) (*CreateStrategyRes, error)
-	ReadStrategy(ctx context.Context, in *ReadStrategyReq, opts ...grpc.CallOption) (*ReadStrategyRes, error)
-	UpdateStrategy(ctx context.Context, in *UpdateStrategyReq, opts ...grpc.CallOption) (*UpdateStrategyRes, error)
-	DeleteStrategy(ctx context.Context, in *DeleteStrategyReq, opts ...grpc.CallOption) (*DeleteStrategyRes, error)
-	ListStrategies(ctx context.Context, in *ListStrategyReq, opts ...grpc.CallOption) (StrategyService_ListStrategiesClient, error)
 }
 
 type strategyServiceClient struct {
@@ -771,72 +759,9 @@ func (c *strategyServiceClient) CreateStrategy(ctx context.Context, in *CreateSt
 	return out, nil
 }
 
-func (c *strategyServiceClient) ReadStrategy(ctx context.Context, in *ReadStrategyReq, opts ...grpc.CallOption) (*ReadStrategyRes, error) {
-	out := new(ReadStrategyRes)
-	err := c.cc.Invoke(ctx, "/strategy.StrategyService/ReadStrategy", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *strategyServiceClient) UpdateStrategy(ctx context.Context, in *UpdateStrategyReq, opts ...grpc.CallOption) (*UpdateStrategyRes, error) {
-	out := new(UpdateStrategyRes)
-	err := c.cc.Invoke(ctx, "/strategy.StrategyService/UpdateStrategy", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *strategyServiceClient) DeleteStrategy(ctx context.Context, in *DeleteStrategyReq, opts ...grpc.CallOption) (*DeleteStrategyRes, error) {
-	out := new(DeleteStrategyRes)
-	err := c.cc.Invoke(ctx, "/strategy.StrategyService/DeleteStrategy", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *strategyServiceClient) ListStrategies(ctx context.Context, in *ListStrategyReq, opts ...grpc.CallOption) (StrategyService_ListStrategiesClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_StrategyService_serviceDesc.Streams[0], "/strategy.StrategyService/ListStrategies", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &strategyServiceListStrategiesClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type StrategyService_ListStrategiesClient interface {
-	Recv() (*ListStrategyRes, error)
-	grpc.ClientStream
-}
-
-type strategyServiceListStrategiesClient struct {
-	grpc.ClientStream
-}
-
-func (x *strategyServiceListStrategiesClient) Recv() (*ListStrategyRes, error) {
-	m := new(ListStrategyRes)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 // StrategyServiceServer is the server API for StrategyService service.
 type StrategyServiceServer interface {
 	CreateStrategy(context.Context, *CreateStrategyReq) (*CreateStrategyRes, error)
-	ReadStrategy(context.Context, *ReadStrategyReq) (*ReadStrategyRes, error)
-	UpdateStrategy(context.Context, *UpdateStrategyReq) (*UpdateStrategyRes, error)
-	DeleteStrategy(context.Context, *DeleteStrategyReq) (*DeleteStrategyRes, error)
-	ListStrategies(*ListStrategyReq, StrategyService_ListStrategiesServer) error
 }
 
 // UnimplementedStrategyServiceServer can be embedded to have forward compatible implementations.
@@ -845,18 +770,6 @@ type UnimplementedStrategyServiceServer struct {
 
 func (*UnimplementedStrategyServiceServer) CreateStrategy(ctx context.Context, req *CreateStrategyReq) (*CreateStrategyRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateStrategy not implemented")
-}
-func (*UnimplementedStrategyServiceServer) ReadStrategy(ctx context.Context, req *ReadStrategyReq) (*ReadStrategyRes, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReadStrategy not implemented")
-}
-func (*UnimplementedStrategyServiceServer) UpdateStrategy(ctx context.Context, req *UpdateStrategyReq) (*UpdateStrategyRes, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateStrategy not implemented")
-}
-func (*UnimplementedStrategyServiceServer) DeleteStrategy(ctx context.Context, req *DeleteStrategyReq) (*DeleteStrategyRes, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteStrategy not implemented")
-}
-func (*UnimplementedStrategyServiceServer) ListStrategies(req *ListStrategyReq, srv StrategyService_ListStrategiesServer) error {
-	return status.Errorf(codes.Unimplemented, "method ListStrategies not implemented")
 }
 
 func RegisterStrategyServiceServer(s *grpc.Server, srv StrategyServiceServer) {
@@ -881,81 +794,6 @@ func _StrategyService_CreateStrategy_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _StrategyService_ReadStrategy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReadStrategyReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StrategyServiceServer).ReadStrategy(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/strategy.StrategyService/ReadStrategy",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StrategyServiceServer).ReadStrategy(ctx, req.(*ReadStrategyReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _StrategyService_UpdateStrategy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateStrategyReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StrategyServiceServer).UpdateStrategy(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/strategy.StrategyService/UpdateStrategy",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StrategyServiceServer).UpdateStrategy(ctx, req.(*UpdateStrategyReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _StrategyService_DeleteStrategy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteStrategyReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(StrategyServiceServer).DeleteStrategy(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/strategy.StrategyService/DeleteStrategy",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StrategyServiceServer).DeleteStrategy(ctx, req.(*DeleteStrategyReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _StrategyService_ListStrategies_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(ListStrategyReq)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(StrategyServiceServer).ListStrategies(m, &strategyServiceListStrategiesServer{stream})
-}
-
-type StrategyService_ListStrategiesServer interface {
-	Send(*ListStrategyRes) error
-	grpc.ServerStream
-}
-
-type strategyServiceListStrategiesServer struct {
-	grpc.ServerStream
-}
-
-func (x *strategyServiceListStrategiesServer) Send(m *ListStrategyRes) error {
-	return x.ServerStream.SendMsg(m)
-}
-
 var _StrategyService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "strategy.StrategyService",
 	HandlerType: (*StrategyServiceServer)(nil),
@@ -964,25 +802,7 @@ var _StrategyService_serviceDesc = grpc.ServiceDesc{
 			MethodName: "CreateStrategy",
 			Handler:    _StrategyService_CreateStrategy_Handler,
 		},
-		{
-			MethodName: "ReadStrategy",
-			Handler:    _StrategyService_ReadStrategy_Handler,
-		},
-		{
-			MethodName: "UpdateStrategy",
-			Handler:    _StrategyService_UpdateStrategy_Handler,
-		},
-		{
-			MethodName: "DeleteStrategy",
-			Handler:    _StrategyService_DeleteStrategy_Handler,
-		},
 	},
-	Streams: []grpc.StreamDesc{
-		{
-			StreamName:    "ListStrategies",
-			Handler:       _StrategyService_ListStrategies_Handler,
-			ServerStreams: true,
-		},
-	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "proto/strategy.proto",
 }

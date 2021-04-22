@@ -4,40 +4,40 @@ option go_package = "strategypb";
 
 service StrategyService {
     rpc CreateStrategy(CreateStrategyReq) returns (CreateStrategyRes);
-    rpc ReadStrategy(ReadStrategyReq) returns (ReadStrategyRes);
-    rpc UpdateStrategy(UpdateStrategyReq) returns (UpdateStrategyRes);
-    rpc DeleteStrategy(DeleteStrategyReq) returns (DeleteStrategyRes);
-    rpc ListStrategies(ListStrategyReq) returns (stream ListStrategyRes);
+    //rpc ReadStrategy(ReadStrategyReq) returns (ReadStrategyRes);
+    //rpc UpdateStrategy(UpdateStrategyReq) returns (UpdateStrategyRes);
+    //rpc DeleteStrategy(DeleteStrategyReq) returns (DeleteStrategyRes);
+   // rpc ListStrategies(ListStrategyReq) returns (stream ListStrategyRes);
 }
 
 message Strategy {
     string id = 1;
-    string bot_name = 2;
-    string selected_strategy = 3;
-    string bot_type = 4;
-    string pairs = 5;
-    string strategy_type = 6;
-    string profit_currency = 7;
-    double base_order_size = 8;
-    double safety_order_size = 9;
-    string order_type = 10;
-    string target_profit = 11;
-    string profit_type = 12;
-    string trailing_deviation = 13;
-    string stop_loss = 14;
-    string stop_loss_action = 15;
-    string max_safety_trade_acc = 16;
-    string max_active_safety_trade_acc = 17;
-    string price_devation = 18;
-    string safety_order_volume_scale = 19;
-    string safety_order_step_scale = 20;
-    bool active = 21;
-    string no_deal_if_daily_volume_is_less_than = 22;
-    double min_price_to_open_deal = 23;
-    double max_price_to_open_deal = 24;
-    string cooldown_bewtween_deals = 25;
-    string open_deal_stop = 26;
-    string user_id = 27;
+    string strategy_name = 2;
+    string selected_exchange = 3;
+    string strategy_type = 4;
+    string start_order_type = 5;
+    string deal_start_condition = 6;
+    double base_order_size = 7;
+    double safety_order_size = 8;
+    string max_safety_trade_acc = 9;
+    string price_devation = 10;
+    string safety_order_volume_scale = 11;
+    string safety_order_step_scale = 12;
+    string take_profit = 13;
+    string target_profit = 14;
+    string allocate_funds_to_strategy = 15;
+    string user_id = 16;
+    int64 version = 17;   
+    enum Status {
+        STOPPED = 0;
+        STARTED = 1;
+    } 
+    Status status = 18;
+    repeated Stock stock = 19;
+}
+
+message Stock {
+    string stock_name = 1;
 }
 
 message CreateStrategyReq {
