@@ -14,9 +14,19 @@ message Strategy {
     string id = 1;
     string strategy_name = 2;
     string selected_exchange = 3;
-    string strategy_type = 4;
-    string start_order_type = 5;
-    string deal_start_condition = 6;
+    enum Type {
+        LONG = 0;
+    }
+    Type strategy_type = 4;
+    enum StartOrderType{
+        LIMIT = 0;
+        MARKET = 1;
+    }
+    StartOrderType start_order_type = 5;
+    enum DealStartCondition {
+        OPEN_NEW_TRADE_ASAP = 0;
+    }
+    DealStartCondition deal_start_condition = 6;
     double base_order_size = 7;
     double safety_order_size = 8;
     string max_safety_trade_acc = 9;

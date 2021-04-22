@@ -25,9 +25,6 @@ func (s *StrategyServiceServer) CreateStrategy(ctx context.Context, req *strateg
 		// ID:       primitive.NilObjectID,
 		StrategyName:            strategy.GetStrategyName(),
 		SelectedExchange:        strategy.GetSelectedExchange(),
-		StrategyType:            strategy.GetStrategyType(),
-		StartOrderType:          strategy.GetStartOrderType(),
-		DealStartCondition:      strategy.GetDealStartCondition(),
 		BaseOrderSize:           strategy.GetBaseOrderSize(),
 		SafetyOrderSize:         strategy.GetSafetyOrderSize(),
 		MaxSafetyTradeAcc:       strategy.GetMaxSafetyTradeAcc(),
@@ -299,9 +296,6 @@ type StrategyItem struct {
 	Id                      primitive.ObjectID  `bson:"_id,omitempty"`
 	StrategyName            string              `bson:"strategy_name"`
 	SelectedExchange        string              `bson:"selected_exchange"`
-	StrategyType            string              `bson:"strategy_type"`
-	StartOrderType          string              `bson:"start_order_type"`
-	DealStartCondition      string              `bson:"deal_start_condition"`
 	BaseOrderSize           float64             `bson:"base_order_size"`
 	SafetyOrderSize         float64             `bson:"safety_order_size"`
 	MaxSafetyTradeAcc       string              `bson:"max_safety_trade_acc"`
