@@ -21,10 +21,16 @@ func (s *StrategyServiceServer) CreateStrategy(ctx context.Context, req *strateg
 	strategy := req.GetStrategy()
 	fmt.Println(strategy)
 
+	//strategy.Status = &strategypb.Strategy_Status{0}
+
+	//strategy_status := Strategy_Status(0)
 	data := StrategyItem{
 		// ID:       primitive.NilObjectID,
 		StrategyName:            strategy.GetStrategyName(),
 		SelectedExchange:        strategy.GetSelectedExchange(),
+		StrategyType:            0,
+		StartOrderType:          0,
+		DealStartCondition:      0,
 		BaseOrderSize:           strategy.GetBaseOrderSize(),
 		SafetyOrderSize:         strategy.GetSafetyOrderSize(),
 		MaxSafetyTradeAcc:       strategy.GetMaxSafetyTradeAcc(),
@@ -35,7 +41,8 @@ func (s *StrategyServiceServer) CreateStrategy(ctx context.Context, req *strateg
 		TargetProfit:            strategy.GetTargetProfit(),
 		AllocateFundsToStrategy: strategy.GetAllocateFundsToStrategy(),
 		UserId:                  strategy.GetUserId(),
-		Version:                 strategy.GetVersion(),
+		Version:                 0,
+		Status:                  0,
 		Stock:                   strategy.GetStock(),
 	}
 
@@ -292,22 +299,31 @@ func (s *StrategyServiceServer) UpdateStrategy(ctx context.Context, req *strateg
 
 type StrategyServiceServer struct{}
 
+type Strategy_Type int32
+type Strategy_StartOrderType int32
+type Strategy_DealStartCondition int32
+type Strategy_Status int32
+
 type StrategyItem struct {
-	Id                      primitive.ObjectID  `bson:"_id,omitempty"`
-	StrategyName            string              `bson:"strategy_name"`
-	SelectedExchange        string              `bson:"selected_exchange"`
-	BaseOrderSize           float64             `bson:"base_order_size"`
-	SafetyOrderSize         float64             `bson:"safety_order_size"`
-	MaxSafetyTradeAcc       string              `bson:"max_safety_trade_acc"`
-	PriceDevation           string              `bson:"price_devation"`
-	SafetyOrderVolumeScale  string              `bson:"safety_order_volume_scale"`
-	SafetyOrderStepScale    string              `bson:"safety_order_step_scale"`
-	TakeProfit              string              `bson:"take_profit"`
-	TargetProfit            string              `bson:"target_profit"`
-	AllocateFundsToStrategy string              `bson:"allocate_funds_to_strategy"`
-	UserId                  string              `bson:"user_id"`
-	Version                 int64               `bson:"version"`
-	Stock                   []*strategypb.Stock `bson:"stock"`
+	Id                      primitive.ObjectID          `bson:"_id,omitempty"`
+	StrategyName            string                      `bson:"strategy_name"`
+	SelectedExchange        string                      `bson:"selected_exchange"`
+	StrategyType            Strategy_Type               `bson:"strategy_type"`
+	StartOrderType          Strategy_StartOrderType     `bson:"start_order_type"`
+	DealStartCondition      Strategy_DealStartCondition `bson:"deal_start_condition"`
+	BaseOrderSize           float64                     `bson:"base_order_size"`
+	SafetyOrderSize         float64                     `bson:"safety_order_size"`
+	MaxSafetyTradeAcc       string                      `bson:"max_safety_trade_acc"`
+	PriceDevation           string                      `bson:"price_devation"`
+	SafetyOrderVolumeScale  string                      `bson:"safety_order_volume_scale"`
+	SafetyOrderStepScale    string                      `bson:"safety_order_step_scale"`
+	TakeProfit              string                      `bson:"take_profit"`
+	TargetProfit            string                      `bson:"target_profit"`
+	AllocateFundsToStrategy string                      `bson:"allocate_funds_to_strategy"`
+	UserId                  string                      `bson:"user_id"`
+	Version                 int64                       `bson:"version"`
+	Status                  Strategy_Status             `bson:"status"`
+	Stock                   []*strategypb.Stock         `bson:"stock"`
 }
 
 type Stock struct {
