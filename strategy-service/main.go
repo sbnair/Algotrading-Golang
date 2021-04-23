@@ -28,9 +28,9 @@ func (s *StrategyServiceServer) CreateStrategy(ctx context.Context, req *strateg
 		// ID:       primitive.NilObjectID,
 		StrategyName:            strategy.GetStrategyName(),
 		SelectedExchange:        strategy.GetSelectedExchange(),
-		StrategyType:            0,
-		StartOrderType:          0,
-		DealStartCondition:      0,
+		StrategyType:            1,
+		StartOrderType:          1,
+		DealStartCondition:      1,
 		BaseOrderSize:           strategy.GetBaseOrderSize(),
 		SafetyOrderSize:         strategy.GetSafetyOrderSize(),
 		MaxSafetyTradeAcc:       strategy.GetMaxSafetyTradeAcc(),
@@ -41,8 +41,8 @@ func (s *StrategyServiceServer) CreateStrategy(ctx context.Context, req *strateg
 		TargetProfit:            strategy.GetTargetProfit(),
 		AllocateFundsToStrategy: strategy.GetAllocateFundsToStrategy(),
 		UserId:                  strategy.GetUserId(),
-		Version:                 0,
-		Status:                  0,
+		Version:                 1,
+		Status:                  1,
 		Stock:                   strategy.GetStock(),
 	}
 
