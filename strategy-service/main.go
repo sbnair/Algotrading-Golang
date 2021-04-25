@@ -179,6 +179,11 @@ func (s *StrategyServiceServer) DeleteStrategy(ctx context.Context, req *strateg
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find/delete strategy with id %s: %v", req.GetId(), err))
 	}
+
+	_, err = strategy_revisionsdb.DeleteMany(ctx, bson.M{"strategy_id": req.GetId()})
+	if err != nil {
+		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not delete from strategy_revisionsdb with id %s: %v", req.GetId(), err))
+	}
 	return &strategypb.DeleteStrategyRes{
 		Success: true,
 	}, nil
@@ -197,22 +202,86 @@ func (s *StrategyServiceServer) UpdateStrategy(ctx context.Context, req *strateg
 		)
 	}
 
-	// Convert the data to be updated into an unordered Bson document
-	update := bson.M{
-		"strategy_name":              strategy.GetStrategyName(),
-		"selected_exchange":          strategy.GetSelectedExchange(),
-		"base_order_size":            strategy.GetBaseOrderSize(),
-		"safety_order_size":          strategy.GetSafetyOrderSize(),
-		"max_safety_trade_acc":       strategy.GetMaxSafetyTradeAcc(),
-		"price_devation":             strategy.GetPriceDevation(),
-		"safety_order_volume_scale":  strategy.GetSafetyOrderVolumeScale(),
-		"safety_order_step_scale":    strategy.GetSafetyOrderStepScale(),
-		"take_profit":                strategy.GetTakeProfit(),
-		"target_profit":              strategy.GetTargetProfit(),
-		"allocate_funds_to_strategy": strategy.GetAllocateFundsToStrategy(),
-		"version":                    strategy.GetVersion(),
-		"stock":                      strategy.GetStock(),
+	resultReadStrategy := strategydb.FindOne(ctx, bson.M{"_id": oid})
+	// Create an empty ExchangeItem to write our decode result to
+	dataRead := StrategyRevisionItem{}
+	// decode and write to dataRead
+	if err := resultReadStrategy.Decode(&dataRead); err != nil {
+		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find Strategy with Object Id %s: %v", oid, err))
 	}
+	dataRead.StrategyId = oid.Hex()
+	dataRead.Id = primitive.NewObjectID()
+	resultInsert, err := strategy_revisionsdb.InsertOne(mongoCtx, dataRead)
+	// check error
+	if err != nil {
+		// return internal gRPC error to be handled later
+		return nil, status.Errorf(
+			codes.Internal,
+			fmt.Sprintf("Internal error: %v", err),
+		)
+	}
+
+	fmt.Sprintf("Inserted in strategy_revisionsdb: %v", resultInsert.InsertedID)
+
+	// Convert the data to be updated into an unordered Bson document
+	/*
+		update := bson.M{
+			"strategy_name":              strategy.GetStrategyName(),
+			"selected_exchange":          strategy.GetSelectedExchange(),
+			"base_order_size":            strategy.GetBaseOrderSize(),
+			"safety_order_size":          strategy.GetSafetyOrderSize(),
+			"max_safety_trade_acc":       strategy.GetMaxSafetyTradeAcc(),
+			"price_devation":             strategy.GetPriceDevation(),
+			"safety_order_volume_scale":  strategy.GetSafetyOrderVolumeScale(),
+			"safety_order_step_scale":    strategy.GetSafetyOrderStepScale(),
+			"take_profit":                strategy.GetTakeProfit(),
+			"target_profit":              strategy.GetTargetProfit(),
+			"allocate_funds_to_strategy": strategy.GetAllocateFundsToStrategy(),
+			"version":                    strategy.GetVersion(),
+			"stock":                      strategy.GetStock(),
+		}
+	*/
+	update := bson.M{}
+	if strategy.GetStrategyName() != "" {
+		update["strategy_name"] = strategy.GetStrategyName()
+	}
+	if strategy.GetSelectedExchange() != "" {
+		update["selected_exchange"] = strategy.GetSelectedExchange()
+	}
+	if strategy.GetBaseOrderSize() != 0 {
+		update["base_order_size"] = strategy.GetBaseOrderSize()
+	}
+	if strategy.GetSafetyOrderSize() != 0 {
+		update["safety_order_size"] = strategy.GetSafetyOrderSize()
+	}
+	if strategy.GetMaxSafetyTradeAcc() != "" {
+		update["max_safety_trade_acc"] = strategy.GetMaxSafetyTradeAcc()
+	}
+	if strategy.GetPriceDevation() != "" {
+		update["price_devation"] = strategy.GetPriceDevation()
+	}
+	if strategy.GetSafetyOrderVolumeScale() != "" {
+		update["safety_order_volume_scale"] = strategy.GetSafetyOrderVolumeScale()
+	}
+	if strategy.GetSafetyOrderStepScale() != "" {
+		update["safety_order_step_scale"] = strategy.GetSafetyOrderStepScale()
+	}
+	if strategy.GetTakeProfit() != "" {
+		update["take_profit"] = strategy.GetTakeProfit()
+	}
+	if strategy.GetTargetProfit() != "" {
+		update["target_profit"] = strategy.GetTargetProfit()
+	}
+	if strategy.GetAllocateFundsToStrategy() != "" {
+		update["allocate_funds_to_strategy"] = strategy.GetAllocateFundsToStrategy()
+	}
+	update["version"] = dataRead.Version + 1
+
+	if strategy.GetStock() != nil {
+		update["stock"] = strategy.GetStock()
+	}
+
+	fmt.Println(update)
 
 	// Convert the oid into an unordered bson document to search by id
 	filter := bson.M{"_id": oid}
@@ -276,6 +345,29 @@ type StrategyItem struct {
 	Version                 int64               `bson:"version"`
 	Status                  string              `bson:"status"`
 	Stock                   []*strategypb.Stock `bson:"stock"`
+}
+
+type StrategyRevisionItem struct {
+	Id                      primitive.ObjectID  `bson:"_id,omitempty"`
+	StrategyName            string              `bson:"strategy_name"`
+	SelectedExchange        string              `bson:"selected_exchange"`
+	StrategyType            string              `bson:"strategy_type"`
+	StartOrderType          string              `bson:"start_order_type"`
+	DealStartCondition      string              `bson:"deal_start_condition"`
+	BaseOrderSize           float64             `bson:"base_order_size"`
+	SafetyOrderSize         float64             `bson:"safety_order_size"`
+	MaxSafetyTradeAcc       string              `bson:"max_safety_trade_acc"`
+	PriceDevation           string              `bson:"price_devation"`
+	SafetyOrderVolumeScale  string              `bson:"safety_order_volume_scale"`
+	SafetyOrderStepScale    string              `bson:"safety_order_step_scale"`
+	TakeProfit              string              `bson:"take_profit"`
+	TargetProfit            string              `bson:"target_profit"`
+	AllocateFundsToStrategy string              `bson:"allocate_funds_to_strategy"`
+	UserId                  string              `bson:"user_id"`
+	Version                 int64               `bson:"version"`
+	Status                  string              `bson:"status"`
+	Stock                   []*strategypb.Stock `bson:"stock"`
+	StrategyId              string              `bson:"strategy_id"`
 }
 
 type Stock struct {

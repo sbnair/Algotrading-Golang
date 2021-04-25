@@ -66,13 +66,13 @@ go run main.go listbyuser -u "user1"
 ```
 3. To read a Strategy
 ```
-go run main.go read -i "607c2d01ca735a091de58254"
+go run main.go read -i "608597be6854e8575cdb5c3d"
 ```
 4. To Delete a Strategy
 ```
-go run main.go delete -i "607c2d01ca735a091de58254"
+go run main.go delete -i "608597be6854e8575cdb5c3d"
 ```
 5. To update a Strategy
 ```
-go run main.go update -1 "607c3a6bca735a091de58255" -a "bot2" -b "alpaca" -c "simple" -d "BTC/SDT" -e "Long" -f "USD" -g 10.00 -i 5.00 -j "Market" -2 "user1"
+go run main.go update -i "608597be6854e8575cdb5c3d" -n "Strategy 2 Updated" -e "Alpaca" -b 10.0 -s 20.0 -t "5" -p "2%" -v "1%" -c "1%" -m "5%" -z "7%" -f "10000" -d "G1,G2,G3"
 ```

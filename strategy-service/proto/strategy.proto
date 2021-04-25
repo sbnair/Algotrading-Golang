@@ -36,6 +36,30 @@ message Stock {
     string stock_name = 1;
 }
 
+
+message StrategyRevision {
+    string id = 1;
+    string strategy_name = 2;
+    string selected_exchange = 3;
+    string strategy_type = 4;
+    string start_order_type = 5;
+    string deal_start_condition = 6;
+    double base_order_size = 7;
+    double safety_order_size = 8;
+    string max_safety_trade_acc = 9;
+    string price_devation = 10;
+    string safety_order_volume_scale = 11;
+    string safety_order_step_scale = 12;
+    string take_profit = 13;
+    string target_profit = 14;
+    string allocate_funds_to_strategy = 15;
+    string user_id = 16;
+    int64 version = 17;   
+    string status = 18;
+    repeated Stock stock = 19;
+    string strategy_id = 20;
+}
+
 message CreateStrategyReq {
     Strategy strategy = 1;
 }
