@@ -25,9 +25,9 @@ import (
 	strategypb "github.com/vikjdk7/Algotrading-Golang/strategy-service/proto"
 )
 
-// listCmd represents the list command
-var listCmd = &cobra.Command{
-	Use:   "list",
+// listbyuserCmd represents the listbyuser command
+var listbyuserCmd = &cobra.Command{
+	Use:   "listbyuser",
 	Short: "List all Strategies by user id",
 	Long:  `List all Strategies in the DB by UserId`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -73,17 +73,17 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
-	listCmd.Flags().StringP("user_id", "u", "", "The user id of the User")
-	listCmd.MarkFlagRequired("user_id")
-	rootCmd.AddCommand(listCmd)
+	listbyuserCmd.Flags().StringP("user_id", "u", "", "The user id of the User")
+	listbyuserCmd.MarkFlagRequired("user_id")
+	rootCmd.AddCommand(listbyuserCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// listCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// listbyuserCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// listbyuserCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

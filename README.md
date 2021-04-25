@@ -21,8 +21,11 @@ db.availableExchanges.insert({ "name": "Alpaca"})
 db.users.insert({"name":"Vikash"})
 ```
 
-## To compile your proto file to Go stubs in exchange service
+## To compile your proto file to Go stubs
+1. For Exchange Service:
 ```protoc -I. proto/exchange.proto --go_out=plugins=grpc:.```
+2. For Strategy Service:
+```protoc -I. proto/strategy.proto --go_out=plugins=grpc:.```
 
 ## Run the gRPC Client
 
@@ -55,11 +58,11 @@ go run main.go update -i "607815df7f51e077fd7ac87a" -e "Alpaca" -n "Alpaca Excha
 ### For Strategy Service
 1. To create a Strategy
 ```
-go run main.go create -a "bot1" -b "alpaca" -c "simple" -d "BTC/USDT" -e "Long" -f "USD" -g 10.00 -i 5.00 -j "Market" -2 "user1"
+go run main.go create -n "Strategy 1" -e "Alpaca" -b 10.0 -s 20.0 -t "5" -p "2%" -v "1%" -c "1%" -m "5%" -z "3%" -f "10000" -u "user1" -d "G1,G2"
 ```
 2. To list all the Strategies by User Id
 ```
-go run main.go list -u "user1"
+go run main.go listbyuser -u "user1"
 ```
 3. To read a Strategy
 ```
