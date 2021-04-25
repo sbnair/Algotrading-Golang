@@ -128,8 +128,6 @@ func (s *StrategyServiceServer) ListStrategies(req *strategypb.ListStrategyReq, 
 	return nil
 }
 
-/* ---------------------------------------
-
 func (s *StrategyServiceServer) ReadStrategy(ctx context.Context, req *strategypb.ReadStrategyReq) (*strategypb.ReadStrategyRes, error) {
 	// convert string id (from proto) to mongoDB ObjectId
 	oid, err := primitive.ObjectIDFromHex(req.GetId())
@@ -146,33 +144,25 @@ func (s *StrategyServiceServer) ReadStrategy(ctx context.Context, req *strategyp
 	// Cast to ReadStrategyRes type
 	response := &strategypb.ReadStrategyRes{
 		Strategy: &strategypb.Strategy{
-			Id:                            data.Id.Hex(),
-			BotName:                       data.BotName,
-			SelectedStrategy:              data.SelectedStrategy,
-			BotType:                       data.BotType,
-			Pairs:                         data.Pairs,
-			StrategyType:                  data.StrategyType,
-			ProfitCurrency:                data.ProfitCurrency,
-			BaseOrderSize:                 data.BaseOrderSize,
-			SafetyOrderSize:               data.SafetyOrderSize,
-			OrderType:                     data.OrderType,
-			TargetProfit:                  data.TargetProfit,
-			ProfitType:                    data.ProfitType,
-			TrailingDeviation:             data.TrailingDeviation,
-			StopLoss:                      data.StopLoss,
-			StopLossAction:                data.StopLossAction,
-			MaxSafetyTradeAcc:             data.MaxSafetyTradeAcc,
-			MaxActiveSafetyTradeAcc:       data.MaxActiveSafetyTradeAcc,
-			PriceDevation:                 data.PriceDevation,
-			SafetyOrderVolumeScale:        data.SafetyOrderVolumeScale,
-			SafetyOrderStepScale:          data.SafetyOrderStepScale,
-			Active:                        data.Active,
-			NoDealIfDailyVolumeIsLessThan: data.NoDealIfDailyVolumeIsLessThan,
-			MinPriceToOpenDeal:            data.MinPriceToOpenDeal,
-			MaxPriceToOpenDeal:            data.MaxPriceToOpenDeal,
-			CooldownBewtweenDeals:         data.CooldownBewtweenDeals,
-			OpenDealStop:                  data.OpenDealStop,
-			UserId:                        data.UserId,
+			Id:                      data.Id.Hex(),
+			StrategyName:            data.StrategyName,
+			SelectedExchange:        data.SelectedExchange,
+			StrategyType:            data.StrategyType,
+			StartOrderType:          data.StartOrderType,
+			DealStartCondition:      data.DealStartCondition,
+			BaseOrderSize:           data.BaseOrderSize,
+			SafetyOrderSize:         data.SafetyOrderSize,
+			MaxSafetyTradeAcc:       data.MaxSafetyTradeAcc,
+			PriceDevation:           data.PriceDevation,
+			SafetyOrderVolumeScale:  data.SafetyOrderVolumeScale,
+			SafetyOrderStepScale:    data.SafetyOrderStepScale,
+			TakeProfit:              data.TakeProfit,
+			TargetProfit:            data.TargetProfit,
+			AllocateFundsToStrategy: data.AllocateFundsToStrategy,
+			UserId:                  data.UserId,
+			Version:                 data.Version,
+			Status:                  data.Status,
+			Stock:                   data.Stock,
 		},
 	}
 	return response, nil
@@ -193,6 +183,7 @@ func (s *StrategyServiceServer) DeleteStrategy(ctx context.Context, req *strateg
 		Success: true,
 	}, nil
 }
+
 func (s *StrategyServiceServer) UpdateStrategy(ctx context.Context, req *strategypb.UpdateStrategyReq) (*strategypb.UpdateStrategyRes, error) {
 	// Get the blog data from the request
 	strategy := req.GetStrategy()
@@ -208,32 +199,19 @@ func (s *StrategyServiceServer) UpdateStrategy(ctx context.Context, req *strateg
 
 	// Convert the data to be updated into an unordered Bson document
 	update := bson.M{
-		"bot_name":                             strategy.GetBotName(),
-		"selected_strategy":                    strategy.GetSelectedStrategy(),
-		"bot_type":                             strategy.GetBotType(),
-		"pairs":                                strategy.GetPairs(),
-		"strategy_type":                        strategy.GetStrategyType(),
-		"profit_currency":                      strategy.GetProfitCurrency(),
-		"base_order_size":                      strategy.GetBaseOrderSize(),
-		"safety_order_size":                    strategy.GetSafetyOrderSize(),
-		"order_type":                           strategy.GetOrderType(),
-		"target_profit":                        strategy.GetTargetProfit(),
-		"profit_type":                          strategy.GetProfitType(),
-		"trailing_deviation":                   strategy.GetTrailingDeviation(),
-		"stop_loss":                            strategy.GetStopLoss(),
-		"stop_loss_action":                     strategy.GetStopLossAction(),
-		"max_safety_trade_acc":                 strategy.GetMaxSafetyTradeAcc(),
-		"max_active_safety_trade_acc":          strategy.GetMaxActiveSafetyTradeAcc(),
-		"price_devation":                       strategy.GetPriceDevation(),
-		"safety_order_volume_scale":            strategy.GetSafetyOrderVolumeScale(),
-		"safety_order_step_scale":              strategy.GetSafetyOrderStepScale(),
-		"active":                               strategy.GetActive(),
-		"no_deal_if_daily_volume_is_less_than": strategy.GetNoDealIfDailyVolumeIsLessThan(),
-		"min_price_to_open_deal":               strategy.GetMinPriceToOpenDeal(),
-		"max_price_to_open_deal":               strategy.GetMaxPriceToOpenDeal(),
-		"cooldown_bewtween_deals":              strategy.GetCooldownBewtweenDeals(),
-		"open_deal_stop":                       strategy.GetOpenDealStop(),
-		"user_id":                              strategy.GetUserId(),
+		"strategy_name":              strategy.GetStrategyName(),
+		"selected_exchange":          strategy.GetSelectedExchange(),
+		"base_order_size":            strategy.GetBaseOrderSize(),
+		"safety_order_size":          strategy.GetSafetyOrderSize(),
+		"max_safety_trade_acc":       strategy.GetMaxSafetyTradeAcc(),
+		"price_devation":             strategy.GetPriceDevation(),
+		"safety_order_volume_scale":  strategy.GetSafetyOrderVolumeScale(),
+		"safety_order_step_scale":    strategy.GetSafetyOrderStepScale(),
+		"take_profit":                strategy.GetTakeProfit(),
+		"target_profit":              strategy.GetTargetProfit(),
+		"allocate_funds_to_strategy": strategy.GetAllocateFundsToStrategy(),
+		"version":                    strategy.GetVersion(),
+		"stock":                      strategy.GetStock(),
 	}
 
 	// Convert the oid into an unordered bson document to search by id
@@ -254,39 +232,28 @@ func (s *StrategyServiceServer) UpdateStrategy(ctx context.Context, req *strateg
 	}
 	return &strategypb.UpdateStrategyRes{
 		Strategy: &strategypb.Strategy{
-			Id:                            decoded.Id.Hex(),
-			BotName:                       decoded.BotName,
-			SelectedStrategy:              decoded.SelectedStrategy,
-			BotType:                       decoded.BotType,
-			Pairs:                         decoded.Pairs,
-			StrategyType:                  decoded.StrategyType,
-			ProfitCurrency:                decoded.ProfitCurrency,
-			BaseOrderSize:                 decoded.BaseOrderSize,
-			SafetyOrderSize:               decoded.SafetyOrderSize,
-			OrderType:                     decoded.OrderType,
-			TargetProfit:                  decoded.TargetProfit,
-			ProfitType:                    decoded.ProfitType,
-			TrailingDeviation:             decoded.TrailingDeviation,
-			StopLoss:                      decoded.StopLoss,
-			StopLossAction:                decoded.StopLossAction,
-			MaxSafetyTradeAcc:             decoded.MaxSafetyTradeAcc,
-			MaxActiveSafetyTradeAcc:       decoded.MaxActiveSafetyTradeAcc,
-			PriceDevation:                 decoded.PriceDevation,
-			SafetyOrderVolumeScale:        decoded.SafetyOrderVolumeScale,
-			SafetyOrderStepScale:          decoded.SafetyOrderStepScale,
-			Active:                        decoded.Active,
-			NoDealIfDailyVolumeIsLessThan: decoded.NoDealIfDailyVolumeIsLessThan,
-			MinPriceToOpenDeal:            decoded.MinPriceToOpenDeal,
-			MaxPriceToOpenDeal:            decoded.MaxPriceToOpenDeal,
-			CooldownBewtweenDeals:         decoded.CooldownBewtweenDeals,
-			OpenDealStop:                  decoded.OpenDealStop,
-			UserId:                        decoded.UserId,
+			Id:                      decoded.Id.Hex(),
+			StrategyName:            decoded.StrategyName,
+			SelectedExchange:        decoded.SelectedExchange,
+			StrategyType:            decoded.StrategyType,
+			StartOrderType:          decoded.StartOrderType,
+			DealStartCondition:      decoded.DealStartCondition,
+			BaseOrderSize:           decoded.BaseOrderSize,
+			SafetyOrderSize:         decoded.SafetyOrderSize,
+			MaxSafetyTradeAcc:       decoded.MaxSafetyTradeAcc,
+			PriceDevation:           decoded.PriceDevation,
+			SafetyOrderVolumeScale:  decoded.SafetyOrderVolumeScale,
+			SafetyOrderStepScale:    decoded.SafetyOrderStepScale,
+			TakeProfit:              decoded.TakeProfit,
+			TargetProfit:            decoded.TargetProfit,
+			AllocateFundsToStrategy: decoded.AllocateFundsToStrategy,
+			UserId:                  decoded.UserId,
+			Version:                 decoded.Version,
+			Status:                  decoded.Status,
+			Stock:                   decoded.Stock,
 		},
 	}, nil
 }
-
-
-/* ---------------------------------------*/
 
 type StrategyServiceServer struct{}
 type StrategyItem struct {
@@ -317,6 +284,7 @@ type Stock struct {
 
 var db *mongo.Client
 var strategydb *mongo.Collection
+var strategy_revisionsdb *mongo.Collection
 var mongoCtx context.Context
 
 func main() {
@@ -363,7 +331,7 @@ func main() {
 	}
 	// Bind our collection to our global variable for use in other methods
 	strategydb = db.Database("hedgina_algobot").Collection("strategy")
-
+	strategy_revisionsdb = db.Database("hedgina_algobot").Collection("strategy_revisions")
 	// Start the server in a child routine
 	go func() {
 		if err := s.Serve(listener); err != nil {

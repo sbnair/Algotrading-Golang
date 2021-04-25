@@ -4,9 +4,9 @@ option go_package = "strategypb";
 
 service StrategyService {
     rpc CreateStrategy(CreateStrategyReq) returns (CreateStrategyRes);
-    //rpc ReadStrategy(ReadStrategyReq) returns (ReadStrategyRes);
-    //rpc UpdateStrategy(UpdateStrategyReq) returns (UpdateStrategyRes);
-    //rpc DeleteStrategy(DeleteStrategyReq) returns (DeleteStrategyRes);
+    rpc ReadStrategy(ReadStrategyReq) returns (ReadStrategyRes);
+    rpc UpdateStrategy(UpdateStrategyReq) returns (UpdateStrategyRes);
+    rpc DeleteStrategy(DeleteStrategyReq) returns (DeleteStrategyRes);
     rpc ListStrategies(ListStrategyReq) returns (stream ListStrategyRes);
 }
 
