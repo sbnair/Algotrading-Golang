@@ -85,3 +85,26 @@ go run main.go startstrategybot -i "60827aeb8babc1d81794a4f7" -d "G1,G2"
 ```
 go run main.go listdealsbyuser -u "user1"
 ```
+
+## Run the User Authentication Service
+1. Git Clone
+2. go build -o new -v
+3. ```go run main.go```. The app is then available on http://localhost:8000
+4. For User Signup, POST to http://localhost:8000/users/signup with body
+```
+{
+    "first_name":"Neha",
+    "last_name":"Kumari",
+    "email":"neha190495@gmail.com",
+    "password":"algobot1",
+    "phone":"7416516791"
+}
+```
+5. For User Login, POST to http://localhost:8000/users/login with body
+```
+{
+    "email":"neha190495@gmail.com",
+    "password":"algobot1"
+}
+```
+6. To access API's: GET http://localhost:8000/api-1 with header "token" and value token retrieved from login api call.
