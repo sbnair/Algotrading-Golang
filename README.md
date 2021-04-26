@@ -33,7 +33,7 @@ db.availableExchanges.insert({ "name": "Alpaca"})
 ### For Exchange Service
 1. To create an exchange
 ```
-go run main.go create -e "Alpaca" -n "Alpaca Exchange" -t "paper_trading" -u "607c612ba353cad51f8103fb" -k "PKOP7ALK9WCI4BH5OX4R" -s "S0NuGhDTNXZ1wp3z9TmuUWhst53ydKAtZ7dtsYhI"
+go run main.go create -e "Alpaca" -n "Alpaca Exchange" -t "paper_trading" -u "60865a63a6116f40ab12d863" -k "PKOP7ALK9WCI4BH5OX4R" -s "S0NuGhDTNXZ1wp3z9TmuUWhst53ydKAtZ7dtsYhI"
 ```
 2. To read an exchange by Exchange Id
 ```
@@ -87,6 +87,11 @@ go run main.go startstrategybot -i "60867adb76c5d62a565126c6" -d "G1,G2"
 go run main.go listdealsbyuser -u "user1"
 ```
 
+### For Price Service
+1. List My Positions for an exchange
+```
+go run main.go listmypositions -e "6086b79f8ec6cae85d53584a"
+```
 ## Run the User Authentication Service
 1. Git Clone
 2. go build -o new -v

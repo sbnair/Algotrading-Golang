@@ -57,7 +57,38 @@ func (s *PriceServiceServer) ListMyPositions(req *pricepb.ListMyPositionReq, str
 				fmt.Sprintf("Internal error: %v", err),
 			)
 		}
-		fmt.Println(positions)
+		//fmt.Println(positions)
+
+		for _, position := range positions {
+			avg_entry_price, _ := position.EntryPrice.Float64()
+			qty, _ := position.Qty.Float64()
+			market_value, _ := position.MarketValue.Float64()
+			cost_basis, _ := position.CostBasis.Float64()
+			unrealized_pl, _ := position.UnrealizedPL.Float64()
+			unrealized_plpc, _ := position.UnrealizedPLPC.Float64()
+			current_price, _ := position.CurrentPrice.Float64()
+			lastday_price, _ := position.LastdayPrice.Float64()
+			change_today, _ := position.ChangeToday.Float64()
+			stream.Send(&pricepb.ListMyPositionRes{
+				Position: &pricepb.Position{
+					AssetId:        position.AssetID,
+					Symbol:         position.Symbol,
+					Exchange:       position.Exchange,
+					AssetClass:     position.Class,
+					AccountId:      position.AccountID,
+					AvgEntryPrice:  avg_entry_price,
+					Qty:            qty,
+					Side:           position.Side,
+					MarketValue:    market_value,
+					CostBasis:      cost_basis,
+					UnrealizedPl:   unrealized_pl,
+					UnrealizedPlpc: unrealized_plpc,
+					CurrentPrice:   current_price,
+					LastdayPrice:   lastday_price,
+					ChangeToday:    change_today,
+				},
+			})
+		}
 	}
 
 	return nil
