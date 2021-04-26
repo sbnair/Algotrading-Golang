@@ -18,7 +18,6 @@ Add some records by connecting to MongoDB Shell:
 :/# mongo
 use mydb
 db.availableExchanges.insert({ "name": "Alpaca"})
-db.users.insert({"name":"Vikash"})
 ```
 
 ## To compile your proto file to Go stubs
@@ -26,6 +25,8 @@ db.users.insert({"name":"Vikash"})
 ```protoc -I. proto/exchange.proto --go_out=plugins=grpc:.```
 2. For Strategy Service:
 ```protoc -I. proto/strategy.proto --go_out=plugins=grpc:.```
+3. For Price Service:
+```protoc -I. proto/price.proto --go_out=plugins=grpc:.```
 
 ## Run the gRPC Client
 

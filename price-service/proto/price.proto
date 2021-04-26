@@ -1,0 +1,34 @@
+syntax = "proto3";
+package price;
+option go_package = "pricepb";
+
+service PriceService {
+    rpc ListMyPositions(ListMyPositionReq) returns (stream ListMyPositionRes);
+    
+}
+
+message ListMyPositionReq {
+    string exchange_id = 1;
+}
+
+message ListMyPositionRes {
+    Position position = 1;
+}
+
+message Position {
+    string asset_id = 1;
+    string symbol = 2;
+    string exchange = 3;
+    string asset_class = 4;
+    string account_id = 5;
+    double avg_entry_price = 6;
+    double qty = 7;
+    string side = 8;
+    double market_value = 9;
+    double cost_basis = 10;
+    double unrealized_pl = 11;
+    double unrealized_plpc = 12;
+    double current_price = 13;
+    double lastday_price = 14;
+    double change_today = 15;
+}
