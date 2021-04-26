@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -79,7 +80,9 @@ var updateCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println(res)
+		//fmt.Println(res)
+		jsonBytes, _ := json.MarshalIndent(res, "", "    ")
+		fmt.Println(string(jsonBytes))
 
 		diff := time.Since(startTime)
 		fmt.Println("Time taken for the operation: ")

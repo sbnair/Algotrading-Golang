@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -55,7 +56,9 @@ var startstrategybotCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Println(res)
+		//fmt.Println(res)
+		jsonBytes, _ := json.MarshalIndent(res, "", "    ")
+		fmt.Println(string(jsonBytes))
 
 		return nil
 	},

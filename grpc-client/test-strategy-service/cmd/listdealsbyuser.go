@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"time"
@@ -62,7 +63,9 @@ var listdealsbyuserCmd = &cobra.Command{
 				return err
 			}
 			// If everything went well use the generated getter to print the blog message
-			fmt.Println(res.GetDeal())
+			//fmt.Println(res.GetDeal())
+			jsonBytes, _ := json.MarshalIndent(res.GetDeal(), "", "    ")
+			fmt.Println(string(jsonBytes))
 		}
 
 		diff := time.Since(startTime)

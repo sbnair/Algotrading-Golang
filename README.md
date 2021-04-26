@@ -67,7 +67,7 @@ go run main.go listbyuser -u "user1"
 ```
 3. To read a Strategy
 ```
-go run main.go read -i "60867adb76c5d62a565126c6"
+go run main.go read -i "6086c3b8e33d324e030c78ed"
 ```
 4. To Delete a Strategy
 ```
@@ -75,12 +75,12 @@ go run main.go delete -i "60867adb76c5d62a565126c6"
 ```
 5. To update a Strategy
 ```
-go run main.go update -i "60867adb76c5d62a565126c6" -n "Strategy 1 Updated" -e "Alpaca" -b 10.0 -s 20.0 -t "5" -p "2%" -v "1%" -c "1%" -m "5%" -z "7%" -f "10000" -d "G1,G2,G3"
+go run main.go update -i "6086c3b8e33d324e030c78ed" -n "Strategy 1 Updated" -e "Alpaca" -b 10.0 -s 20.0 -t "5" -p "2%" -v "1%" -c "1%" -m "5%" -z "7%" -f "10000" -d "G1,G2,G3"
 ```
 ### Strategy & Deals Bot
 1. To Start a Strategy Bot
 ```
-go run main.go startstrategybot -i "60867adb76c5d62a565126c6" -d "G1,G2"
+go run main.go startstrategybot -i "6086c3b8e33d324e030c78ed" -d "G1,G2"
 ```
 2. To List all Deals for a User
 ```

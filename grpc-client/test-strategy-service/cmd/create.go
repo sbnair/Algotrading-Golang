@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -90,7 +91,9 @@ var createCmd = &cobra.Command{
 		}
 		fmt.Printf("Strategy created: %s\n", res.Strategy.Id)
 
-		fmt.Println(res)
+		//fmt.Println(res)
+		jsonBytes, _ := json.MarshalIndent(res, "", "    ")
+		fmt.Println(string(jsonBytes))
 
 		diff := time.Since(startTime)
 		fmt.Println("Time taken for the operation: ")

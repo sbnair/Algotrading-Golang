@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 
@@ -57,7 +58,9 @@ var listmypositionsCmd = &cobra.Command{
 				return err
 			}
 			// If everything went well use the generated getter to print the exchange message
-			fmt.Println(res.GetPosition())
+			//fmt.Println(res.GetPosition())
+			jsonBytes, _ := json.MarshalIndent(res.GetPosition(), "", "    ")
+			fmt.Println(string(jsonBytes))
 		}
 		return nil
 	},
