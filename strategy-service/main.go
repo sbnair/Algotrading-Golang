@@ -324,6 +324,31 @@ func (s *StrategyServiceServer) UpdateStrategy(ctx context.Context, req *strateg
 	}, nil
 }
 
+func (s *StrategyServiceServer) StartBot(ctx context.Context, req *strategypb.StartBotReq) (*strategypb.StartBotRes, error) {
+	strategyId := req.GetStrategyId()
+	stocks := req.GetStocks()
+	fmt.Println(strategyId)
+	fmt.Println(stocks)
+
+	oid, err := primitive.ObjectIDFromHex(strategyId)
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not convert to ObjectId: %v", err))
+	}
+
+	resultStrategyRead := strategydb.FindOne(ctx, bson.M{"_id": oid})
+
+	// Create an empty ExchangeItem to write our decode result to
+	strategyData := StrategyItem{}
+	// decode and write to strategyData
+	if err := resultStrategyRead.Decode(&strategyData); err != nil {
+		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find Strategy with Object Id %s: %v", strategyId, err))
+	}
+
+	return &strategypb.StartBotRes{
+		Success: true,
+	}, nil
+}
+
 type StrategyServiceServer struct{}
 type StrategyItem struct {
 	Id                      primitive.ObjectID  `bson:"_id,omitempty"`
@@ -374,9 +399,18 @@ type Stock struct {
 	StockName string `bson:"stock_name"`
 }
 
+type DealItem struct {
+	Id         primitive.ObjectID  `bson:"_id,omitempty"`
+	StrategyId string              `bson:"strategy_id"`
+	Version    int64               `bson:"version"`
+	Stock      []*strategypb.Stock `bson:"stock"`
+	UserId     string              `bson:"user_id"`
+}
+
 var db *mongo.Client
 var strategydb *mongo.Collection
 var strategy_revisionsdb *mongo.Collection
+var dealsdb *mongo.Collection
 var mongoCtx context.Context
 
 func main() {
@@ -422,8 +456,10 @@ func main() {
 		fmt.Println("Connected to Mongodb")
 	}
 	// Bind our collection to our global variable for use in other methods
-	strategydb = db.Database("hedgina_algobot").Collection("strategy")
-	strategy_revisionsdb = db.Database("hedgina_algobot").Collection("strategy_revisions")
+	mongoDB := db.Database("hedgina_algobot")
+	strategydb = mongoDB.Collection("strategy")
+	strategy_revisionsdb = mongoDB.Collection("strategy_revisions")
+	dealsdb = mongoDB.Collection("deals")
 	// Start the server in a child routine
 	go func() {
 		if err := s.Serve(listener); err != nil {
