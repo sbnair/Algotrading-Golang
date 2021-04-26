@@ -104,7 +104,7 @@ message ListStrategyRes{
 
 message StartBotReq{
     string strategy_id = 1;
-    Stock stocks = 2;
+    repeated Stock stocks = 2;
 }
 
 message StartBotRes {
