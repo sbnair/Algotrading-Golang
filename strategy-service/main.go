@@ -327,8 +327,8 @@ func (s *StrategyServiceServer) UpdateStrategy(ctx context.Context, req *strateg
 func (s *StrategyServiceServer) StartBot(ctx context.Context, req *strategypb.StartBotReq) (*strategypb.StartBotRes, error) {
 	strategyId := req.GetStrategyId()
 	stocks := req.GetStocks()
-	fmt.Println(strategyId)
-	fmt.Println(stocks)
+	//fmt.Println(strategyId)
+	//fmt.Println(stocks)
 
 	oid, err := primitive.ObjectIDFromHex(strategyId)
 	if err != nil {
@@ -344,9 +344,76 @@ func (s *StrategyServiceServer) StartBot(ctx context.Context, req *strategypb.St
 		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find Strategy with Object Id %s: %v", strategyId, err))
 	}
 
+	//fmt.Println(len(stocks))
+	var insert []interface{}
+	for _, v := range stocks {
+		//fmt.Println(stocks[i].StockName)
+		//fmt.Println(v.StockName)
+		deal := bson.M{
+			"strategy_id": strategyId,
+			"version":     strategyData.Version,
+			"user_id":     strategyData.UserId,
+			"stock":       v.StockName,
+		}
+		insert = append(insert, deal)
+	}
+
+	//fmt.Println(insert)
+
+	insertManyResult, err := dealsdb.InsertMany(mongoCtx, insert)
+	if err != nil {
+		return nil, status.Errorf(
+			codes.Internal,
+			fmt.Sprintf("Internal error: %v", err),
+		)
+	}
+	fmt.Print("Inserted Deal ID's: ")
+	fmt.Println(insertManyResult.InsertedIDs)
+
 	return &strategypb.StartBotRes{
 		Success: true,
 	}, nil
+}
+
+func (s *StrategyServiceServer) ListDeals(req *strategypb.ListDealReq, stream strategypb.StrategyService_ListDealsServer) error {
+	userIdQuery := req.GetUserId()
+	if len(userIdQuery) == 0 {
+		return status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not find UserId in Req"))
+	}
+
+	// Initiate a StrategyItem type to write decoded data to
+	data := &DealItem{}
+	// collection.Find returns a cursor for our (empty) query
+	cursor, err := dealsdb.Find(context.Background(), bson.M{"user_id": userIdQuery})
+	if err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unknown internal error: %v", err))
+	}
+	// An expression with defer will be called at the end of the function
+	defer cursor.Close(context.Background())
+	// cursor.Next() returns a boolean, if false there are no more items and loop will break
+	for cursor.Next(context.Background()) {
+		// Decode the data at the current pointer and write it to data
+		err := cursor.Decode(data)
+		// check error
+		if err != nil {
+			return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
+		}
+		// If no error is found send exchange over stream
+		stream.Send(&strategypb.ListDealRes{
+			Deal: &strategypb.Deal{
+				Id:         data.Id.Hex(),
+				StrategyId: data.StrategyId,
+				Version:    data.Version,
+				Stock:      data.Stock,
+				UserId:     data.UserId,
+			},
+		})
+	}
+	// Check if the cursor has any errors
+	if err := cursor.Err(); err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unkown cursor error: %v", err))
+	}
+	return nil
 }
 
 type StrategyServiceServer struct{}
@@ -400,11 +467,11 @@ type Stock struct {
 }
 
 type DealItem struct {
-	Id         primitive.ObjectID  `bson:"_id,omitempty"`
-	StrategyId string              `bson:"strategy_id"`
-	Version    int64               `bson:"version"`
-	Stock      []*strategypb.Stock `bson:"stock"`
-	UserId     string              `bson:"user_id"`
+	Id         primitive.ObjectID `bson:"_id,omitempty"`
+	StrategyId string             `bson:"strategy_id"`
+	Version    int64              `bson:"version"`
+	Stock      string             `bson:"stock"`
+	UserId     string             `bson:"user_id"`
 }
 
 var db *mongo.Client

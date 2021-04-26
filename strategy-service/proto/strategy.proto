@@ -8,8 +8,9 @@ service StrategyService {
     rpc UpdateStrategy(UpdateStrategyReq) returns (UpdateStrategyRes);
     rpc DeleteStrategy(DeleteStrategyReq) returns (DeleteStrategyRes);
     rpc ListStrategies(ListStrategyReq) returns (stream ListStrategyRes);
-
+    // Start Bot to start deals
     rpc StartBot(StartBotReq) returns (StartBotRes);
+    rpc ListDeals(ListDealReq) returns (stream ListDealRes);
 }
 
 message Strategy {
@@ -117,4 +118,12 @@ message Deal {
     int64 version = 3;
     string stock = 4;
     string user_id = 5;
+}
+
+message ListDealReq {
+    string user_id = 1;
+}
+
+message ListDealRes{
+    Deal deal = 1;
 }

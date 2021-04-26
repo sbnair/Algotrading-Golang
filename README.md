@@ -76,3 +76,8 @@ go run main.go delete -i "608597be6854e8575cdb5c3d"
 ```
 go run main.go update -i "608597be6854e8575cdb5c3d" -n "Strategy 2 Updated" -e "Alpaca" -b 10.0 -s 20.0 -t "5" -p "2%" -v "1%" -c "1%" -m "5%" -z "7%" -f "10000" -d "G1,G2,G3"
 ```
+### Strategy & Deals Bot
+1. To Start a Strategy Bot
+```
+go run main.go startstrategybot -i "60827aeb8babc1d81794a4f7" -d "G1,G2"
+```
