@@ -81,3 +81,7 @@ go run main.go update -i "608597be6854e8575cdb5c3d" -n "Strategy 2 Updated" -e "
 ```
 go run main.go startstrategybot -i "60827aeb8babc1d81794a4f7" -d "G1,G2"
 ```
+2. To List all Deals for a User
+```
+go run main.go listdealsbyuser -u "user1"
+```
