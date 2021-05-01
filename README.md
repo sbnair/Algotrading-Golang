@@ -5,7 +5,7 @@ An automated tool to sell and buy stock
 
 A golang implementation of trading bot for cryptocurrency exchanges. EXchange used - Alpaka
 
-## Start a MongoDB container using the image from docker hub.
+## Locally Start a MongoDB container using the image from docker hub.
 ```
 docker run -p 27017:27017 --name mongo -d mongo
 ```
@@ -114,3 +114,24 @@ go run main.go listmypositions -e "6086b79f8ec6cae85d53584a"
 }
 ```
 6. To access API's: GET http://localhost:8000/api-1 with header "token" and value token retrieved from login api call.
+
+## Kubernetes Deployments
+
+### Create a standalone mongodb statefulset
+1. To create a standalone mongodb
+```
+kubectl apply -f kubernetes-deployments/mongodb/mongodb.yaml
+```
+2. To exec into mongodb from CLI
+```
+kubectl -n hedgina exec -it mongodb-0 -- mongo mongodb://mongoadmin:mongopassword@mongodb-0.database:27017/?authSource=admin
+```
+or
+```
+kubectl -n hedgina exec -it mongodb-0 -- mongo mongodb://mongodb-0.database:27017 --username mongoadmin --password mongopassword
+```
+3. To connect to mongodb from inside the cluster use the connection String: ```mongodb://mongoadmin:mongopassword@mongodb-0.database:27017/?authSource=admin``` using standard connection string format: ```mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]```
+
+4. Example of mongodb connection string for multiple replicaset ```mongodb://mongoadmin:mongopassword@mongodb-0.database:27017,mongodb-1.database:27017,mongodb-2.database:27017/?authSource=admin```
+
+5. To connect to mongodb from your local, port-forward the mongodb pod to localhost:27017 using ```kubectl -n hedgina port-forward mongodb-0 27017:27017```. To stop, hit Ctrl+C
