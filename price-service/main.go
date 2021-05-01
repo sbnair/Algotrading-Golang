@@ -135,13 +135,13 @@ func main() {
 	// Configure 'log' package to give file name and line number on eg. log.Fatal
 	// Pipe flags to one another (log.LstdFLags = log.Ldate | log.Ltime)
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
-	fmt.Println("Starting server on port :50051...")
+	fmt.Println("Starting server on port :50053...")
 
-	// Start our listener, 50051 is the default gRPC port
-	listener, err := net.Listen("tcp", ":50051")
+	// Start our listener, 50053 is the default gRPC port
+	listener, err := net.Listen("tcp", ":50053")
 	// Handle errors if any
 	if err != nil {
-		log.Fatalf("Unable to listen on port :50051: %v", err)
+		log.Fatalf("Unable to listen on port :50053: %v", err)
 	}
 
 	// Set options, here we can configure things like TLS support
@@ -184,7 +184,7 @@ func main() {
 			log.Fatalf("Failed to serve: %v", err)
 		}
 	}()
-	fmt.Println("Server succesfully started on port :50051")
+	fmt.Println("Server succesfully started on port :50053")
 
 	// Right way to stop the server using a SHUTDOWN HOOK
 	// Create a channel to receive OS signals

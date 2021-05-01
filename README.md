@@ -33,7 +33,7 @@ db.availableExchanges.insert({ "name": "Alpaca"})
 ### For Exchange Service
 1. To create an exchange
 ```
-go run main.go create -e "Alpaca" -n "Alpaca Exchange" -t "paper_trading" -u "60865a63a6116f40ab12d863" -k "PKOP7ALK9WCI4BH5OX4R" -s "S0NuGhDTNXZ1wp3z9TmuUWhst53ydKAtZ7dtsYhI"
+go run main.go create -e "Alpaca" -n "Alpaca Exchange" -t "paper_trading" -u "608d6b42ada75cc7e25e6b6a" -k "PKI0XITWRU9E47IEOLV3" -s "d2EdBHfpzZmMABVuJey2weVu35mImiMTGO6pPXO2"
 ```
 2. To read an exchange by Exchange Id
 ```
@@ -45,7 +45,7 @@ go run main.go list
 ```
 4. To list all Exchanges by User ID
 ```
-go run main.go -u "user2"
+go run main.go -u "608d6b42ada75cc7e25e6b6a"
 ```
 5. To delete an Exchange
 ```
@@ -53,23 +53,23 @@ go run main.go delete -i "607815df7f51e077fd7ac87a"
 ```
 6. To update an Exchange
 ```
-go run main.go update -i "607815df7f51e077fd7ac87a" -e "Alpaca" -n "Alpaca Exchange" -t "paper_trading" -u "user1" -k "1234trewpoiuyhfjdksa" -s "ertyertyuiolkjhgfdhjkl,mnbvcxdsfghjk"
+go run main.go update -i "607815df7f51e077fd7ac87a" -e "Alpaca" -n "Alpaca Exchange" -t "paper_trading" -u "608d6b42ada75cc7e25e6b6a" -k "PKI0XITWRU9E47IEOLV3" -s "d2EdBHfpzZmMABVuJey2weVu35mImiMTGO6pPXO2"
 ```
 
 ### For Strategy Service
 1. To create a Strategy
 ```
-go run main.go create -n "Strategy 1" -e "Alpaca" -b 10.0 -s 20.0 -t "5" -p "2%" -v "1%" -c "1%" -m "5%" -z "3%" -f "10000" -u "user1" -d "G1,G2"
+go run main.go create -n "Strategy 1" -e "Alpaca" -b 10.0 -s 20.0 -t "5" -p "2%" -v "1%" -c "1%" -m "5%" -z "3%" -f "10000" -u "608d6b42ada75cc7e25e6b6a" -d "G1,G2"
 ```
 2. To list all the Strategies by User Id
 ```
 go run main.go listbyuser -u "user1"
 ```
-3. To read a Strategy
+3. To read a Strategy by Strategy Id
 ```
 go run main.go read -i "6086c3b8e33d324e030c78ed"
 ```
-4. To Delete a Strategy
+4. To Delete a Strategy by Strategy Id
 ```
 go run main.go delete -i "60867adb76c5d62a565126c6"
 ```
@@ -80,7 +80,7 @@ go run main.go update -i "6086c3b8e33d324e030c78ed" -n "Strategy 1 Updated" -e "
 ### Strategy & Deals Bot
 1. To Start a Strategy Bot
 ```
-go run main.go startstrategybot -i "6086c3b8e33d324e030c78ed" -d "G1,G2"
+go run main.go startstrategybot -i "608d6d04c3271e63ee719eab" -d "G1,G2"
 ```
 2. To List all Deals for a User
 ```
@@ -90,7 +90,7 @@ go run main.go listdealsbyuser -u "user1"
 ### For Price Service
 1. List My Positions for an exchange
 ```
-go run main.go listmypositions -e "6086b79f8ec6cae85d53584a"
+go run main.go listmypositions -e "608d6c042ea48ebc779a3358"
 ```
 ## Run the User Authentication Service
 1. Git Clone
@@ -134,4 +134,4 @@ kubectl -n hedgina exec -it mongodb-0 -- mongo mongodb://mongodb-0.database:2701
 
 4. Example of mongodb connection string for multiple replicaset ```mongodb://mongoadmin:mongopassword@mongodb-0.database:27017,mongodb-1.database:27017,mongodb-2.database:27017/?authSource=admin```
 
-5. To connect to mongodb from your local, port-forward the mongodb pod to localhost:27017 using ```kubectl -n hedgina port-forward mongodb-0 27017:27017```. To stop, hit Ctrl+C
+5. To connect to mongodb running on k8s cluster from your local, port-forward the mongodb pod to localhost:27017 using ```kubectl -n hedgina port-forward mongodb-0 27017:27017```. To stop, hit Ctrl+C

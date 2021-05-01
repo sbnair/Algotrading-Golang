@@ -77,9 +77,9 @@ func init() {
 	// Establish insecure grpc options (no TLS)
 	requestOpts = grpc.WithInsecure()
 	// Dial the server, returns a client connection
-	conn, err := grpc.Dial("localhost:50051", requestOpts)
+	conn, err := grpc.Dial("localhost:50053", requestOpts)
 	if err != nil {
-		log.Fatalf("Unable to establish client connection to localhost:50051: %v", err)
+		log.Fatalf("Unable to establish client connection to localhost:50053: %v", err)
 	}
 	// Instantiate the BlogServiceClient with our client connection to the server
 	client = pricepb.NewPriceServiceClient(conn)
