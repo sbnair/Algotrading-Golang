@@ -18,6 +18,7 @@ import (
 
 func getAssets() error {
 
+	//Create env variable for this
 	userdbResult := userdb.FindOne(mongoCtx, bson.M{"first_name": "admin", "last_name": "user"})
 
 	userData := UserItem{}

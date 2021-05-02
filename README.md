@@ -140,8 +140,24 @@ go run main.go listassetbyname -n "SAP SE"
 1. Build the docker image using
 ```
 docker build -t assets-job .
-```
 
+## Docker Operations
+1. Build a docker image:
+```
+docker build -t price-service .
+```
+2. Run the docker container
+```
+docker run -p 50053:50053 price-service
+```
+3. Tag the docker Image
+```
+docker tag price-service:latest neha190495/price-service
+```
+4. Push the docker image to dockerhub
+```
+docker push neha190495/price-service
+```
 ## Kubernetes Deployments
 
 ### Create a standalone mongodb statefulset

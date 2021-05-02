@@ -321,10 +321,15 @@ func main() {
 	// Initialize MongoDb client
 	fmt.Println("Connecting to MongoDB...")
 
+	//Uncomment to run locally
+	//os.Setenv("MONGODB_URL", "mongodb://127.0.0.1:27017")
+
+	MONGODB_URL := os.Getenv("MONGODB_URL")
+
 	// non-nil empty context
 	mongoCtx = context.Background()
 	// Connect takes in a context and options, the connection URI is the only option we pass for now
-	db, err = mongo.Connect(mongoCtx, options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
+	db, err = mongo.Connect(mongoCtx, options.Client().ApplyURI(MONGODB_URL))
 	// Handle potential errors
 	if err != nil {
 		log.Fatal(err)

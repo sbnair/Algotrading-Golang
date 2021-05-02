@@ -1,0 +1,49 @@
+syntax = "proto3";
+package price;
+option go_package = "orderpb";
+
+service OrderService {
+    rpc ListOrders(ListOrdersReq) returns (stream ListOrdersRes);
+}
+
+message ListOrdersReq {
+    string exchange_id = 1;
+}
+
+message ListOrdersRes {
+    Order order = 1;
+}
+
+message Order {
+    string id = 1;
+    string client_order_id = 2;
+    string created_at = 3;
+    string updated_at = 4;
+    string submitted_at = 5;
+    string filled_at = 6;
+    string expired_at = 7;
+    string canceled_at = 8;
+    string failed_at = 9;
+    string replaced_at = 10;
+    string replaces = 11;
+    string replaced_by = 12;
+    string asset_id = 13;
+    string symbol = 14;
+    string exchange = 15;
+    string asset_class = 16;
+    double qty = 17;
+    double notional = 18;
+    double filled_qty = 19;
+    string order_type = 20;
+    string side = 21;
+    string time_in_force = 22;
+    double limit_price = 23;
+    double filled_avg_price = 24;
+    double stop_price = 25;
+    double trail_price = 26;
+    double trail_percent = 27;
+    double hwm = 28;
+    string status = 29;
+    bool extended_hours = 30;
+    repeated Order legs = 31;
+}

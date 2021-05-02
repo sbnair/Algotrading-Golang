@@ -1,0 +1,24 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: assetjob
+  namespace: hedgina
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: assetjob
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+          - image: neha190495/assets-job:latest
+            imagePullPolicy: IfNotPresent
+            name: assetjob
+            resources: {}
+          restartPolicy: Never
+  schedule: '*/15 * * * *'
+status: {}

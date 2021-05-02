@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: strategy-service-app
+  namespace: hedgina
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: strategy-service
+  template:
+    metadata:
+      labels:
+        app: strategy-service
+    spec:
+      containers:
+      - name: strategy-service
+        image: neha190495/strategy-service:latest
+        imagePullPolicy: IfNotPresent
+        resources: {}
+        ports:
+        - containerPort: 50052
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: strategy-service
+  namespace: hedgina
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tcp
+    port: 50052
+    protocol: TCP
+    targetPort: 50052
+  selector:
+    app: strategy-service
