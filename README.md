@@ -92,6 +92,19 @@ go run main.go listdealsbyuser -u "user1"
 ```
 go run main.go listmypositions -e "608d6c042ea48ebc779a3358"
 ```
+2. List All Assets
+```
+go run main.go listassets
+```
+3. List Asset by Symbol
+```
+go run main.go listassetbysymbol -s "GOOGL"
+```
+4. List Asset by Name
+```
+go run main.go listassetbyname -n "SAP SE"
+```
+
 ## Run the User Authentication Service
 1. Git Clone
 2. go build -o new -v

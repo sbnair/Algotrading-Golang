@@ -109,7 +109,7 @@ func (s *PriceServiceServer) ListAssets(req *pricepb.ListAssetsReq, stream price
 		}
 		stream.Send(&pricepb.ListAssetsRes{
 			Asset: &pricepb.Asset{
-				Id:           data.Id.Hex(),
+				Id:           data.Id,
 				Name:         data.Name,
 				Exchange:     data.Exchange,
 				AssetClass:   data.AssetClass,
@@ -149,7 +149,7 @@ func (s *PriceServiceServer) ListAssetBySymbol(req *pricepb.ListAssetBySymbolReq
 		}
 		stream.Send(&pricepb.ListAssetBySymbolRes{
 			Asset: &pricepb.Asset{
-				Id:           data.Id.Hex(),
+				Id:           data.Id,
 				Name:         data.Name,
 				Exchange:     data.Exchange,
 				AssetClass:   data.AssetClass,
@@ -189,7 +189,7 @@ func (s *PriceServiceServer) ListAssetByName(req *pricepb.ListAssetByNameReq, st
 		}
 		stream.Send(&pricepb.ListAssetByNameRes{
 			Asset: &pricepb.Asset{
-				Id:           data.Id.Hex(),
+				Id:           data.Id,
 				Name:         data.Name,
 				Exchange:     data.Exchange,
 				AssetClass:   data.AssetClass,
@@ -222,16 +222,16 @@ type ExchangeItem struct {
 }
 
 type AssetItem struct {
-	Id           primitive.ObjectID `bson:"_id,omitempty"`
-	Name         string             `bson:"name"`
-	Exchange     string             `bson:"exchange"`
-	AssetClass   string             `bson:"asset_class"`
-	Symbol       string             `bson:"symbol"`
-	Status       string             `bson:"status"`
-	Tradable     bool               `bson:"tradable"`
-	Marginable   bool               `bson:"marginable"`
-	Shortable    bool               `bson:"shortable"`
-	EasyToBorrow bool               `bson:"easy_to_borrow"`
+	Id           string `bson:"_id,omitempty"`
+	Name         string `bson:"name"`
+	Exchange     string `bson:"exchange"`
+	AssetClass   string `bson:"asset_class"`
+	Symbol       string `bson:"symbol"`
+	Status       string `bson:"status"`
+	Tradable     bool   `bson:"tradable"`
+	Marginable   bool   `bson:"marginable"`
+	Shortable    bool   `bson:"shortable"`
+	EasyToBorrow bool   `bson:"easy_to_borrow"`
 }
 
 var db *mongo.Client
