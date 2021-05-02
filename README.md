@@ -115,6 +115,20 @@ go run main.go listmypositions -e "608d6c042ea48ebc779a3358"
 ```
 6. To access API's: GET http://localhost:8000/api-1 with header "token" and value token retrieved from login api call.
 
+## Run assets-job to fill asset information from Alpaca into Mongo
+
+### Pre-Requisites
+1. Create a admin user in DB with first_name=admin and last_name=user
+2. Create an exchange for this user with valid API-KEY & SECRET
+### Run the App/Job
+1. To run locally, uncomment line number 146 in main.go
+2. Run the app using ```go run main.go```
+### Build its Docker Image
+1. Build the docker image using
+```
+docker build -t assets-job .
+```
+
 ## Kubernetes Deployments
 
 ### Create a standalone mongodb statefulset

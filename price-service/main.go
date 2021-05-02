@@ -94,6 +94,121 @@ func (s *PriceServiceServer) ListMyPositions(req *pricepb.ListMyPositionReq, str
 	return nil
 }
 
+func (s *PriceServiceServer) ListAssets(req *pricepb.ListAssetsReq, stream pricepb.PriceService_ListAssetsServer) error {
+	data := &AssetItem{}
+	cursor, err := assetsdb.Find(context.Background(), bson.M{})
+	if err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unknown internal error: %v", err))
+	}
+	defer cursor.Close(context.Background())
+	for cursor.Next(context.Background()) {
+		err := cursor.Decode(data)
+		// check error
+		if err != nil {
+			return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
+		}
+		stream.Send(&pricepb.ListAssetsRes{
+			Asset: &pricepb.Asset{
+				Id:           data.Id.Hex(),
+				Name:         data.Name,
+				Exchange:     data.Exchange,
+				AssetClass:   data.AssetClass,
+				Symbol:       data.Symbol,
+				Status:       data.Status,
+				Tradable:     data.Tradable,
+				Marginable:   data.Marginable,
+				Shortable:    data.Shortable,
+				EasyToBorrow: data.EasyToBorrow,
+			},
+		})
+	}
+	// Check if the cursor has any errors
+	if err := cursor.Err(); err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unkown cursor error: %v", err))
+	}
+	return nil
+}
+
+func (s *PriceServiceServer) ListAssetBySymbol(req *pricepb.ListAssetBySymbolReq, stream pricepb.PriceService_ListAssetBySymbolServer) error {
+	symbolQuery := req.GetSymbol()
+	if len(symbolQuery) == 0 {
+		return status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not find Symbol in Req"))
+	}
+
+	data := &AssetItem{}
+	cursor, err := assetsdb.Find(context.Background(), bson.M{"symbol": symbolQuery})
+	if err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unknown internal error: %v", err))
+	}
+	defer cursor.Close(context.Background())
+	for cursor.Next(context.Background()) {
+		err := cursor.Decode(data)
+		// check error
+		if err != nil {
+			return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
+		}
+		stream.Send(&pricepb.ListAssetBySymbolRes{
+			Asset: &pricepb.Asset{
+				Id:           data.Id.Hex(),
+				Name:         data.Name,
+				Exchange:     data.Exchange,
+				AssetClass:   data.AssetClass,
+				Symbol:       data.Symbol,
+				Status:       data.Status,
+				Tradable:     data.Tradable,
+				Marginable:   data.Marginable,
+				Shortable:    data.Shortable,
+				EasyToBorrow: data.EasyToBorrow,
+			},
+		})
+	}
+	// Check if the cursor has any errors
+	if err := cursor.Err(); err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unkown cursor error: %v", err))
+	}
+	return nil
+}
+
+func (s *PriceServiceServer) ListAssetByName(req *pricepb.ListAssetByNameReq, stream pricepb.PriceService_ListAssetByNameServer) error {
+	nameQuery := req.GetName()
+	if len(nameQuery) == 0 {
+		return status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not find Name in Req"))
+	}
+
+	data := &AssetItem{}
+	cursor, err := assetsdb.Find(context.Background(), bson.M{"name": nameQuery})
+	if err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unknown internal error: %v", err))
+	}
+	defer cursor.Close(context.Background())
+	for cursor.Next(context.Background()) {
+		err := cursor.Decode(data)
+		// check error
+		if err != nil {
+			return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
+		}
+		stream.Send(&pricepb.ListAssetByNameRes{
+			Asset: &pricepb.Asset{
+				Id:           data.Id.Hex(),
+				Name:         data.Name,
+				Exchange:     data.Exchange,
+				AssetClass:   data.AssetClass,
+				Symbol:       data.Symbol,
+				Status:       data.Status,
+				Tradable:     data.Tradable,
+				Marginable:   data.Marginable,
+				Shortable:    data.Shortable,
+				EasyToBorrow: data.EasyToBorrow,
+			},
+		})
+	}
+	// Check if the cursor has any errors
+	if err := cursor.Err(); err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unkown cursor error: %v", err))
+	}
+	return nil
+}
+
 type PriceServiceServer struct{}
 
 type ExchangeItem struct {
@@ -106,29 +221,23 @@ type ExchangeItem struct {
 	ApiSecret        string             `bson:"api_secret"`
 }
 
-/*
-type PositionItem struct {
-	AssetId        string  `protobuf:"bytes,1,opt,name=asset_id,json=assetId,proto3" json:"asset_id,omitempty"`
-	Symbol         string  `protobuf:"bytes,2,opt,name=symbol,proto3" json:"symbol,omitempty"`
-	Exchange       string  `protobuf:"bytes,3,opt,name=exchange,proto3" json:"exchange,omitempty"`
-	AssetClass     string  `protobuf:"bytes,4,opt,name=asset_class,json=assetClass,proto3" json:"asset_class,omitempty"`
-	AccountId      string  `protobuf:"bytes,5,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
-	AvgEntryPrice  float64 `protobuf:"fixed64,6,opt,name=avg_entry_price,json=avgEntryPrice,proto3" json:"avg_entry_price,omitempty"`
-	Qty            float64 `protobuf:"fixed64,7,opt,name=qty,proto3" json:"qty,omitempty"`
-	Side           string  `protobuf:"bytes,8,opt,name=side,proto3" json:"side,omitempty"`
-	MarketValue    float64 `protobuf:"fixed64,9,opt,name=market_value,json=marketValue,proto3" json:"market_value,omitempty"`
-	CostBasis      float64 `protobuf:"fixed64,10,opt,name=cost_basis,json=costBasis,proto3" json:"cost_basis,omitempty"`
-	UnrealizedPl   float64 `protobuf:"fixed64,11,opt,name=unrealized_pl,json=unrealizedPl,proto3" json:"unrealized_pl,omitempty"`
-	UnrealizedPlpc float64 `protobuf:"fixed64,12,opt,name=unrealized_plpc,json=unrealizedPlpc,proto3" json:"unrealized_plpc,omitempty"`
-	CurrentPrice   float64 `protobuf:"fixed64,13,opt,name=current_price,json=currentPrice,proto3" json:"current_price,omitempty"`
-	LastdayPrice   float64 `protobuf:"fixed64,14,opt,name=lastday_price,json=lastdayPrice,proto3" json:"lastday_price,omitempty"`
-	ChangeToday    float64 `protobuf:"fixed64,15,opt,name=change_today,json=changeToday,proto3" json:"change_today,omitempty"`
+type AssetItem struct {
+	Id           primitive.ObjectID `bson:"_id,omitempty"`
+	Name         string             `bson:"name"`
+	Exchange     string             `bson:"exchange"`
+	AssetClass   string             `bson:"asset_class"`
+	Symbol       string             `bson:"symbol"`
+	Status       string             `bson:"status"`
+	Tradable     bool               `bson:"tradable"`
+	Marginable   bool               `bson:"marginable"`
+	Shortable    bool               `bson:"shortable"`
+	EasyToBorrow bool               `bson:"easy_to_borrow"`
 }
-*/
 
 var db *mongo.Client
 var pricedb *mongo.Collection
 var exchangedb *mongo.Collection
+var assetsdb *mongo.Collection
 var mongoCtx context.Context
 
 func main() {
@@ -177,6 +286,7 @@ func main() {
 	mongoDB := db.Database("hedgina_algobot")
 	pricedb = mongoDB.Collection("price")
 	exchangedb = mongoDB.Collection("exchange")
+	assetsdb = mongoDB.Collection("assets")
 
 	// Start the server in a child routine
 	go func() {
