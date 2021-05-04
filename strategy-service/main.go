@@ -173,20 +173,32 @@ func (s *StrategyServiceServer) DeleteStrategy(ctx context.Context, req *strateg
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not convert to ObjectId: %v", err))
 	}
-	// DeleteOne returns DeleteResult which is a struct containing the amount of deleted docs (in this case only 1 always)
-	// So we return a boolean instead
-	_, err = strategydb.DeleteOne(ctx, bson.M{"_id": oid})
+
+	dealsCount, err := dealsdb.CountDocuments(ctx, bson.M{"strategy_id": oid.Hex(), "status": "running"})
 	if err != nil {
-		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find/delete strategy with id %s: %v", req.GetId(), err))
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("Could not find deals with strategy id %s: %v", req.GetId(), err))
+	}
+	fmt.Print("Deals Count with status running: ")
+	fmt.Println(dealsCount)
+	if dealsCount < 1 {
+		// DeleteOne returns DeleteResult which is a struct containing the amount of deleted docs (in this case only 1 always)
+		// So we return a boolean instead
+		_, err = strategydb.DeleteOne(ctx, bson.M{"_id": oid})
+		if err != nil {
+			return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find/delete strategy with id %s: %v", req.GetId(), err))
+		}
+
+		_, err = strategy_revisionsdb.DeleteMany(ctx, bson.M{"strategy_id": req.GetId()})
+		if err != nil {
+			return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not delete from strategy_revisionsdb with id %s: %v", req.GetId(), err))
+		}
+		return &strategypb.DeleteStrategyRes{
+			Success: true,
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Cannot delete strategy with %d running deal(s)", dealsCount))
 	}
 
-	_, err = strategy_revisionsdb.DeleteMany(ctx, bson.M{"strategy_id": req.GetId()})
-	if err != nil {
-		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not delete from strategy_revisionsdb with id %s: %v", req.GetId(), err))
-	}
-	return &strategypb.DeleteStrategyRes{
-		Success: true,
-	}, nil
 }
 
 func (s *StrategyServiceServer) UpdateStrategy(ctx context.Context, req *strategypb.UpdateStrategyReq) (*strategypb.UpdateStrategyRes, error) {
