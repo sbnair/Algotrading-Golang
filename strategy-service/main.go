@@ -411,6 +411,19 @@ func (s *StrategyServiceServer) ListDeals(req *strategypb.ListDealReq, stream st
 		if err != nil {
 			return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
 		}
+
+		strategyData := &StrategyItem{}
+
+		err = strategydb.FindOne(mongoCtx, bson.M{"_id": data.Id, "version": data.Version}).Decode(&strategyData)
+		if err != nil {
+			// ErrNoDocuments means that the filter did not match any documents in the collection
+			if err == mongo.ErrNoDocuments {
+				fmt.Sprintf("No Strategy for in strategy collection. Check Strategy revision for StrategyId: %s , Version: %d", data.Id.Hex(), data.Version)
+			} else {
+				fmt.Println("not in error no documents")
+				return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
+			}
+		}
 		// If no error is found send exchange over stream
 		stream.Send(&strategypb.ListDealRes{
 			Deal: &strategypb.Deal{
@@ -420,6 +433,25 @@ func (s *StrategyServiceServer) ListDeals(req *strategypb.ListDealReq, stream st
 				Stock:      data.Stock,
 				UserId:     data.UserId,
 				Status:     data.Status,
+			},
+			Strategy: &strategypb.Strategy{
+				StrategyName:            strategyData.StrategyName,
+				SelectedExchange:        strategyData.SelectedExchange,
+				StrategyType:            strategyData.StrategyType,
+				StartOrderType:          strategyData.StartOrderType,
+				DealStartCondition:      strategyData.DealStartCondition,
+				BaseOrderSize:           strategyData.BaseOrderSize,
+				SafetyOrderSize:         strategyData.SafetyOrderSize,
+				MaxSafetyTradeAcc:       strategyData.MaxSafetyTradeAcc,
+				PriceDevation:           strategyData.PriceDevation,
+				SafetyOrderVolumeScale:  strategyData.SafetyOrderVolumeScale,
+				SafetyOrderStepScale:    strategyData.SafetyOrderStepScale,
+				TakeProfit:              strategyData.TakeProfit,
+				TargetProfit:            strategyData.TargetProfit,
+				AllocateFundsToStrategy: strategyData.AllocateFundsToStrategy,
+				UserId:                  strategyData.UserId,
+				Version:                 strategyData.Version,
+				Status:                  strategyData.Status,
 			},
 		})
 	}
