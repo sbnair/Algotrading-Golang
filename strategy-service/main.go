@@ -413,17 +413,33 @@ func (s *StrategyServiceServer) ListDeals(req *strategypb.ListDealReq, stream st
 		}
 
 		strategyData := &StrategyItem{}
+		strategyId, err := primitive.ObjectIDFromHex(data.StrategyId)
 
-		err = strategydb.FindOne(mongoCtx, bson.M{"_id": data.Id, "version": data.Version}).Decode(&strategyData)
-		if err != nil {
-			// ErrNoDocuments means that the filter did not match any documents in the collection
+		resultReadStrategy := strategydb.FindOne(mongoCtx, bson.M{"_id": strategyId, "version": data.Version})
+
+		if err := resultReadStrategy.Decode(&strategyData); err != nil {
+
+			fmt.Println("Inside error not nil")
+			fmt.Println(err)
 			if err == mongo.ErrNoDocuments {
-				fmt.Sprintf("No Strategy for in strategy collection. Check Strategy revision for StrategyId: %s , Version: %d", data.Id.Hex(), data.Version)
+				fmt.Println(fmt.Sprintf("No Strategy in strategy collection. Check Strategy revision for StrategyId: %s , Version: %d", data.StrategyId, data.Version))
+				resultReadStrategyRevisions := strategy_revisionsdb.FindOne(mongoCtx, bson.M{"_id": strategyId, "version": data.Version})
+				if errReadRevisions := resultReadStrategyRevisions.Decode(&strategyData); err != nil {
+					if errReadRevisions == mongo.ErrNoDocuments {
+						fmt.Println(fmt.Sprintf("No Strategy in strategy revisions collection for StrategyId: %s , Version: %d", data.StrategyId, data.Version))
+					} else {
+						fmt.Println("not in error no documents")
+						return nil, status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
+					}
+				}
 			} else {
 				fmt.Println("not in error no documents")
-				return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
+				return nil, status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
 			}
+			//return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find Strategy with Object Id %s: %v", oid, err))
 		}
+		fmt.Print("StrategyData: ")
+		fmt.Println(strategyData)
 		// If no error is found send exchange over stream
 		stream.Send(&strategypb.ListDealRes{
 			Deal: &strategypb.Deal{
