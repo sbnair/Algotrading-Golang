@@ -61,7 +61,30 @@ func (s *OrderServiceServer) ListOrders(req *orderpb.ListOrdersReq, stream order
 				fmt.Sprintf("Internal error: %v", err),
 			)
 		}
-		fmt.Println(orders)
+
+		for _, order := range orders {
+
+			stream.Send(&orderpb.ListOrdersRes{
+				Order: &orderpb.Order{
+					Id:            order.ID,
+					ClientOrderId: order.ClientOrderID,
+					CreatedAt:     order.CreatedAt.String(),
+					UpdatedAt:     order.UpdatedAt.String(),
+					SubmittedAt:   order.SubmittedAt.String(),
+					FilledAt:      order.FilledAt.String(),
+					ExpiredAt:     order.ExpiredAt.String(),
+					CanceledAt:    order.CanceledAt.String(),
+					FailedAt:      order.FailedAt.String(),
+					ReplacedAt:    order.ReplacedAt.String(),
+					AssetId:       order.AssetID,
+					Symbol:        order.Symbol,
+					Exchange:      order.Exchange,
+					AssetClass:    order.Class,
+					Status:        order.Status,
+					ExtendedHours: order.ExtendedHours,
+				},
+			})
+		}
 	} else {
 		return status.Errorf(codes.InvalidArgument, fmt.Sprintf("Cannot use exchange other than Alpaca"))
 	}

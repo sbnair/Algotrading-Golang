@@ -70,6 +70,7 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
 	// After Cobra root config init, initialize the client
 	fmt.Println("Starting Order Service Client")
 	// Establish context to timeout after 10 seconds if server does not respond
