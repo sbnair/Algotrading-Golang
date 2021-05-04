@@ -24,7 +24,7 @@ func (s *StrategyServiceServer) CreateStrategy(ctx context.Context, req *strateg
 	strategy.StrategyType = "Long"
 	strategy.StartOrderType = "Limit"
 	strategy.DealStartCondition = "Open new trade asap"
-	strategy.Status = "Stopped"
+	strategy.Status = "stopped"
 	strategy.Version = 1
 
 	data := StrategyItem{
@@ -383,6 +383,16 @@ func (s *StrategyServiceServer) StartBot(ctx context.Context, req *strategypb.St
 	fmt.Print("Inserted Deal ID's: ")
 	fmt.Println(insertManyResult.InsertedIDs)
 
+	decoded := StrategyItem{}
+	filter := bson.M{"_id": oid}
+	resultUpdateStrategy := strategydb.FindOneAndUpdate(ctx, filter, bson.M{"$set": bson.M{"status": "running"}}, options.FindOneAndUpdate().SetReturnDocument(1))
+	err = resultUpdateStrategy.Decode(&decoded)
+	if err != nil {
+		return nil, status.Errorf(
+			codes.NotFound,
+			fmt.Sprintf("Could not find strategy with supplied ID: %v", err),
+		)
+	}
 	return &strategypb.StartBotRes{
 		Success: true,
 	}, nil
@@ -423,23 +433,21 @@ func (s *StrategyServiceServer) ListDeals(req *strategypb.ListDealReq, stream st
 			fmt.Println(err)
 			if err == mongo.ErrNoDocuments {
 				fmt.Println(fmt.Sprintf("No Strategy in strategy collection. Check Strategy revision for StrategyId: %s , Version: %d", data.StrategyId, data.Version))
-				resultReadStrategyRevisions := strategy_revisionsdb.FindOne(mongoCtx, bson.M{"_id": strategyId, "version": data.Version})
-				if errReadRevisions := resultReadStrategyRevisions.Decode(&strategyData); err != nil {
+				resultReadStrategyRevisions := strategy_revisionsdb.FindOne(mongoCtx, bson.M{"strategy_id": data.StrategyId, "version": data.Version})
+				if errReadRevisions := resultReadStrategyRevisions.Decode(&strategyData); errReadRevisions != nil {
 					if errReadRevisions == mongo.ErrNoDocuments {
 						fmt.Println(fmt.Sprintf("No Strategy in strategy revisions collection for StrategyId: %s , Version: %d", data.StrategyId, data.Version))
 					} else {
 						fmt.Println("not in error no documents")
-						return nil, status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
+						return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
 					}
 				}
 			} else {
 				fmt.Println("not in error no documents")
-				return nil, status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
+				return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
 			}
 			//return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find Strategy with Object Id %s: %v", oid, err))
 		}
-		fmt.Print("StrategyData: ")
-		fmt.Println(strategyData)
 		// If no error is found send exchange over stream
 		stream.Send(&strategypb.ListDealRes{
 			Deal: &strategypb.Deal{

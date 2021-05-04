@@ -254,8 +254,8 @@ github.com/subosito/gotenv v1.2.0 h1:Slr1R9HxAlEKefgq5jn9U+DnETlIUa6HfgEzj0g5d7s
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
 github.com/tidwall/pretty v1.0.0/go.mod h1:XNkn88O1ChpSDQmQeStsy+sBenx6DDtFZJxhVysOjyk=
 github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5/go.mod h1:ncp9v5uamzpCO7NfCPTXjqaC+bZgJeR0sMTm6dMHP7U=
-github.com/vikjdk7/Algotrading-Golang/strategy-service v0.0.0-20210504022513-9eda56969a91 h1:GaFOtCvITVQnXS3qJgqEyxBzZXwsa5fOVLAEdpADZj4=
-github.com/vikjdk7/Algotrading-Golang/strategy-service v0.0.0-20210504022513-9eda56969a91/go.mod h1:W4arxaYoteXAf/EmmZnrtsoF9RgIJXYXYDzmT/kMJMg=
+github.com/vikjdk7/Algotrading-Golang/strategy-service v0.0.0-20210504082657-9b3ff43815c1 h1:mg8K1J105ip+SlGl+Si22j8seaY3QEODis7nVMQdUfc=
+github.com/vikjdk7/Algotrading-Golang/strategy-service v0.0.0-20210504082657-9b3ff43815c1/go.mod h1:W4arxaYoteXAf/EmmZnrtsoF9RgIJXYXYDzmT/kMJMg=
 github.com/xdg-go/pbkdf2 v1.0.0/go.mod h1:jrpuAogTd400dnrH08LKmI/xc1MbPOebTwRqcT5RDeI=
 github.com/xdg-go/scram v1.0.2/go.mod h1:1WAq6h33pAW+iRreB34OORO2Nf7qel3VV3fjBj+hCSs=
 github.com/xdg-go/stringprep v1.0.2/go.mod h1:8F9zXuvzgwmyT5DUm4GUfZGDdT3W+LCvS6+da4O5kxM=

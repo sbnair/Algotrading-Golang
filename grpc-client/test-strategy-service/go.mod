@@ -6,6 +6,6 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/viper v1.7.1
-	github.com/vikjdk7/Algotrading-Golang/strategy-service v0.0.0-20210504022513-9eda56969a91
+	github.com/vikjdk7/Algotrading-Golang/strategy-service v0.0.0-20210504082657-9b3ff43815c1
 	google.golang.org/grpc v1.37.0
 )

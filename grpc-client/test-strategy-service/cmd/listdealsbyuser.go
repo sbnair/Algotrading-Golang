@@ -64,7 +64,7 @@ var listdealsbyuserCmd = &cobra.Command{
 			}
 			// If everything went well use the generated getter to print the blog message
 			//fmt.Println(res.GetDeal())
-			jsonBytes, _ := json.MarshalIndent(res.GetDeal(), "", "    ")
+			jsonBytes, _ := json.MarshalIndent(res, "", "    ")
 			fmt.Println(string(jsonBytes))
 		}
 
