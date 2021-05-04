@@ -118,6 +118,7 @@ message Deal {
     int64 version = 3;
     string stock = 4;
     string user_id = 5;
+    string status = 6;
 }
 
 message ListDealReq {

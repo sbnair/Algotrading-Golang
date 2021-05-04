@@ -354,6 +354,7 @@ func (s *StrategyServiceServer) StartBot(ctx context.Context, req *strategypb.St
 			"version":     strategyData.Version,
 			"user_id":     strategyData.UserId,
 			"stock":       v.StockName,
+			"status":      "running",
 		}
 		insert = append(insert, deal)
 	}
@@ -406,6 +407,7 @@ func (s *StrategyServiceServer) ListDeals(req *strategypb.ListDealReq, stream st
 				Version:    data.Version,
 				Stock:      data.Stock,
 				UserId:     data.UserId,
+				Status:     data.Status,
 			},
 		})
 	}
@@ -472,6 +474,7 @@ type DealItem struct {
 	Version    int64              `bson:"version"`
 	Stock      string             `bson:"stock"`
 	UserId     string             `bson:"user_id"`
+	Status     string             `bson:"status"`
 }
 
 var db *mongo.Client
@@ -507,7 +510,7 @@ func main() {
 	fmt.Println("Connecting to MongoDB...")
 
 	//Uncomment to run locally
-	//os.Setenv("MONGODB_URL", "mongodb://127.0.0.1:27017")
+	os.Setenv("MONGODB_URL", "mongodb://127.0.0.1:27017")
 
 	MONGODB_URL := os.Getenv("MONGODB_URL")
 
