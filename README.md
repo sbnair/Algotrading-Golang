@@ -119,6 +119,9 @@ go run main.go placeorder -e "6094d1ee9a18b28d455491fb" -a "SAP" -q 1 -s "buy" -
 ```
 go run main.go listordersbyuser -u "608d6b42ada75cc7e25e6b6a"
 ```
+4. Cancel an order
+```
+```
 ## Run the User Authentication Service
 1. Git Clone
 2. go build -o new -v

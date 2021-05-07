@@ -342,7 +342,9 @@ func (s *OrderServiceServer) CancelOrder(ctx context.Context, req *orderpb.Cance
 
 		alpacaClient := alpaca.NewClient(common.Credentials())
 
+		fmt.Println(orderIdQuery)
 		err := alpacaClient.CancelOrder(orderIdQuery)
+		fmt.Println(err)
 		if err != nil {
 			return nil, status.Errorf(codes.Internal, fmt.Sprintf("Could not cancel the order %v", err))
 		}
@@ -354,7 +356,7 @@ func (s *OrderServiceServer) CancelOrder(ctx context.Context, req *orderpb.Cance
 		update := bson.M{
 			"status": "cancelled",
 		}
-		result := exchangedb.FindOneAndUpdate(ctx, filter, bson.M{"$set": update}, options.FindOneAndUpdate().SetReturnDocument(1))
+		result := orderdb.FindOneAndUpdate(ctx, filter, bson.M{"$set": update}, options.FindOneAndUpdate().SetReturnDocument(1))
 		// Decode result and write it to 'decoded'
 		decoded := OrderItem{}
 		err = result.Decode(&decoded)
