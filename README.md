@@ -27,7 +27,8 @@ db.availableExchanges.insert({ "name": "Alpaca"})
 ```protoc -I. proto/strategy.proto --go_out=plugins=grpc:.```
 3. For Price Service:
 ```protoc -I. proto/price.proto --go_out=plugins=grpc:.```
-
+4. For Order Service:
+```protoc -I. proto/order.proto --go_out=plugins=grpc:.```
 ## Run the gRPC Client
 
 ### For Exchange Service
@@ -105,6 +106,15 @@ go run main.go listassetbysymbol -s "GOOGL"
 go run main.go listassetbyname -n "SAP SE"
 ```
 
+### For Order Service
+1. Create an order of type "market"
+```
+go run main.go placeorder -e "6094d1ee9a18b28d455491fb" -a "SAP" -q 0.1 -s "buy" -t "market" -f "day"
+```
+2. Create an order of type "limit"
+```
+go run main.go placeorder -e "6094d1ee9a18b28d455491fb" -a "SAP" -q 1 -s "buy" -t "limit" -f "day" -l 200.0
+```
 ## Run the User Authentication Service
 1. Git Clone
 2. go build -o new -v

@@ -17,7 +17,7 @@ spec:
       containers:
       - name: strategy-service
         image: neha190495/strategy-service:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources: {}
         ports:
         - containerPort: 50052

@@ -8,33 +8,48 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
+	"github.com/alpacahq/alpaca-trade-api-go/common"
+	"github.com/shopspring/decimal"
 	orderpb "github.com/vikjdk7/Algotrading-Golang/order-service/proto"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
-/*
-func (s *OrderServiceServer) ListOrders(req *orderpb.ListOrdersReq, stream orderpb.OrderService_ListOrdersServer) error {
+func (s *OrderServiceServer) PlaceOrder(ctx context.Context, req *orderpb.PlaceOrderReq) (*orderpb.PlaceOrderRes, error) {
+	fmt.Print("Request Data: ")
+	fmt.Println(req)
+
 	exchange_id := req.GetExchangeId()
-	fmt.Println(exchange_id)
+
+	//fmt.Println(exchange_id)
 
 	// Convert the Id string to a MongoDB ObjectId
 	oid, err := primitive.ObjectIDFromHex(exchange_id)
 	if err != nil {
-		return status.Errorf(
+		return nil, status.Errorf(
 			codes.InvalidArgument,
 			fmt.Sprintf("Could not convert the supplied Exchange id to a MongoDB Object Id: %v", err),
 		)
 	}
+
 	resultReadExchange := exchangedb.FindOne(mongoCtx, bson.M{"_id": oid})
 	// Create an empty ExchangeItem to write our decode result to
 	dataRead := ExchangeItem{}
 	// decode and write to dataRead
 	if err := resultReadExchange.Decode(&dataRead); err != nil {
-		return status.Errorf(codes.NotFound, fmt.Sprintf("Could not find Exchange with Object Id %s: %v", oid, err))
+		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find Exchange with Object Id %s: %v", oid, err))
 	}
+
+	fmt.Print("Exchange Data Read: ")
+	fmt.Println(dataRead)
+
+	placeOrderResponse := &orderpb.PlaceOrderRes{}
 
 	if dataRead.SelectedExchange == "Alpaca" {
 		os.Setenv(common.EnvApiKeyID, dataRead.ApiKey)
@@ -44,48 +59,252 @@ func (s *OrderServiceServer) ListOrders(req *orderpb.ListOrdersReq, stream order
 		} else if dataRead.ExchangeType == "live_trading" {
 			alpaca.SetBaseUrl("https://api.alpaca.markets")
 		}
+
 		alpacaClient := alpaca.NewClient(common.Credentials())
-		orderstatus := "all"
-		until := time.Now()
-		limit := 500
-		nested := true
-		orders, err := alpacaClient.ListOrders(&orderstatus, &until, &limit, &nested)
+
+		placeOrderRequest := alpaca.PlaceOrderRequest{}
+
+		reqSymbolOrderRequest := req.GetSymbol()
+		if reqSymbolOrderRequest != "" {
+			placeOrderRequest.AssetKey = &reqSymbolOrderRequest
+		} else {
+			return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Symbol cannot be empty or null"))
+		}
+
+		qtyOrderRequest := decimal.NewFromFloat(req.GetQty())
+		if req.GetQty() > 0.0 {
+			placeOrderRequest.Qty = qtyOrderRequest
+		} else {
+			return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Quantity should be greate than 0"))
+		}
+
+		sideOrderRequest := req.GetSide()
+		if sideOrderRequest == orderpb.Side_buy {
+			fmt.Println("side type buy")
+			placeOrderRequest.Side = alpaca.Buy
+		} else if sideOrderRequest == orderpb.Side_sell {
+			placeOrderRequest.Side = alpaca.Sell
+		} else {
+			return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Invalid value for Side. Use either buy or sell"))
+		}
+
+		limitPriceOrderRequest := req.GetLimitPrice()
+		typeOrderRequest := req.GetOrderType()
+		if typeOrderRequest == orderpb.OrderType_market {
+			placeOrderRequest.Type = alpaca.Market
+		} else if typeOrderRequest == orderpb.OrderType_limit {
+			if limitPriceOrderRequest <= 0.0 {
+				return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Invalid value for Limit Price. Limit Price should be > 0.0"))
+			}
+			placeOrderRequest.Type = alpaca.Limit
+		} else if typeOrderRequest == orderpb.OrderType_stop {
+			placeOrderRequest.Type = alpaca.Stop
+		} else if typeOrderRequest == orderpb.OrderType_stop_limit {
+			if limitPriceOrderRequest <= 0.0 {
+				return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Invalid value for Limit Price. Limit Price should be > 0.0"))
+			}
+			placeOrderRequest.Type = alpaca.StopLimit
+		} else if typeOrderRequest == orderpb.OrderType_trailing_stop {
+			placeOrderRequest.Type = alpaca.TrailingStop
+		} else {
+			return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Invalid value for Order Type. Use one of market,limit,stop,stop_limit,trailing_stop"))
+		}
+
+		timeInForceOrderRequest := req.GetTimeInForce()
+		if timeInForceOrderRequest == orderpb.TimeInForce_day {
+			placeOrderRequest.TimeInForce = alpaca.Day
+		} else if timeInForceOrderRequest == orderpb.TimeInForce_gtc {
+			placeOrderRequest.TimeInForce = alpaca.GTC
+		} else if timeInForceOrderRequest == orderpb.TimeInForce_opg {
+			placeOrderRequest.TimeInForce = alpaca.OPG
+		} else if timeInForceOrderRequest == orderpb.TimeInForce_ioc {
+			placeOrderRequest.TimeInForce = alpaca.IOC
+		} else if timeInForceOrderRequest == orderpb.TimeInForce_fok {
+			placeOrderRequest.TimeInForce = alpaca.FOK
+		} else if timeInForceOrderRequest == orderpb.TimeInForce_gtx {
+			placeOrderRequest.TimeInForce = alpaca.GTX
+		} else if timeInForceOrderRequest == orderpb.TimeInForce_gtd {
+			placeOrderRequest.TimeInForce = alpaca.GTD
+		} else if timeInForceOrderRequest == orderpb.TimeInForce_cls {
+			placeOrderRequest.TimeInForce = alpaca.CLS
+		} else {
+			return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Invalid value for Time in Force. Use one of day,gtc,opg,ioc,fok,gtx,gtd,cls"))
+		}
+
+		if limitPriceOrderRequest > 0.0 {
+			if typeOrderRequest == orderpb.OrderType_limit || typeOrderRequest == orderpb.OrderType_stop_limit {
+				reqLimitPrice := decimal.NewFromFloat(req.GetLimitPrice())
+				placeOrderRequest.LimitPrice = &reqLimitPrice
+			} else {
+				return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Limit Price cannot be used with order type %v", typeOrderRequest))
+			}
+		}
+
+		fmt.Print("PlaceOrderRequest Data: ")
+		fmt.Println(placeOrderRequest)
+		orderPlaced, err := alpacaClient.PlaceOrder(placeOrderRequest)
+		fmt.Print("OrderPlaced Result: ")
+		fmt.Println(orderPlaced)
+
 		if err != nil {
-			return status.Errorf(
+			return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not place the order %v", err))
+		}
+
+		qtyOrderPlacedRes, _ := orderPlaced.Qty.Float64()
+		notionalOrderPlacedRes, _ := orderPlaced.Notional.Float64()
+		filledQtyOrderPlacedRes, _ := orderPlaced.FilledQty.Float64()
+		//limitPriceOrderPlacedRes, _ := orderPlaced.LimitPrice.Float64()
+		//filledAvgPriceOrderPlacedRes, _ := orderPlaced.FilledAvgPrice.Float64()
+		//stopPriceOrderPlacedRes, _ := orderPlaced.StopPrice.Float64()
+		//trailPriceOrderPlacedRes, _ := orderPlaced.TrailPrice.Float64()
+		//trailPercentOrderPlacedRes, _ := orderPlaced.TrailPercent.Float64()
+		//hwmOrderPlacedRes, _ := orderPlaced.Hwm.Float64()
+
+		insert := OrderItem{
+			Id:            orderPlaced.ID,
+			ClientOrderId: orderPlaced.ClientOrderID,
+			CreatedAt:     orderPlaced.CreatedAt.String(),
+			UpdatedAt:     orderPlaced.UpdatedAt.String(),
+			SubmittedAt:   orderPlaced.SubmittedAt.String(),
+			//FilledAt:       orderPlaced.FilledAt.String(),
+			//ExpiredAt:      orderPlaced.ExpiredAt.String(),
+			//CanceledAt:     orderPlaced.CanceledAt.String(),
+			//FailedAt:       orderPlaced.FailedAt.String(),
+			//ReplacedAt:     orderPlaced.ReplacedAt.String(),
+			AssetId:     orderPlaced.AssetID,
+			Symbol:      orderPlaced.Symbol,
+			Exchange:    orderPlaced.Exchange,
+			AssetClass:  orderPlaced.Class,
+			Qty:         qtyOrderPlacedRes,
+			Notional:    notionalOrderPlacedRes,
+			FilledQty:   filledQtyOrderPlacedRes,
+			OrderType:   typeOrderRequest.String(),
+			Side:        sideOrderRequest.String(),
+			TimeInForce: timeInForceOrderRequest.String(),
+			LimitPrice:  limitPriceOrderRequest,
+			//FilledAvgPrice: filledAvgPriceOrderPlacedRes,
+			//StopPrice:      stopPriceOrderPlacedRes,
+			//TrailPrice:     trailPriceOrderPlacedRes,
+			//TrailPercent:   trailPercentOrderPlacedRes,
+			//Hwm:            hwmOrderPlacedRes,
+			Status:        orderPlaced.Status,
+			ExtendedHours: orderPlaced.ExtendedHours,
+			//Legs:           orderPlaced.Legs,
+			UserId: dataRead.UserId,
+		}
+
+		fmt.Print("insert: ")
+		fmt.Println(insert)
+
+		_, err = orderdb.InsertOne(mongoCtx, insert)
+		if err != nil {
+			// return internal gRPC error to be handled later
+			return nil, status.Errorf(
 				codes.Internal,
 				fmt.Sprintf("Internal error: %v", err),
 			)
 		}
 
-		for _, order := range orders {
-
-			stream.Send(&orderpb.ListOrdersRes{
-				Order: &orderpb.Order{
-					Id:            order.ID,
-					ClientOrderId: order.ClientOrderID,
-					CreatedAt:     order.CreatedAt.String(),
-					UpdatedAt:     order.UpdatedAt.String(),
-					SubmittedAt:   order.SubmittedAt.String(),
-					FilledAt:      order.FilledAt.String(),
-					ExpiredAt:     order.ExpiredAt.String(),
-					CanceledAt:    order.CanceledAt.String(),
-					FailedAt:      order.FailedAt.String(),
-					ReplacedAt:    order.ReplacedAt.String(),
-					AssetId:       order.AssetID,
-					Symbol:        order.Symbol,
-					Exchange:      order.Exchange,
-					AssetClass:    order.Class,
-					Status:        order.Status,
-					ExtendedHours: order.ExtendedHours,
-				},
-			})
+		order := &orderpb.Order{
+			Id:            orderPlaced.ID,
+			ClientOrderId: orderPlaced.ClientOrderID,
+			CreatedAt:     orderPlaced.CreatedAt.String(),
+			UpdatedAt:     orderPlaced.UpdatedAt.String(),
+			SubmittedAt:   orderPlaced.SubmittedAt.String(),
+			//FilledAt:       orderPlaced.FilledAt.String(),
+			//ExpiredAt:      orderPlaced.ExpiredAt.String(),
+			//CanceledAt:     orderPlaced.CanceledAt.String(),
+			//FailedAt:       orderPlaced.FailedAt.String(),
+			AssetId:     orderPlaced.AssetID,
+			Symbol:      orderPlaced.Symbol,
+			Exchange:    orderPlaced.Exchange,
+			AssetClass:  orderPlaced.Class,
+			Qty:         qtyOrderPlacedRes,
+			Notional:    notionalOrderPlacedRes,
+			FilledQty:   filledQtyOrderPlacedRes,
+			OrderType:   typeOrderRequest.String(),
+			Side:        sideOrderRequest.String(),
+			TimeInForce: timeInForceOrderRequest.String(),
+			LimitPrice:  limitPriceOrderRequest,
+			//FilledAvgPrice: filledAvgPriceOrderPlacedRes,
+			//StopPrice:      stopPriceOrderPlacedRes,
+			//TrailPrice:     trailPriceOrderPlacedRes,
+			//TrailPercent:   trailPercentOrderPlacedRes,
+			//Hwm:            hwmOrderPlacedRes,
+			Status:        orderPlaced.Status,
+			ExtendedHours: orderPlaced.ExtendedHours,
+			//Legs:           orderPlaced.Legs,
+			UserId: dataRead.UserId,
 		}
+
+		placeOrderResponse.Order = order
 	} else {
-		return status.Errorf(codes.InvalidArgument, fmt.Sprintf("Cannot use exchange other than Alpaca"))
+		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Cannot use exchange other than Alpaca"))
+	}
+	fmt.Println(placeOrderResponse)
+	return placeOrderResponse, nil
+}
+
+func (s *OrderServiceServer) ListOrders(req *orderpb.ListOrdersReq, stream orderpb.OrderService_ListOrdersServer) error {
+	userIdQuery := req.GetUserId()
+	if len(userIdQuery) == 0 {
+		return status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not find UserId in Req"))
+	}
+	data := &OrderItem{}
+
+	cursor, err := orderdb.Find(context.Background(), bson.M{"user_id": userIdQuery})
+	if err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unknown internal error: %v", err))
+	}
+	defer cursor.Close(context.Background())
+	for cursor.Next(context.Background()) {
+		// Decode the data at the current pointer and write it to data
+		err := cursor.Decode(data)
+		// check error
+		if err != nil {
+			return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
+		}
+		// If no error is found send exchange over stream
+		stream.Send(&orderpb.ListOrdersRes{
+			Order: &orderpb.Order{
+				Id:            data.Id,
+				ClientOrderId: data.ClientOrderId,
+				CreatedAt:     data.CreatedAt,
+				UpdatedAt:     data.UpdatedAt,
+				SubmittedAt:   data.SubmittedAt,
+				//FilledAt:       data.FilledAt.String(),
+				//ExpiredAt:      data.ExpiredAt.String(),
+				//CanceledAt:     data.CanceledAt.String(),
+				//FailedAt:       data.FailedAt.String(),
+				AssetId:     data.AssetId,
+				Symbol:      data.Symbol,
+				Exchange:    data.Exchange,
+				AssetClass:  data.AssetClass,
+				Qty:         data.Qty,
+				Notional:    data.Notional,
+				FilledQty:   data.FilledQty,
+				OrderType:   data.OrderType,
+				Side:        data.Side,
+				TimeInForce: data.TimeInForce,
+				LimitPrice:  data.LimitPrice,
+				//FilledAvgPrice: filledAvgPricedataRes,
+				//StopPrice:      stopPricedataRes,
+				//TrailPrice:     trailPricedataRes,
+				//TrailPercent:   trailPercentdataRes,
+				//Hwm:            hwmdataRes,
+				Status:        data.Status,
+				ExtendedHours: data.ExtendedHours,
+				//Legs:           data.Legs,
+				UserId: data.UserId,
+			},
+		})
+	}
+	// Check if the cursor has any errors
+	if err := cursor.Err(); err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unkown cursor error: %v", err))
 	}
 	return nil
 }
-*/
 
 type OrderServiceServer struct{}
 
@@ -97,6 +316,41 @@ type ExchangeItem struct {
 	UserId           string             `bson:"user_id"`
 	ApiKey           string             `bson:"api_key"`
 	ApiSecret        string             `bson:"api_secret"`
+}
+
+type OrderItem struct {
+	Id             string       `bson:"_id,omitempty"`
+	ClientOrderId  string       `bson:"client_order_id"`
+	CreatedAt      string       `bson:"created_at"`
+	UpdatedAt      string       `bson:"updated_at"`
+	SubmittedAt    string       `bson:"submitted_at"`
+	FilledAt       string       `bson:"filled_at"`
+	ExpiredAt      string       `bson:"expired_at"`
+	CanceledAt     string       `bson:"canceled_at"`
+	FailedAt       string       `bson:"failed_at"`
+	ReplacedAt     string       `bson:"replaced_at"`
+	Replaces       string       `bson:"replaces"`
+	ReplacedBy     string       `bson:"replaced_by"`
+	AssetId        string       `bson:"asset_id"`
+	Symbol         string       `bson:"symbol"`
+	Exchange       string       `bson:"exchange"`
+	AssetClass     string       `bson:"asset_class"`
+	Qty            float64      `bson:"qty"`
+	Notional       float64      `bson:"notional"`
+	FilledQty      float64      `bson:"filled_qty"`
+	OrderType      string       `bson:"order_type"`
+	Side           string       `bson:"side"`
+	TimeInForce    string       `bson:"time_in_force"`
+	LimitPrice     float64      `bson:"limit_price"`
+	FilledAvgPrice float64      `bson:"filled_avg_price"`
+	StopPrice      float64      `bson:"stop_price"`
+	TrailPrice     float64      `bson:"trail_price"`
+	TrailPercent   float64      `bson:"trail_percent"`
+	Hwm            float64      `bson:"hwm"`
+	Status         string       `bson:"status"`
+	ExtendedHours  bool         `bson:"extended_hours"`
+	Legs           []*OrderItem `bson:"legs"`
+	UserId         string       `bson:"user_id"`
 }
 
 var db *mongo.Client

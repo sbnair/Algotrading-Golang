@@ -3,7 +3,7 @@ package order;
 option go_package = "orderpb";
 
 service OrderService {
-    //rpc ListOrders(ListOrdersReq) returns (stream ListOrdersRes);
+    rpc ListOrders(ListOrdersReq) returns (stream ListOrdersRes);
     rpc PlaceOrder(PlaceOrderReq) returns (PlaceOrderRes);
 }
 
@@ -74,7 +74,7 @@ enum OrderType{
 }
 
 message ListOrdersReq {
-    string exchange_id = 1;
+    string user_id = 1;
 }
 
 message ListOrdersRes {
@@ -113,4 +113,5 @@ message Order {
     string status = 29;
     bool extended_hours = 30;
     repeated Order legs = 31;
+    string user_id = 32;
 }
