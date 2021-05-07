@@ -306,6 +306,72 @@ func (s *OrderServiceServer) ListOrders(req *orderpb.ListOrdersReq, stream order
 	return nil
 }
 
+func (s *OrderServiceServer) CancelOrder(ctx context.Context, req *orderpb.CancelOrderReq) (*orderpb.CancelOrderRes, error) {
+	orderIdQuery := req.GetOrderId()
+	if len(orderIdQuery) == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not find OrderId in Req"))
+	}
+	exchange_id := req.GetExchangeId()
+
+	//fmt.Println(exchange_id)
+
+	// Convert the Id string to a MongoDB ObjectId
+	oid, err := primitive.ObjectIDFromHex(exchange_id)
+	if err != nil {
+		return nil, status.Errorf(
+			codes.InvalidArgument,
+			fmt.Sprintf("Could not convert the supplied Exchange id to a MongoDB Object Id: %v", err),
+		)
+	}
+
+	resultReadExchange := exchangedb.FindOne(mongoCtx, bson.M{"_id": oid})
+	// Create an empty ExchangeItem to write our decode result to
+	dataRead := ExchangeItem{}
+	// decode and write to dataRead
+	if err := resultReadExchange.Decode(&dataRead); err != nil {
+		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find Exchange with Object Id %s: %v", oid, err))
+	}
+	if dataRead.SelectedExchange == "Alpaca" {
+		os.Setenv(common.EnvApiKeyID, dataRead.ApiKey)
+		os.Setenv(common.EnvApiSecretKey, dataRead.ApiSecret)
+		if dataRead.ExchangeType == "paper_trading" {
+			alpaca.SetBaseUrl("https://paper-api.alpaca.markets")
+		} else if dataRead.ExchangeType == "live_trading" {
+			alpaca.SetBaseUrl("https://api.alpaca.markets")
+		}
+
+		alpacaClient := alpaca.NewClient(common.Credentials())
+
+		err := alpacaClient.CancelOrder(orderIdQuery)
+		if err != nil {
+			return nil, status.Errorf(codes.Internal, fmt.Sprintf("Could not cancel the order %v", err))
+		}
+
+		filter := bson.M{"_id": orderIdQuery}
+
+		// Result is the BSON encoded result
+		// To return the updated document instead of original we have to add options.
+		update := bson.M{
+			"status": "cancelled",
+		}
+		result := exchangedb.FindOneAndUpdate(ctx, filter, bson.M{"$set": update}, options.FindOneAndUpdate().SetReturnDocument(1))
+		// Decode result and write it to 'decoded'
+		decoded := OrderItem{}
+		err = result.Decode(&decoded)
+		if err != nil {
+			return nil, status.Errorf(
+				codes.NotFound,
+				fmt.Sprintf("Could not find Order with supplied ID: %v", err),
+			)
+		}
+	}
+	cancelOrderResponse := &orderpb.CancelOrderRes{
+		Success: "true",
+	}
+	return cancelOrderResponse, nil
+
+}
+
 type OrderServiceServer struct{}
 
 type ExchangeItem struct {

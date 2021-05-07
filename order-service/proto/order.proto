@@ -5,6 +5,15 @@ option go_package = "orderpb";
 service OrderService {
     rpc ListOrders(ListOrdersReq) returns (stream ListOrdersRes);
     rpc PlaceOrder(PlaceOrderReq) returns (PlaceOrderRes);
+    rpc CancelOrder(CancelOrderReq) returns (CancelOrderRes);
+}
+
+message CancelOrderReq{
+    string order_id = 1;
+    string exchange_id = 2;
+}
+message CancelOrderRes{
+    string success = 1;
 }
 
 message PlaceOrderRes{
