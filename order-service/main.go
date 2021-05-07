@@ -453,7 +453,7 @@ func main() {
 	fmt.Println("Connecting to MongoDB...")
 
 	//Uncomment to run locally
-	os.Setenv("MONGODB_URL", "mongodb://127.0.0.1:27017")
+	//os.Setenv("MONGODB_URL", "mongodb://127.0.0.1:27017")
 
 	MONGODB_URL := os.Getenv("MONGODB_URL")
 

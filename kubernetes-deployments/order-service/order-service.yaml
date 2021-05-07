@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service-app
+  namespace: hedgina
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+      - name: order-service
+        image: neha190495/order-service:latest
+        imagePullPolicy: IfNotPresent
+        resources: {}
+        ports:
+        - containerPort: 50054
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  namespace: hedgina
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tcp
+    port: 50054
+    protocol: TCP
+    targetPort: 50054
+  selector:
+    app: order-service
