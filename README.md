@@ -34,11 +34,11 @@ db.availableExchanges.insert({ "name": "Alpaca"})
 ### For Exchange Service
 1. To create an exchange
 ```
-go run main.go create -e "Alpaca" -n "Alpaca Exchange" -t "paper_trading" -u "608d6b42ada75cc7e25e6b6a" -k "PKI0XITWRU9E47IEOLV3" -s "d2EdBHfpzZmMABVuJey2weVu35mImiMTGO6pPXO2"
+go run main.go create -e "Alpaca" -n "Alpaca Exchange 1" -t "paper_trading" -u "608d6b42ada75cc7e25e6b6a" -k "PKX55YM3PYOL8T8LBNML" -s "ftlFvZpoRC05VUfJdzPJAsyp4HXT6tKhvm8sqFGN"
 ```
 2. To read an exchange by Exchange Id
 ```
-go run main.go read -i "607bd212016f5a5de8117285"
+go run main.go read -i "60955018a020171d0214f053"
 ```
 3. To list all Exchanges in DB
 ```
@@ -91,7 +91,7 @@ go run main.go listdealsbyuser -u "user1"
 ### For Price Service
 1. List My Positions for an exchange
 ```
-go run main.go listmypositions -e "608d6c042ea48ebc779a3358"
+go run main.go listmypositions -e "60955018a020171d0214f053"
 ```
 2. List All Assets
 ```
@@ -121,6 +121,7 @@ go run main.go listordersbyuser -u "608d6b42ada75cc7e25e6b6a"
 ```
 4. Cancel an order
 ```
+go run main.go cancelorder -o "4db7a9b2-0e0d-4674-b442-2ae73be3a786" -e "60955018a020171d0214f053"
 ```
 ## Run the User Authentication Service
 1. Git Clone
