@@ -7,20 +7,15 @@ import (
 	"net"
 	"os"
 	"os/signal"
-	"time"
 
-	"github.com/alpacahq/alpaca-trade-api-go/alpaca"
-	"github.com/alpacahq/alpaca-trade-api-go/common"
 	orderpb "github.com/vikjdk7/Algotrading-Golang/order-service/proto"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
+/*
 func (s *OrderServiceServer) ListOrders(req *orderpb.ListOrdersReq, stream orderpb.OrderService_ListOrdersServer) error {
 	exchange_id := req.GetExchangeId()
 	fmt.Println(exchange_id)
@@ -90,6 +85,7 @@ func (s *OrderServiceServer) ListOrders(req *orderpb.ListOrdersReq, stream order
 	}
 	return nil
 }
+*/
 
 type OrderServiceServer struct{}
 

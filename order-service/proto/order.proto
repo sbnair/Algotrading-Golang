@@ -3,7 +3,73 @@ package order;
 option go_package = "orderpb";
 
 service OrderService {
-    rpc ListOrders(ListOrdersReq) returns (stream ListOrdersRes);
+    //rpc ListOrders(ListOrdersReq) returns (stream ListOrdersRes);
+    rpc PlaceOrder(PlaceOrderReq) returns (PlaceOrderRes);
+}
+
+message PlaceOrderRes{
+    Order order = 1;
+}
+message PlaceOrderReq {
+	string symbol = 2;
+	double qty = 3;
+	double notional = 4;
+	Side side = 5;
+	OrderType order_type = 6;
+	TimeInForce time_in_force = 7;
+    double limit_price = 8;
+    bool extended_hours = 9;
+    double stop_price = 10;
+	string client_order_id = 11;
+    OrderClass order_class = 12;
+    TakeProfit take_profit = 13;
+    StopLoss stop_loss = 14;
+    double trail_price = 15;
+    double trail_percent = 16;
+}
+
+message TakeProfit {
+    double limit_price = 1;
+}
+
+message StopLoss {
+    double limit_price = 1;
+    double stop_price = 2;
+}
+
+enum Side {
+    invalid_side = 0;
+    buy = 1;
+    sell = 2;
+}
+
+enum OrderClass{
+    invalid_order_class = 0;
+    bracket = 1;
+    oto = 2;
+    oco = 3;
+    simple = 4;
+}
+
+enum TimeInForce{
+    invalid_time_in_force = 0;
+    day = 1;
+    gtc = 2;
+    opg = 3;
+    ioc = 4;
+    fok = 5;
+    gtx = 6;
+    gtd = 7;
+    cls = 8;
+}
+
+enum OrderType{
+    invalid_order_type = 0;
+    market = 1;
+    limit = 2;
+    stop = 3;
+    stop_limit = 4;
+    trailing_stop = 5;
 }
 
 message ListOrdersReq {
