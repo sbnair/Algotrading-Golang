@@ -158,7 +158,7 @@ go run main.go cancelorder -o "4db7a9b2-0e0d-4674-b442-2ae73be3a786" -e "6095501
 1. Build the docker image using
 ```
 docker build -t assets-job .
-
+```
 ## Docker Operations
 1. Build a docker image:
 ```
