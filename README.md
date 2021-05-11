@@ -109,7 +109,7 @@ go run main.go listassetbyname -n "SAP SE"
 ### For Order Service
 1. Create an order of type "market"
 ```
-go run main.go placeorder -e "6094d1ee9a18b28d455491fb" -a "SAP" -q 0.1 -s "buy" -t "market" -f "day"
+go run main.go placeorder -e "609566b5a020171d0214f057" -a "SAP" -q 0.1 -s "buy" -t "market" -f "day"
 ```
 2. Create an order of type "limit"
 ```
@@ -177,6 +177,31 @@ docker tag price-service:latest neha190495/price-service
 docker push neha190495/price-service
 ```
 ## Kubernetes Deployments
+
+### Setup EFK Stack on Kubernetes Cluster for Logging
+1. Create a namespace
+```
+kubectl apply -f kubernetes-deployments/logging/namespace.yaml
+```
+If the namespace name is changed, change it in other elastisearch.yaml,kibana.yaml & fluentd.yaml as well.
+
+2. Setup Elastisearch
+Enter your cluster name at line 55 & storage class name at line 92
+```
+kubectl apply -f kubernetes-deployments/logging/elastisearch.yaml
+```
+3. Setup Kibana
+```
+kubectl apply -f kubernetes-deployments/logging/kibana.yaml
+```
+4. Setup fluentd DeamonSet
+```
+kubectl apply -f kubernetes-deployments/logging/fluentd.yaml
+```
+5. Open Kibana dashboard 
+```
+kubectl port-forward $kibanaPodName 5601:5601 -n logging
+```
 
 ### Create a standalone mongodb statefulset
 1. To create a standalone mongodb
