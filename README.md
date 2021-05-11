@@ -185,7 +185,7 @@ kubectl apply -f kubernetes-deployments/logging/namespace.yaml
 ```
 If the namespace name is changed, change it in other elastisearch.yaml,kibana.yaml & fluentd.yaml as well.
 
-2. Setup Elastisearch
+2. Setup Elastisearch <br />
 Enter your cluster name at line 55 & storage class name at line 92
 ```
 kubectl apply -f kubernetes-deployments/logging/elastisearch.yaml
