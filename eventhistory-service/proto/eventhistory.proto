@@ -1,0 +1,37 @@
+syntax = "proto3";
+package eventhistory;
+option go_package = "eventhistorypb";
+
+service EventHistoryService {
+    rpc ListEventHistory(ListEventHistoryReq) returns (stream ListEventHistoryRes);
+}
+
+message ListEventHistoryReq {
+    string user_id = 1;
+}
+
+message ListEventHistoryRes{
+    EventHistoryExchange eventHistoryExchange = 1;
+}
+
+message EventHistoryExchange {
+    string id = 1;
+    string operation_type = 2;
+    string timestamp = 3;
+    string db = 4;
+    string collection = 5;
+    string name = 6;
+    string user_id = 7;
+    Exchange old_value = 8;
+    Exchange new_value = 9;
+}
+
+message Exchange {
+    string id = 1;
+    string selected_exchange = 2;
+    string exchange_name = 3;
+    string exchange_type = 4;
+    string user_id = 5;
+    string api_key = 6;
+    string api_secret= 7;
+}
