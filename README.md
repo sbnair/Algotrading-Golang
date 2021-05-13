@@ -34,7 +34,7 @@ db.availableExchanges.insert({ "name": "Alpaca"})
 ### For Exchange Service
 1. To create an exchange
 ```
-go run main.go create -e "Alpaca" -n "Alpaca Exchange 1" -t "paper_trading" -u "608d6b42ada75cc7e25e6b6a" -k "PKX55YM3PYOL8T8LBNML" -s "ftlFvZpoRC05VUfJdzPJAsyp4HXT6tKhvm8sqFGN"
+go run main.go create -e "Alpaca" -n "Alpaca Exchange 1" -t "paper_trading" -u "57bf425a34ce5ee85891b914" -k "PKI0XITWRU9E47IEOLV3" -s "d2EdBHfpzZmMABVuJey2weVu35mImiMTGO6pPXO2"
 ```
 2. To read an exchange by Exchange Id
 ```
@@ -46,7 +46,7 @@ go run main.go list
 ```
 4. To list all Exchanges by User ID
 ```
-go run main.go -u "608d6b42ada75cc7e25e6b6a"
+go run main.go -u "57bf425a34ce5ee85891b914"
 ```
 5. To delete an Exchange
 ```
@@ -54,17 +54,17 @@ go run main.go delete -i "607815df7f51e077fd7ac87a"
 ```
 6. To update an Exchange
 ```
-go run main.go update -i "607815df7f51e077fd7ac87a" -e "Alpaca" -n "Alpaca Exchange" -t "paper_trading" -u "608d6b42ada75cc7e25e6b6a" -k "PKI0XITWRU9E47IEOLV3" -s "d2EdBHfpzZmMABVuJey2weVu35mImiMTGO6pPXO2"
+go run main.go update -i "607815df7f51e077fd7ac87a" -e "Alpaca" -n "Alpaca Exchange" -t "paper_trading" -u "57bf425a34ce5ee85891b914" -k "PKI0XITWRU9E47IEOLV3" -s "d2EdBHfpzZmMABVuJey2weVu35mImiMTGO6pPXO2"
 ```
 
 ### For Strategy Service
 1. To create a Strategy
 ```
-go run main.go create -n "Strategy 1" -e "Alpaca" -b 10.0 -s 20.0 -t "5" -p "2%" -v "1%" -c "1%" -m "5%" -z "3%" -f "10000" -u "608d6b42ada75cc7e25e6b6a" -d "G1,G2"
+go run main.go create -n "Strategy 1" -e "Alpaca" -b 10.0 -s 20.0 -t "5" -p "2%" -v "1%" -c "1%" -m "5%" -z "3%" -f "10000" -u "57bf425a34ce5ee85891b914" -d "G1,G2"
 ```
 2. To list all the Strategies by User Id
 ```
-go run main.go listbyuser -u "user1"
+go run main.go listbyuser -u "57bf425a34ce5ee85891b914"
 ```
 3. To read a Strategy by Strategy Id
 ```
@@ -85,7 +85,7 @@ go run main.go startstrategybot -i "608d6d04c3271e63ee719eab" -d "G1,G2"
 ```
 2. To List all Deals for a User
 ```
-go run main.go listdealsbyuser -u "user1"
+go run main.go listdealsbyuser -u "57bf425a34ce5ee85891b914"
 ```
 
 ### For Price Service
@@ -117,7 +117,7 @@ go run main.go placeorder -e "6094d1ee9a18b28d455491fb" -a "SAP" -q 1 -s "buy" -
 ```
 3. List all orders by User
 ```
-go run main.go listordersbyuser -u "608d6b42ada75cc7e25e6b6a"
+go run main.go listordersbyuser -u "57bf425a34ce5ee85891b914"
 ```
 4. Cancel an order
 ```
@@ -130,17 +130,17 @@ go run main.go cancelorder -o "4db7a9b2-0e0d-4674-b442-2ae73be3a786" -e "6095501
 4. For User Signup, POST to http://localhost:8000/users/signup with body
 ```
 {
-    "first_name":"Neha",
-    "last_name":"Kumari",
-    "email":"neha190495@gmail.com",
+    "first_name":"Vikash",
+    "last_name":"Bharti",
+    "email":"vikjdk7@gmail.com",
     "password":"algobot1",
-    "phone":"7416516791"
+    "phone":"7779920620"
 }
 ```
 5. For User Login, POST to http://localhost:8000/users/login with body
 ```
 {
-    "email":"neha190495@gmail.com",
+    "email":"vikjdk7@gmail.com",
     "password":"algobot1"
 }
 ```
@@ -170,11 +170,11 @@ docker run -p 50053:50053 price-service
 ```
 3. Tag the docker Image
 ```
-docker tag price-service:latest neha190495/price-service
+docker tag price-service:latest vikash99/price-service
 ```
 4. Push the docker image to dockerhub
 ```
-docker push neha190495/price-service
+docker push vikash99/price-service
 ```
 ## Kubernetes Deployments
 
