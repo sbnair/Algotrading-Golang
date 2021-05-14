@@ -133,6 +133,12 @@ go run main.go listeventhistoryexchange -u "608d6b42ada75cc7e25e6b6a"
 ```
 go run main.go listeventhistorystrategy -u "608d6b42ada75cc7e25e6b6a"
 ```
+
+### For CEP Rule Service
+1. Calculate Funds allocation for Strategy
+```
+go run main.go calculatefundallocation -b 100.0 -s 3.0 -v 2.0 -a 3.0 -d 2
+```
 ## Run the User Authentication Service
 1. Git Clone
 2. go build -o new -v
