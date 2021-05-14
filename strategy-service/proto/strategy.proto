@@ -22,17 +22,18 @@ message Strategy {
     string deal_start_condition = 6;
     double base_order_size = 7;
     double safety_order_size = 8;
-    string max_safety_trade_acc = 9;
-    string price_devation = 10;
-    string safety_order_volume_scale = 11;
-    string safety_order_step_scale = 12;
-    string take_profit = 13;
-    string target_profit = 14;
-    string allocate_funds_to_strategy = 15;
-    string user_id = 16;
-    int64 version = 17;   
-    string status = 18;
-    repeated Stock stock = 19;
+    string max_safety_trade_count = 9;
+    string max_active_safety_trade_count = 10;
+    string price_devation = 11;
+    string safety_order_volume_scale = 12;
+    string safety_order_step_scale = 13;
+    string take_profit = 14;
+    string target_profit = 15;
+    string allocate_funds_to_strategy = 16;
+    string user_id = 17;
+    int64 version = 18;   
+    string status = 19;
+    repeated Stock stock = 20;
 }
 
 message Stock {
@@ -49,18 +50,32 @@ message StrategyRevision {
     string deal_start_condition = 6;
     double base_order_size = 7;
     double safety_order_size = 8;
-    string max_safety_trade_acc = 9;
-    string price_devation = 10;
-    string safety_order_volume_scale = 11;
-    string safety_order_step_scale = 12;
-    string take_profit = 13;
-    string target_profit = 14;
-    string allocate_funds_to_strategy = 15;
-    string user_id = 16;
-    int64 version = 17;   
-    string status = 18;
-    repeated Stock stock = 19;
-    string strategy_id = 20;
+    string max_safety_trade_count = 9;
+    string max_active_safety_trade_count = 10;
+    string price_devation = 11;
+    string safety_order_volume_scale = 12;
+    string safety_order_step_scale = 13;
+    string take_profit = 14;
+    string target_profit = 15;
+    string allocate_funds_to_strategy = 16;
+    string user_id = 17;
+    int64 version = 18;   
+    string status = 19;
+    repeated Stock stock = 20;
+    string strategy_id = 21;
+}
+
+message EventHistory {
+    string id = 1;
+    string operation_type = 2;
+    string timestamp = 3;
+    string db = 4;
+    string collection = 5;
+    string name = 6;
+    string user_id = 7;
+    string strategy_id = 8;
+    Strategy old_value = 9;
+    Strategy new_value = 10;
 }
 
 message CreateStrategyReq {
