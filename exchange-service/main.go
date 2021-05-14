@@ -97,6 +97,26 @@ func (s *ExchangeServiceServer) CreateExchange(ctx context.Context, req *exchang
 	// add the id to blog
 	oid := result.InsertedID.(primitive.ObjectID)
 	exchange.Id = oid.Hex()
+
+	data.ID = oid
+	eventData := EventHistoryItem{
+		OperationType: "insert",
+		Timestamp:     time.Now().Format(time.RFC3339),
+		Db:            "hedgina_algobot",
+		Collection:    "exchange",
+		Name:          data.ExchangeName,
+		UserId:        data.UserId,
+		ExchangeId:    data.ID.Hex(),
+		NewValue:      data,
+	}
+	_, errEventHistory := eventhistorydb.InsertOne(mongoCtx, eventData)
+	if errEventHistory != nil {
+		// return internal gRPC error to be handled later
+		return nil, status.Errorf(
+			codes.Internal,
+			fmt.Sprintf("Internal error: %v", errEventHistory),
+		)
+	}
 	// return the blog in a CreateBlogRes type
 	createExchangeResponse := &exchangepb.CreateExchangeRes{
 		Exchange:            exchange,
@@ -139,12 +159,39 @@ func (s *ExchangeServiceServer) DeleteExchange(ctx context.Context, req *exchang
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not convert to ObjectId: %v", err))
 	}
+	resultReadExchange := exchangedb.FindOne(ctx, bson.M{"_id": oid})
+	// Create an empty ExchangeItem to write our decode result to
+	dataResultReadExchange := ExchangeItem{}
+	// decode and write to data
+	if err := resultReadExchange.Decode(&dataResultReadExchange); err != nil {
+		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find Exchange with Object Id %s: %v", req.GetId(), err))
+	}
 	// DeleteOne returns DeleteResult which is a struct containing the amount of deleted docs (in this case only 1 always)
 	// So we return a boolean instead
 	_, err = exchangedb.DeleteOne(ctx, bson.M{"_id": oid})
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find/delete exchange with id %s: %v", req.GetId(), err))
 	}
+
+	eventData := EventHistoryItem{
+		OperationType: "delete",
+		Timestamp:     time.Now().Format(time.RFC3339),
+		Db:            "hedgina_algobot",
+		Collection:    "exchange",
+		Name:          dataResultReadExchange.ExchangeName,
+		UserId:        dataResultReadExchange.UserId,
+		ExchangeId:    oid.Hex(),
+		OldValue:      dataResultReadExchange,
+	}
+	_, errEventHistory := eventhistorydb.InsertOne(mongoCtx, eventData)
+	if errEventHistory != nil {
+		// return internal gRPC error to be handled later
+		return nil, status.Errorf(
+			codes.Internal,
+			fmt.Sprintf("Internal error: %v", errEventHistory),
+		)
+	}
+
 	return &exchangepb.DeleteExchangeRes{
 		Success: true,
 	}, nil
@@ -163,14 +210,49 @@ func (s *ExchangeServiceServer) UpdateExchange(ctx context.Context, req *exchang
 		)
 	}
 
+	resultReadExchange := exchangedb.FindOne(ctx, bson.M{"_id": oid})
+	// Create an empty ExchangeItem to write our decode result to
+	dataResultReadExchange := ExchangeItem{}
+	// decode and write to data
+	if err := resultReadExchange.Decode(&dataResultReadExchange); err != nil {
+		return nil, status.Errorf(codes.NotFound, fmt.Sprintf("Could not find Exchange with Object Id %s: %v", exchange.GetId(), err))
+	}
+
+	oldValues := ExchangeItem{}
+	newValues := ExchangeItem{}
+
 	// Convert the data to be updated into an unordered Bson document
-	update := bson.M{
-		"selected_exchange": exchange.GetSelectedExchange(),
-		"exchange_name":     exchange.GetExchangeName(),
-		"exchange_type":     exchange.GetExchangeType(),
-		"user_id":           exchange.GetUserId(),
-		"api_key":           exchange.GetApiKey(),
-		"api_secret":        exchange.GetApiSecret(),
+	update := bson.M{}
+
+	if exchange.GetSelectedExchange() != "" {
+		update["selected_exchange"] = exchange.GetSelectedExchange()
+		oldValues.SelectedExchange = dataResultReadExchange.SelectedExchange
+		newValues.SelectedExchange = exchange.GetApiSecret()
+	}
+	if exchange.GetExchangeName() != "" {
+		update["exchange_name"] = exchange.GetExchangeName()
+		oldValues.ExchangeName = dataResultReadExchange.ExchangeName
+		newValues.ExchangeName = exchange.GetExchangeName()
+	}
+	if exchange.GetExchangeType() != "" {
+		update["exchange_type"] = exchange.GetExchangeType()
+		oldValues.ExchangeType = dataResultReadExchange.ExchangeType
+		newValues.ExchangeType = exchange.GetExchangeType()
+	}
+	if exchange.GetUserId() != "" {
+		update["user_id"] = exchange.GetUserId()
+		oldValues.UserId = dataResultReadExchange.UserId
+		newValues.UserId = exchange.GetUserId()
+	}
+	if exchange.GetApiKey() != "" {
+		update["api_key"] = exchange.GetApiKey()
+		oldValues.ApiKey = dataResultReadExchange.ApiKey
+		newValues.ApiKey = exchange.GetApiKey()
+	}
+	if exchange.GetApiSecret() != "" {
+		update["api_secret"] = exchange.GetApiSecret()
+		oldValues.ApiSecret = dataResultReadExchange.ApiSecret
+		newValues.ApiSecret = exchange.GetApiSecret()
 	}
 
 	// Convert the oid into an unordered bson document to search by id
@@ -189,6 +271,27 @@ func (s *ExchangeServiceServer) UpdateExchange(ctx context.Context, req *exchang
 			fmt.Sprintf("Could not find exchange with supplied ID: %v", err),
 		)
 	}
+
+	eventData := EventHistoryItem{
+		OperationType: "update",
+		Timestamp:     time.Now().Format(time.RFC3339),
+		Db:            "hedgina_algobot",
+		Collection:    "exchange",
+		Name:          dataResultReadExchange.ExchangeName,
+		UserId:        dataResultReadExchange.UserId,
+		ExchangeId:    oid.Hex(),
+		OldValue:      oldValues,
+		NewValue:      newValues,
+	}
+	_, errEventHistory := eventhistorydb.InsertOne(mongoCtx, eventData)
+	if errEventHistory != nil {
+		// return internal gRPC error to be handled later
+		return nil, status.Errorf(
+			codes.Internal,
+			fmt.Sprintf("Internal error: %v", errEventHistory),
+		)
+	}
+
 	return &exchangepb.UpdateExchangeRes{
 		Exchange: &exchangepb.Exchange{
 			Id:               decoded.ID.Hex(),
@@ -291,8 +394,22 @@ type ExchangeItem struct {
 	ApiSecret        string             `bson:"api_secret"`
 }
 
+type EventHistoryItem struct {
+	Id            primitive.ObjectID `bson:"_id,omitempty"`
+	OperationType string             `bson:"operation_type"`
+	Timestamp     string             `bson:"timestamp"`
+	Db            string             `bson:"db"`
+	Collection    string             `bson:"collection"`
+	Name          string             `bson:"name"`
+	UserId        string             `bson:"user_id"`
+	ExchangeId    string             `bson:"exchange_id"`
+	OldValue      ExchangeItem       `bson:"old_value"`
+	NewValue      ExchangeItem       `bson:"new_value"`
+}
+
 var db *mongo.Client
 var exchangedb *mongo.Collection
+var eventhistorydb *mongo.Collection
 var mongoCtx context.Context
 
 func main() {
@@ -343,7 +460,9 @@ func main() {
 		fmt.Println("Connected to Mongodb")
 	}
 	// Bind our collection to our global variable for use in other methods
-	exchangedb = db.Database("hedgina_algobot").Collection("exchange")
+	mongoDb := db.Database("hedgina_algobot")
+	exchangedb = mongoDb.Collection("exchange")
+	eventhistorydb = mongoDb.Collection("eventhistory_exchange")
 
 	// Start the server in a child routine
 	go func() {

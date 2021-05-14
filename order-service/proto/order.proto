@@ -6,7 +6,11 @@ service OrderService {
     rpc ListOrders(ListOrdersReq) returns (stream ListOrdersRes);
     rpc PlaceOrder(PlaceOrderReq) returns (PlaceOrderRes);
     rpc CancelOrder(CancelOrderReq) returns (CancelOrderRes);
+    //rpc CancelAllOrders(CancelAllOrderReq) returns (CancelAllOrderRes);
 }
+
+//message CancelAllOrderReq{}
+//message CancelAllOrderRes{}
 
 message CancelOrderReq{
     string order_id = 1;

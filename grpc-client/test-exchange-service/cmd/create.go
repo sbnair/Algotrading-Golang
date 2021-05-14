@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -60,7 +61,10 @@ var createCmd = &cobra.Command{
 			return err
 		}
 		fmt.Printf("Exchange created: %s\n", res.Exchange.Id)
-		fmt.Println(res)
+		//fmt.Println(res)
+		// If everything went well use the generated getter to print the exchange message
+		jsonBytes, _ := json.MarshalIndent(res, "", "    ")
+		fmt.Println(string(jsonBytes))
 		return nil
 	},
 }

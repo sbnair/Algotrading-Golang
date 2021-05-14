@@ -17,6 +17,7 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 
@@ -49,8 +50,10 @@ var listCmd = &cobra.Command{
 			if err != nil {
 				return err
 			}
-			// If everything went well use the generated getter to print the blog message
-			fmt.Println(res.GetExchange())
+			//fmt.Println(res.GetExchange())
+			// If everything went well use the generated getter to print the exchange message
+			jsonBytes, _ := json.MarshalIndent(res, "", "    ")
+			fmt.Println(string(jsonBytes))
 		}
 		return nil
 	},

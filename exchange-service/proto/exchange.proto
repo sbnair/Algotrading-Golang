@@ -44,6 +44,19 @@ message ExchangeAccountInfo {
     double short_market_value = 20;
 }
 
+message EventHistory {
+    string id = 1;
+    string operation_type = 2;
+    string timestamp = 3;
+    string db = 4;
+    string collection = 5;
+    string name = 6;
+    string user_id = 7;
+    string exchange_id = 8;
+    Exchange old_value = 9;
+    Exchange new_value = 10;
+}
+
 message CreateExchangeReq {
     Exchange exchange = 1; 
 }
