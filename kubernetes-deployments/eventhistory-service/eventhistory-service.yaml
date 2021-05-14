@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eventhistory-service-app
+  namespace: hedgina
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eventhistory-service
+  template:
+    metadata:
+      labels:
+        app: eventhistory-service
+    spec:
+      containers:
+      - name: eventhistory-service
+        image: neha190495/eventhistory-service:latest
+        imagePullPolicy: Always
+        resources: {}
+        ports:
+        - containerPort: 50052
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eventhistory-service
+  namespace: hedgina
+spec:
+  type: LoadBalancer
+  ports:
+  - name: tcp
+    port: 50055
+    protocol: TCP
+    targetPort: 50055
+  selector:
+    app: eventhistory-service
