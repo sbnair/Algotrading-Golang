@@ -60,7 +60,7 @@ go run main.go update -i "607815df7f51e077fd7ac87a" -e "Alpaca" -n "Alpaca Excha
 ### For Strategy Service
 1. To create a Strategy
 ```
-go run main.go create -n "Strategy 1" -e "608d6c042ea48ebc779a3358" -b 10.0 -s 20.0 -t "5" -w "2" -p "2%" -v "1%" -c "1%" -m "5%" -z "3%" -f "10000" -u "57bf425a34ce5ee85891b914" -d "SAP,GOOGL"
+go run main.go create -n "Strategy 1" -e "609e8aa2f5d820ae105be543" -b 10.0 -s 20.0 -t "5" -w "2" -p "2%" -v "1%" -c "1%" -m "5%" -z "3%" -f "10000" -u "57bf425a34ce5ee85891b914" -d "SAP,GOOGL"
 ```
 2. To list all the Strategies by User Id
 ```
@@ -127,11 +127,11 @@ go run main.go cancelorder -o "4db7a9b2-0e0d-4674-b442-2ae73be3a786" -e "6095501
 ### For Event History Service
 1. List all Events History for Exchange
 ```
-go run main.go listeventhistoryexchange -u "608d6b42ada75cc7e25e6b6a"
+go run main.go listeventhistoryexchange -u "57bf425a34ce5ee85891b914"
 ```
 2. List all Events History for Strategy
 ```
-go run main.go listeventhistorystrategy -u "608d6b42ada75cc7e25e6b6a"
+go run main.go listeventhistorystrategy -u "57bf425a34ce5ee85891b914"
 ```
 
 ### For CEP Rule Service

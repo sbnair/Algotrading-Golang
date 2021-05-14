@@ -78,7 +78,7 @@ func init() {
 	requestOpts = grpc.WithInsecure()
 	// Dial the server, returns a client connection
 	//conn, err := grpc.Dial("localhost:50055", requestOpts)
-	conn, err := grpc.Dial("35.240.95.189:50055", requestOpts)
+	conn, err := grpc.Dial("34.77.244.114:50055", requestOpts)
 
 	if err != nil {
 		log.Fatalf("Unable to establish client connection to localhost:50055: %v", err)
