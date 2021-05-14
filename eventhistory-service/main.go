@@ -28,7 +28,7 @@ func (s *EventHistoryServiceServer) ListEventHistory(req *eventhistorypb.ListEve
 
 	data := &EventHistoryExchangeItem{}
 	// collection.Find returns a cursor for our (empty) query
-	cursor, err := eventhistorydb.Find(context.Background(), bson.M{"user_id": userIdQuery})
+	cursor, err := eventhistory_exchangedb.Find(context.Background(), bson.M{"user_id": userIdQuery})
 	if err != nil {
 		return status.Errorf(codes.Internal, fmt.Sprintf("Unknown internal error: %v", err))
 	}
@@ -51,6 +51,22 @@ func (s *EventHistoryServiceServer) ListEventHistory(req *eventhistorypb.ListEve
 				Collection:    data.Collection,
 				Name:          data.Name,
 				UserId:        data.UserId,
+				ExchangeId:    data.ExchangeId,
+				OldValue: &eventhistorypb.Exchange{
+					SelectedExchange: data.OldValue.SelectedExchange,
+					ExchangeName:     data.OldValue.ExchangeName,
+					ExchangeType:     data.OldValue.ExchangeType,
+					ApiKey:           data.OldValue.ApiKey,
+					ApiSecret:        data.OldValue.ApiSecret,
+				},
+				NewValue: &eventhistorypb.Exchange{
+					Id:               data.NewValue.ID.Hex(),
+					SelectedExchange: data.NewValue.SelectedExchange,
+					ExchangeName:     data.NewValue.ExchangeName,
+					ExchangeType:     data.NewValue.ExchangeType,
+					ApiKey:           data.NewValue.ApiKey,
+					ApiSecret:        data.NewValue.ApiSecret,
+				},
 			},
 		})
 	}
@@ -71,6 +87,7 @@ type EventHistoryExchangeItem struct {
 	Collection    string             `bson:"collection"`
 	Name          string             `bson:"name"`
 	UserId        string             `bson:"user_id"`
+	ExchangeId    string             `bson:"exchange_id"`
 	OldValue      ExchangeItem       `bson:"old_value"`
 	NewValue      ExchangeItem       `bson:"new_value"`
 }
@@ -86,7 +103,7 @@ type ExchangeItem struct {
 }
 
 var db *mongo.Client
-var eventhistorydb *mongo.Collection
+var eventhistory_exchangedb *mongo.Collection
 var mongoCtx context.Context
 
 func main() {
@@ -137,7 +154,7 @@ func main() {
 		fmt.Println("Connected to Mongodb")
 	}
 	// Bind our collection to our global variable for use in other methods
-	eventhistorydb = db.Database("hedgina_algobot").Collection("eventhistory")
+	eventhistory_exchangedb = db.Database("hedgina_algobot").Collection("eventhistory_exchange")
 
 	// Start the server in a child routine
 	go func() {
