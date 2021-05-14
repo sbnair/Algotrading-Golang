@@ -24,80 +24,158 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type ListEventHistoryReq struct {
+type ListEventHistoryExchangeReq struct {
 	UserId               string   `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *ListEventHistoryReq) Reset()         { *m = ListEventHistoryReq{} }
-func (m *ListEventHistoryReq) String() string { return proto.CompactTextString(m) }
-func (*ListEventHistoryReq) ProtoMessage()    {}
-func (*ListEventHistoryReq) Descriptor() ([]byte, []int) {
+func (m *ListEventHistoryExchangeReq) Reset()         { *m = ListEventHistoryExchangeReq{} }
+func (m *ListEventHistoryExchangeReq) String() string { return proto.CompactTextString(m) }
+func (*ListEventHistoryExchangeReq) ProtoMessage()    {}
+func (*ListEventHistoryExchangeReq) Descriptor() ([]byte, []int) {
 	return fileDescriptor_07bf2a04f2257c1f, []int{0}
 }
 
-func (m *ListEventHistoryReq) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ListEventHistoryReq.Unmarshal(m, b)
+func (m *ListEventHistoryExchangeReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListEventHistoryExchangeReq.Unmarshal(m, b)
 }
-func (m *ListEventHistoryReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ListEventHistoryReq.Marshal(b, m, deterministic)
+func (m *ListEventHistoryExchangeReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListEventHistoryExchangeReq.Marshal(b, m, deterministic)
 }
-func (m *ListEventHistoryReq) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListEventHistoryReq.Merge(m, src)
+func (m *ListEventHistoryExchangeReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListEventHistoryExchangeReq.Merge(m, src)
 }
-func (m *ListEventHistoryReq) XXX_Size() int {
-	return xxx_messageInfo_ListEventHistoryReq.Size(m)
+func (m *ListEventHistoryExchangeReq) XXX_Size() int {
+	return xxx_messageInfo_ListEventHistoryExchangeReq.Size(m)
 }
-func (m *ListEventHistoryReq) XXX_DiscardUnknown() {
-	xxx_messageInfo_ListEventHistoryReq.DiscardUnknown(m)
+func (m *ListEventHistoryExchangeReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListEventHistoryExchangeReq.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ListEventHistoryReq proto.InternalMessageInfo
+var xxx_messageInfo_ListEventHistoryExchangeReq proto.InternalMessageInfo
 
-func (m *ListEventHistoryReq) GetUserId() string {
+func (m *ListEventHistoryExchangeReq) GetUserId() string {
 	if m != nil {
 		return m.UserId
 	}
 	return ""
 }
 
-type ListEventHistoryRes struct {
+type ListEventHistoryExchangeRes struct {
 	EventHistoryExchange *EventHistoryExchange `protobuf:"bytes,1,opt,name=eventHistoryExchange,proto3" json:"eventHistoryExchange,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
 }
 
-func (m *ListEventHistoryRes) Reset()         { *m = ListEventHistoryRes{} }
-func (m *ListEventHistoryRes) String() string { return proto.CompactTextString(m) }
-func (*ListEventHistoryRes) ProtoMessage()    {}
-func (*ListEventHistoryRes) Descriptor() ([]byte, []int) {
+func (m *ListEventHistoryExchangeRes) Reset()         { *m = ListEventHistoryExchangeRes{} }
+func (m *ListEventHistoryExchangeRes) String() string { return proto.CompactTextString(m) }
+func (*ListEventHistoryExchangeRes) ProtoMessage()    {}
+func (*ListEventHistoryExchangeRes) Descriptor() ([]byte, []int) {
 	return fileDescriptor_07bf2a04f2257c1f, []int{1}
 }
 
-func (m *ListEventHistoryRes) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ListEventHistoryRes.Unmarshal(m, b)
+func (m *ListEventHistoryExchangeRes) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListEventHistoryExchangeRes.Unmarshal(m, b)
 }
-func (m *ListEventHistoryRes) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ListEventHistoryRes.Marshal(b, m, deterministic)
+func (m *ListEventHistoryExchangeRes) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListEventHistoryExchangeRes.Marshal(b, m, deterministic)
 }
-func (m *ListEventHistoryRes) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListEventHistoryRes.Merge(m, src)
+func (m *ListEventHistoryExchangeRes) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListEventHistoryExchangeRes.Merge(m, src)
 }
-func (m *ListEventHistoryRes) XXX_Size() int {
-	return xxx_messageInfo_ListEventHistoryRes.Size(m)
+func (m *ListEventHistoryExchangeRes) XXX_Size() int {
+	return xxx_messageInfo_ListEventHistoryExchangeRes.Size(m)
 }
-func (m *ListEventHistoryRes) XXX_DiscardUnknown() {
-	xxx_messageInfo_ListEventHistoryRes.DiscardUnknown(m)
+func (m *ListEventHistoryExchangeRes) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListEventHistoryExchangeRes.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ListEventHistoryRes proto.InternalMessageInfo
+var xxx_messageInfo_ListEventHistoryExchangeRes proto.InternalMessageInfo
 
-func (m *ListEventHistoryRes) GetEventHistoryExchange() *EventHistoryExchange {
+func (m *ListEventHistoryExchangeRes) GetEventHistoryExchange() *EventHistoryExchange {
 	if m != nil {
 		return m.EventHistoryExchange
+	}
+	return nil
+}
+
+type ListEventHistoryStrategyReq struct {
+	UserId               string   `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ListEventHistoryStrategyReq) Reset()         { *m = ListEventHistoryStrategyReq{} }
+func (m *ListEventHistoryStrategyReq) String() string { return proto.CompactTextString(m) }
+func (*ListEventHistoryStrategyReq) ProtoMessage()    {}
+func (*ListEventHistoryStrategyReq) Descriptor() ([]byte, []int) {
+	return fileDescriptor_07bf2a04f2257c1f, []int{2}
+}
+
+func (m *ListEventHistoryStrategyReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListEventHistoryStrategyReq.Unmarshal(m, b)
+}
+func (m *ListEventHistoryStrategyReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListEventHistoryStrategyReq.Marshal(b, m, deterministic)
+}
+func (m *ListEventHistoryStrategyReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListEventHistoryStrategyReq.Merge(m, src)
+}
+func (m *ListEventHistoryStrategyReq) XXX_Size() int {
+	return xxx_messageInfo_ListEventHistoryStrategyReq.Size(m)
+}
+func (m *ListEventHistoryStrategyReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListEventHistoryStrategyReq.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListEventHistoryStrategyReq proto.InternalMessageInfo
+
+func (m *ListEventHistoryStrategyReq) GetUserId() string {
+	if m != nil {
+		return m.UserId
+	}
+	return ""
+}
+
+type ListEventHistoryStrategyRes struct {
+	EventHistoryStrategy *EventHistoryStrategy `protobuf:"bytes,1,opt,name=eventHistoryStrategy,proto3" json:"eventHistoryStrategy,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
+	XXX_unrecognized     []byte                `json:"-"`
+	XXX_sizecache        int32                 `json:"-"`
+}
+
+func (m *ListEventHistoryStrategyRes) Reset()         { *m = ListEventHistoryStrategyRes{} }
+func (m *ListEventHistoryStrategyRes) String() string { return proto.CompactTextString(m) }
+func (*ListEventHistoryStrategyRes) ProtoMessage()    {}
+func (*ListEventHistoryStrategyRes) Descriptor() ([]byte, []int) {
+	return fileDescriptor_07bf2a04f2257c1f, []int{3}
+}
+
+func (m *ListEventHistoryStrategyRes) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ListEventHistoryStrategyRes.Unmarshal(m, b)
+}
+func (m *ListEventHistoryStrategyRes) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ListEventHistoryStrategyRes.Marshal(b, m, deterministic)
+}
+func (m *ListEventHistoryStrategyRes) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListEventHistoryStrategyRes.Merge(m, src)
+}
+func (m *ListEventHistoryStrategyRes) XXX_Size() int {
+	return xxx_messageInfo_ListEventHistoryStrategyRes.Size(m)
+}
+func (m *ListEventHistoryStrategyRes) XXX_DiscardUnknown() {
+	xxx_messageInfo_ListEventHistoryStrategyRes.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ListEventHistoryStrategyRes proto.InternalMessageInfo
+
+func (m *ListEventHistoryStrategyRes) GetEventHistoryStrategy() *EventHistoryStrategy {
+	if m != nil {
+		return m.EventHistoryStrategy
 	}
 	return nil
 }
@@ -122,7 +200,7 @@ func (m *EventHistoryExchange) Reset()         { *m = EventHistoryExchange{} }
 func (m *EventHistoryExchange) String() string { return proto.CompactTextString(m) }
 func (*EventHistoryExchange) ProtoMessage()    {}
 func (*EventHistoryExchange) Descriptor() ([]byte, []int) {
-	return fileDescriptor_07bf2a04f2257c1f, []int{2}
+	return fileDescriptor_07bf2a04f2257c1f, []int{4}
 }
 
 func (m *EventHistoryExchange) XXX_Unmarshal(b []byte) error {
@@ -230,7 +308,7 @@ func (m *Exchange) Reset()         { *m = Exchange{} }
 func (m *Exchange) String() string { return proto.CompactTextString(m) }
 func (*Exchange) ProtoMessage()    {}
 func (*Exchange) Descriptor() ([]byte, []int) {
-	return fileDescriptor_07bf2a04f2257c1f, []int{3}
+	return fileDescriptor_07bf2a04f2257c1f, []int{5}
 }
 
 func (m *Exchange) XXX_Unmarshal(b []byte) error {
@@ -300,11 +378,357 @@ func (m *Exchange) GetApiSecret() string {
 	return ""
 }
 
+type EventHistoryStrategy struct {
+	Id                   string    `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	OperationType        string    `protobuf:"bytes,2,opt,name=operation_type,json=operationType,proto3" json:"operation_type,omitempty"`
+	Timestamp            string    `protobuf:"bytes,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Db                   string    `protobuf:"bytes,4,opt,name=db,proto3" json:"db,omitempty"`
+	Collection           string    `protobuf:"bytes,5,opt,name=collection,proto3" json:"collection,omitempty"`
+	Name                 string    `protobuf:"bytes,6,opt,name=name,proto3" json:"name,omitempty"`
+	UserId               string    `protobuf:"bytes,7,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	StrategyId           string    `protobuf:"bytes,8,opt,name=strategy_id,json=strategyId,proto3" json:"strategy_id,omitempty"`
+	OldValue             *Strategy `protobuf:"bytes,9,opt,name=old_value,json=oldValue,proto3" json:"old_value,omitempty"`
+	NewValue             *Strategy `protobuf:"bytes,10,opt,name=new_value,json=newValue,proto3" json:"new_value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
+}
+
+func (m *EventHistoryStrategy) Reset()         { *m = EventHistoryStrategy{} }
+func (m *EventHistoryStrategy) String() string { return proto.CompactTextString(m) }
+func (*EventHistoryStrategy) ProtoMessage()    {}
+func (*EventHistoryStrategy) Descriptor() ([]byte, []int) {
+	return fileDescriptor_07bf2a04f2257c1f, []int{6}
+}
+
+func (m *EventHistoryStrategy) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_EventHistoryStrategy.Unmarshal(m, b)
+}
+func (m *EventHistoryStrategy) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_EventHistoryStrategy.Marshal(b, m, deterministic)
+}
+func (m *EventHistoryStrategy) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EventHistoryStrategy.Merge(m, src)
+}
+func (m *EventHistoryStrategy) XXX_Size() int {
+	return xxx_messageInfo_EventHistoryStrategy.Size(m)
+}
+func (m *EventHistoryStrategy) XXX_DiscardUnknown() {
+	xxx_messageInfo_EventHistoryStrategy.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EventHistoryStrategy proto.InternalMessageInfo
+
+func (m *EventHistoryStrategy) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *EventHistoryStrategy) GetOperationType() string {
+	if m != nil {
+		return m.OperationType
+	}
+	return ""
+}
+
+func (m *EventHistoryStrategy) GetTimestamp() string {
+	if m != nil {
+		return m.Timestamp
+	}
+	return ""
+}
+
+func (m *EventHistoryStrategy) GetDb() string {
+	if m != nil {
+		return m.Db
+	}
+	return ""
+}
+
+func (m *EventHistoryStrategy) GetCollection() string {
+	if m != nil {
+		return m.Collection
+	}
+	return ""
+}
+
+func (m *EventHistoryStrategy) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *EventHistoryStrategy) GetUserId() string {
+	if m != nil {
+		return m.UserId
+	}
+	return ""
+}
+
+func (m *EventHistoryStrategy) GetStrategyId() string {
+	if m != nil {
+		return m.StrategyId
+	}
+	return ""
+}
+
+func (m *EventHistoryStrategy) GetOldValue() *Strategy {
+	if m != nil {
+		return m.OldValue
+	}
+	return nil
+}
+
+func (m *EventHistoryStrategy) GetNewValue() *Strategy {
+	if m != nil {
+		return m.NewValue
+	}
+	return nil
+}
+
+type Strategy struct {
+	Id                        string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	StrategyName              string   `protobuf:"bytes,2,opt,name=strategy_name,json=strategyName,proto3" json:"strategy_name,omitempty"`
+	SelectedExchange          string   `protobuf:"bytes,3,opt,name=selected_exchange,json=selectedExchange,proto3" json:"selected_exchange,omitempty"`
+	StrategyType              string   `protobuf:"bytes,4,opt,name=strategy_type,json=strategyType,proto3" json:"strategy_type,omitempty"`
+	StartOrderType            string   `protobuf:"bytes,5,opt,name=start_order_type,json=startOrderType,proto3" json:"start_order_type,omitempty"`
+	DealStartCondition        string   `protobuf:"bytes,6,opt,name=deal_start_condition,json=dealStartCondition,proto3" json:"deal_start_condition,omitempty"`
+	BaseOrderSize             float64  `protobuf:"fixed64,7,opt,name=base_order_size,json=baseOrderSize,proto3" json:"base_order_size,omitempty"`
+	SafetyOrderSize           float64  `protobuf:"fixed64,8,opt,name=safety_order_size,json=safetyOrderSize,proto3" json:"safety_order_size,omitempty"`
+	MaxSafetyTradeCount       string   `protobuf:"bytes,9,opt,name=max_safety_trade_count,json=maxSafetyTradeCount,proto3" json:"max_safety_trade_count,omitempty"`
+	MaxActiveSafetyTradeCount string   `protobuf:"bytes,10,opt,name=max_active_safety_trade_count,json=maxActiveSafetyTradeCount,proto3" json:"max_active_safety_trade_count,omitempty"`
+	PriceDevation             string   `protobuf:"bytes,11,opt,name=price_devation,json=priceDevation,proto3" json:"price_devation,omitempty"`
+	SafetyOrderVolumeScale    string   `protobuf:"bytes,12,opt,name=safety_order_volume_scale,json=safetyOrderVolumeScale,proto3" json:"safety_order_volume_scale,omitempty"`
+	SafetyOrderStepScale      string   `protobuf:"bytes,13,opt,name=safety_order_step_scale,json=safetyOrderStepScale,proto3" json:"safety_order_step_scale,omitempty"`
+	TakeProfit                string   `protobuf:"bytes,14,opt,name=take_profit,json=takeProfit,proto3" json:"take_profit,omitempty"`
+	TargetProfit              string   `protobuf:"bytes,15,opt,name=target_profit,json=targetProfit,proto3" json:"target_profit,omitempty"`
+	AllocateFundsToStrategy   string   `protobuf:"bytes,16,opt,name=allocate_funds_to_strategy,json=allocateFundsToStrategy,proto3" json:"allocate_funds_to_strategy,omitempty"`
+	UserId                    string   `protobuf:"bytes,17,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Version                   int64    `protobuf:"varint,18,opt,name=version,proto3" json:"version,omitempty"`
+	Status                    string   `protobuf:"bytes,19,opt,name=status,proto3" json:"status,omitempty"`
+	Stock                     []*Stock `protobuf:"bytes,20,rep,name=stock,proto3" json:"stock,omitempty"`
+	XXX_NoUnkeyedLiteral      struct{} `json:"-"`
+	XXX_unrecognized          []byte   `json:"-"`
+	XXX_sizecache             int32    `json:"-"`
+}
+
+func (m *Strategy) Reset()         { *m = Strategy{} }
+func (m *Strategy) String() string { return proto.CompactTextString(m) }
+func (*Strategy) ProtoMessage()    {}
+func (*Strategy) Descriptor() ([]byte, []int) {
+	return fileDescriptor_07bf2a04f2257c1f, []int{7}
+}
+
+func (m *Strategy) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Strategy.Unmarshal(m, b)
+}
+func (m *Strategy) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Strategy.Marshal(b, m, deterministic)
+}
+func (m *Strategy) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Strategy.Merge(m, src)
+}
+func (m *Strategy) XXX_Size() int {
+	return xxx_messageInfo_Strategy.Size(m)
+}
+func (m *Strategy) XXX_DiscardUnknown() {
+	xxx_messageInfo_Strategy.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Strategy proto.InternalMessageInfo
+
+func (m *Strategy) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *Strategy) GetStrategyName() string {
+	if m != nil {
+		return m.StrategyName
+	}
+	return ""
+}
+
+func (m *Strategy) GetSelectedExchange() string {
+	if m != nil {
+		return m.SelectedExchange
+	}
+	return ""
+}
+
+func (m *Strategy) GetStrategyType() string {
+	if m != nil {
+		return m.StrategyType
+	}
+	return ""
+}
+
+func (m *Strategy) GetStartOrderType() string {
+	if m != nil {
+		return m.StartOrderType
+	}
+	return ""
+}
+
+func (m *Strategy) GetDealStartCondition() string {
+	if m != nil {
+		return m.DealStartCondition
+	}
+	return ""
+}
+
+func (m *Strategy) GetBaseOrderSize() float64 {
+	if m != nil {
+		return m.BaseOrderSize
+	}
+	return 0
+}
+
+func (m *Strategy) GetSafetyOrderSize() float64 {
+	if m != nil {
+		return m.SafetyOrderSize
+	}
+	return 0
+}
+
+func (m *Strategy) GetMaxSafetyTradeCount() string {
+	if m != nil {
+		return m.MaxSafetyTradeCount
+	}
+	return ""
+}
+
+func (m *Strategy) GetMaxActiveSafetyTradeCount() string {
+	if m != nil {
+		return m.MaxActiveSafetyTradeCount
+	}
+	return ""
+}
+
+func (m *Strategy) GetPriceDevation() string {
+	if m != nil {
+		return m.PriceDevation
+	}
+	return ""
+}
+
+func (m *Strategy) GetSafetyOrderVolumeScale() string {
+	if m != nil {
+		return m.SafetyOrderVolumeScale
+	}
+	return ""
+}
+
+func (m *Strategy) GetSafetyOrderStepScale() string {
+	if m != nil {
+		return m.SafetyOrderStepScale
+	}
+	return ""
+}
+
+func (m *Strategy) GetTakeProfit() string {
+	if m != nil {
+		return m.TakeProfit
+	}
+	return ""
+}
+
+func (m *Strategy) GetTargetProfit() string {
+	if m != nil {
+		return m.TargetProfit
+	}
+	return ""
+}
+
+func (m *Strategy) GetAllocateFundsToStrategy() string {
+	if m != nil {
+		return m.AllocateFundsToStrategy
+	}
+	return ""
+}
+
+func (m *Strategy) GetUserId() string {
+	if m != nil {
+		return m.UserId
+	}
+	return ""
+}
+
+func (m *Strategy) GetVersion() int64 {
+	if m != nil {
+		return m.Version
+	}
+	return 0
+}
+
+func (m *Strategy) GetStatus() string {
+	if m != nil {
+		return m.Status
+	}
+	return ""
+}
+
+func (m *Strategy) GetStock() []*Stock {
+	if m != nil {
+		return m.Stock
+	}
+	return nil
+}
+
+type Stock struct {
+	StockName            string   `protobuf:"bytes,1,opt,name=stock_name,json=stockName,proto3" json:"stock_name,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Stock) Reset()         { *m = Stock{} }
+func (m *Stock) String() string { return proto.CompactTextString(m) }
+func (*Stock) ProtoMessage()    {}
+func (*Stock) Descriptor() ([]byte, []int) {
+	return fileDescriptor_07bf2a04f2257c1f, []int{8}
+}
+
+func (m *Stock) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Stock.Unmarshal(m, b)
+}
+func (m *Stock) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Stock.Marshal(b, m, deterministic)
+}
+func (m *Stock) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Stock.Merge(m, src)
+}
+func (m *Stock) XXX_Size() int {
+	return xxx_messageInfo_Stock.Size(m)
+}
+func (m *Stock) XXX_DiscardUnknown() {
+	xxx_messageInfo_Stock.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Stock proto.InternalMessageInfo
+
+func (m *Stock) GetStockName() string {
+	if m != nil {
+		return m.StockName
+	}
+	return ""
+}
+
 func init() {
-	proto.RegisterType((*ListEventHistoryReq)(nil), "eventhistory.ListEventHistoryReq")
-	proto.RegisterType((*ListEventHistoryRes)(nil), "eventhistory.ListEventHistoryRes")
+	proto.RegisterType((*ListEventHistoryExchangeReq)(nil), "eventhistory.ListEventHistoryExchangeReq")
+	proto.RegisterType((*ListEventHistoryExchangeRes)(nil), "eventhistory.ListEventHistoryExchangeRes")
+	proto.RegisterType((*ListEventHistoryStrategyReq)(nil), "eventhistory.ListEventHistoryStrategyReq")
+	proto.RegisterType((*ListEventHistoryStrategyRes)(nil), "eventhistory.ListEventHistoryStrategyRes")
 	proto.RegisterType((*EventHistoryExchange)(nil), "eventhistory.EventHistoryExchange")
 	proto.RegisterType((*Exchange)(nil), "eventhistory.Exchange")
+	proto.RegisterType((*EventHistoryStrategy)(nil), "eventhistory.EventHistoryStrategy")
+	proto.RegisterType((*Strategy)(nil), "eventhistory.Strategy")
+	proto.RegisterType((*Stock)(nil), "eventhistory.Stock")
 }
 
 func init() {
@@ -312,33 +736,61 @@ func init() {
 }
 
 var fileDescriptor_07bf2a04f2257c1f = []byte{
-	// 416 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x93, 0xed, 0x6a, 0xd5, 0x30,
-	0x18, 0xc7, 0x69, 0x3d, 0xeb, 0x39, 0x7d, 0xb6, 0x1d, 0x8e, 0xd9, 0x70, 0x41, 0x7c, 0xad, 0x08,
-	0x82, 0x70, 0x94, 0xed, 0x0e, 0x84, 0x03, 0x0e, 0xc5, 0x0f, 0x67, 0xb2, 0x0f, 0xfb, 0x52, 0xd2,
-	0xe6, 0xc1, 0x05, 0xdb, 0x26, 0x6b, 0xb2, 0x33, 0x7b, 0x9d, 0xde, 0x81, 0x57, 0x22, 0x49, 0x5f,
-	0x4c, 0x47, 0xd5, 0x6f, 0xed, 0xff, 0x25, 0x3c, 0xf9, 0x25, 0x01, 0xaa, 0x6a, 0x69, 0xe4, 0x3b,
-	0xdc, 0x61, 0x65, 0xae, 0x85, 0x36, 0xb2, 0x6e, 0xd6, 0x4e, 0x22, 0x07, 0xbe, 0x96, 0xac, 0xe1,
-	0xe8, 0xb3, 0xd0, 0x66, 0x63, 0xb5, 0x8f, 0xad, 0xb6, 0xc5, 0x1b, 0x72, 0x02, 0xf3, 0x5b, 0x8d,
-	0x75, 0x2a, 0x38, 0x0d, 0x5e, 0x04, 0x6f, 0xe2, 0x6d, 0x64, 0x7f, 0xcf, 0x79, 0x52, 0x4e, 0xe5,
-	0x35, 0xb9, 0x84, 0x63, 0xf4, 0xa4, 0xcd, 0x8f, 0xfc, 0x9a, 0x55, 0xdf, 0xd0, 0x95, 0xf7, 0x4f,
-	0x93, 0xf5, 0x68, 0x8e, 0xcd, 0x44, 0x72, 0x3b, 0xd9, 0x4f, 0x7e, 0x86, 0x70, 0x3c, 0x15, 0x27,
-	0x4b, 0x08, 0x87, 0xd9, 0x42, 0xc1, 0xc9, 0x6b, 0x58, 0x4a, 0x85, 0x35, 0x33, 0x42, 0x56, 0xa9,
-	0x69, 0x14, 0xd2, 0xd0, 0x79, 0x87, 0x83, 0xfa, 0xb5, 0x51, 0x48, 0x9e, 0x40, 0x6c, 0x44, 0x89,
-	0xda, 0xb0, 0x52, 0xd1, 0x07, 0x2e, 0xf1, 0x47, 0xb0, 0x8b, 0xf2, 0x8c, 0xce, 0xda, 0x45, 0x79,
-	0x46, 0x9e, 0x01, 0xe4, 0xb2, 0x28, 0x30, 0xb7, 0x7d, 0xba, 0xe7, 0x74, 0x4f, 0x21, 0x04, 0x66,
-	0x15, 0x2b, 0x91, 0x46, 0xce, 0x71, 0xdf, 0x3e, 0xb9, 0xb9, 0x4f, 0x8e, 0x3c, 0x87, 0x7d, 0xec,
-	0xa6, 0xb7, 0xe6, 0xa2, 0x5d, 0xad, 0x97, 0xce, 0x39, 0x39, 0x83, 0x58, 0x16, 0x3c, 0xdd, 0xb1,
-	0xe2, 0x16, 0x69, 0xec, 0xc0, 0x3d, 0xba, 0x07, 0xae, 0x87, 0xb5, 0x90, 0x05, 0xbf, 0xb4, 0x39,
-	0x5b, 0xaa, 0xf0, 0xae, 0x2b, 0xc1, 0xbf, 0x4b, 0x15, 0xde, 0xb9, 0x52, 0xf2, 0x2b, 0x80, 0xc5,
-	0x5f, 0x49, 0xbe, 0x85, 0x87, 0x1a, 0xed, 0x0e, 0x91, 0xa7, 0xfd, 0x74, 0x1d, 0xcc, 0x55, 0x6f,
-	0x0c, 0xe5, 0x57, 0x70, 0x38, 0x6c, 0xca, 0xa1, 0x68, 0x99, 0x1e, 0xf4, 0xe2, 0x17, 0x8b, 0xc4,
-	0x0f, 0xb9, 0xa3, 0x99, 0x8d, 0x43, 0xee, 0x64, 0x3c, 0x6e, 0x7b, 0x23, 0x6e, 0x27, 0x30, 0x67,
-	0x4a, 0xa4, 0xdf, 0xb1, 0xe9, 0x38, 0x47, 0x4c, 0x89, 0x4f, 0xd8, 0x90, 0xa7, 0x00, 0xd6, 0xd0,
-	0x98, 0xd7, 0x68, 0x3a, 0xd8, 0x31, 0x53, 0xe2, 0xc2, 0x09, 0xa7, 0x37, 0x70, 0xe4, 0xdf, 0x9c,
-	0x0b, 0xac, 0x77, 0x22, 0x47, 0x72, 0x05, 0xab, 0xfb, 0x17, 0x98, 0xbc, 0x1c, 0x13, 0x9b, 0x78,
-	0x10, 0x8f, 0xff, 0x1b, 0xd1, 0xef, 0x83, 0x0f, 0xab, 0xab, 0xa5, 0x9f, 0x52, 0x59, 0x16, 0xb9,
-	0x37, 0x77, 0xf6, 0x3b, 0x00, 0x00, 0xff, 0xff, 0x36, 0xf5, 0x9a, 0xde, 0x8f, 0x03, 0x00, 0x00,
+	// 859 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xd4, 0x56, 0x4d, 0x6f, 0xdb, 0x46,
+	0x10, 0x05, 0xfd, 0x21, 0x4b, 0x23, 0x4b, 0xb6, 0xd7, 0x82, 0xbd, 0x71, 0x9b, 0xc6, 0x50, 0x90,
+	0xc0, 0x69, 0x81, 0xd4, 0xb0, 0xd1, 0x02, 0x45, 0x2f, 0x6d, 0xd3, 0x14, 0x0d, 0x5a, 0xb4, 0x85,
+	0x64, 0xf8, 0xd0, 0x0b, 0xb1, 0x22, 0xc7, 0xce, 0xc2, 0x14, 0x97, 0xdd, 0x5d, 0x29, 0x56, 0x7e,
+	0x62, 0xaf, 0xfd, 0x07, 0xfd, 0x1f, 0x05, 0x8a, 0x9d, 0x25, 0x69, 0x32, 0xa6, 0x1c, 0xe7, 0x98,
+	0x9b, 0xf8, 0xe6, 0xbd, 0xd1, 0xec, 0x9b, 0xb7, 0x04, 0x81, 0x67, 0x5a, 0x59, 0xf5, 0x25, 0xce,
+	0x31, 0xb5, 0xaf, 0xa5, 0xb1, 0x4a, 0x2f, 0x9e, 0x13, 0xc4, 0x36, 0xab, 0xd8, 0xf0, 0x6b, 0xf8,
+	0xe4, 0x57, 0x69, 0xec, 0x4b, 0x87, 0xfd, 0xec, 0xb1, 0x97, 0xd7, 0xd1, 0x6b, 0x91, 0x5e, 0xe2,
+	0x08, 0xff, 0x62, 0xfb, 0xb0, 0x31, 0x33, 0xa8, 0x43, 0x19, 0xf3, 0xe0, 0x30, 0x38, 0xea, 0x8c,
+	0x5a, 0xee, 0xf1, 0x55, 0x3c, 0x9c, 0xdd, 0xa5, 0x33, 0xec, 0x1c, 0x06, 0xd8, 0x50, 0xa2, 0x26,
+	0xdd, 0x93, 0xe1, 0xf3, 0xda, 0x5c, 0x8d, 0x4d, 0x1a, 0xf5, 0x4d, 0xe3, 0x8e, 0xad, 0x16, 0x16,
+	0x2f, 0x17, 0x1f, 0x3a, 0xee, 0x8d, 0xee, 0xd6, 0xb8, 0x45, 0xe9, 0xfd, 0xe3, 0x96, 0x4d, 0x1a,
+	0xf5, 0xc3, 0x7f, 0x56, 0x60, 0xd0, 0x74, 0x3a, 0xd6, 0x87, 0x95, 0x72, 0xc6, 0x15, 0x19, 0xb3,
+	0x27, 0xd0, 0x57, 0x19, 0x6a, 0x61, 0xa5, 0x4a, 0x43, 0xbb, 0xc8, 0x90, 0xaf, 0x50, 0xad, 0x57,
+	0xa2, 0x67, 0x8b, 0x0c, 0xd9, 0xa7, 0xd0, 0xb1, 0x72, 0x8a, 0xc6, 0x8a, 0x69, 0xc6, 0x57, 0x89,
+	0x71, 0x03, 0xb8, 0xa6, 0xf1, 0x84, 0xaf, 0xf9, 0xa6, 0xf1, 0x84, 0x7d, 0x06, 0x10, 0xa9, 0x24,
+	0xc1, 0xc8, 0xe9, 0xf9, 0x3a, 0xe1, 0x15, 0x84, 0x31, 0x58, 0x4b, 0xc5, 0x14, 0x79, 0x8b, 0x2a,
+	0xf4, 0xbb, 0xea, 0xe0, 0x46, 0xd5, 0x41, 0xf6, 0x08, 0xba, 0x98, 0x4f, 0xef, 0x8a, 0x6d, 0xdf,
+	0xad, 0x80, 0x5e, 0xc5, 0xec, 0x14, 0x3a, 0x2a, 0x89, 0xc3, 0xb9, 0x48, 0x66, 0xc8, 0x3b, 0x64,
+	0xdc, 0xde, 0x3b, 0xc6, 0x15, 0xbb, 0x6d, 0xab, 0x24, 0x3e, 0x77, 0x3c, 0x27, 0x4a, 0xf1, 0x4d,
+	0x2e, 0x82, 0xbb, 0x45, 0x29, 0xbe, 0x21, 0xd1, 0xf0, 0xdf, 0x00, 0xda, 0x4b, 0x9d, 0xfc, 0x02,
+	0x76, 0x0c, 0xba, 0x13, 0x62, 0x1c, 0x16, 0xd3, 0xe5, 0x66, 0x6e, 0x17, 0x85, 0x52, 0xfc, 0x18,
+	0x7a, 0xe5, 0xa1, 0xc8, 0x0a, 0xef, 0xe9, 0x66, 0x01, 0xfe, 0xe6, 0x2c, 0xa9, 0x92, 0x68, 0x35,
+	0x6b, 0x75, 0x12, 0x6d, 0xa6, 0xe2, 0xdb, 0x7a, 0xcd, 0xb7, 0x7d, 0xd8, 0x10, 0x99, 0x0c, 0xaf,
+	0x70, 0x91, 0xfb, 0xdc, 0x12, 0x99, 0xfc, 0x05, 0x17, 0xec, 0x21, 0x80, 0x2b, 0x18, 0x8c, 0x34,
+	0xda, 0xdc, 0xec, 0x8e, 0xc8, 0xe4, 0x98, 0x80, 0x5b, 0xd1, 0x29, 0x32, 0xf5, 0x71, 0x46, 0xc7,
+	0xe4, 0xd3, 0x57, 0xa2, 0x53, 0x40, 0xf7, 0x8a, 0x4e, 0x79, 0xcf, 0x3e, 0x24, 0x3a, 0x37, 0xa2,
+	0x32, 0x3a, 0x7f, 0xb7, 0xa0, 0xbd, 0xd4, 0xc9, 0xc7, 0xd0, 0x2b, 0xe7, 0xa4, 0xd3, 0x79, 0x23,
+	0x37, 0x0b, 0x90, 0xd2, 0xd0, 0x98, 0xaf, 0xd5, 0xe5, 0xf9, 0x2a, 0x3b, 0x56, 0xa3, 0x53, 0x80,
+	0xb4, 0x99, 0x23, 0xd8, 0x36, 0x56, 0x68, 0x1b, 0x2a, 0x1d, 0xa3, 0xf6, 0x3c, 0xef, 0x78, 0x9f,
+	0xf0, 0xdf, 0x1d, 0x4c, 0xcc, 0x63, 0x18, 0xc4, 0x28, 0x92, 0xd0, 0xd3, 0x23, 0x95, 0xc6, 0x92,
+	0xf6, 0xe3, 0xb7, 0xc0, 0x5c, 0x6d, 0xec, 0x4a, 0x2f, 0x8a, 0x0a, 0x7b, 0x0a, 0x5b, 0x13, 0x61,
+	0x30, 0x6f, 0x6d, 0xe4, 0x5b, 0xa4, 0xdd, 0x04, 0xa3, 0x9e, 0x83, 0xa9, 0xf3, 0x58, 0xbe, 0x45,
+	0xf6, 0x39, 0xec, 0x18, 0x71, 0x81, 0x76, 0x51, 0x65, 0xb6, 0x89, 0xb9, 0xe5, 0x0b, 0x37, 0xdc,
+	0x53, 0xd8, 0x9b, 0x8a, 0xeb, 0x30, 0xe7, 0x5b, 0x2d, 0x62, 0x0c, 0x23, 0x35, 0x4b, 0x2d, 0xad,
+	0xae, 0x33, 0xda, 0x9d, 0x8a, 0xeb, 0x31, 0x15, 0xcf, 0x5c, 0xed, 0x85, 0x2b, 0xb1, 0xef, 0xe0,
+	0xa1, 0x13, 0x89, 0xc8, 0xca, 0x39, 0x36, 0x69, 0x81, 0xb4, 0x0f, 0xa6, 0xe2, 0xfa, 0x7b, 0xe2,
+	0xdc, 0xea, 0xf0, 0x04, 0xfa, 0x99, 0x96, 0x11, 0x86, 0x31, 0xce, 0x29, 0xd6, 0xbc, 0xeb, 0x73,
+	0x4e, 0xe8, 0x8f, 0x39, 0xc8, 0xbe, 0x81, 0x07, 0xb5, 0x93, 0xcc, 0x55, 0x32, 0x9b, 0x62, 0x68,
+	0x22, 0x91, 0x20, 0xdf, 0x24, 0xc5, 0x5e, 0xe5, 0x44, 0xe7, 0x54, 0x1e, 0xbb, 0x2a, 0xfb, 0x0a,
+	0xf6, 0xeb, 0x26, 0x58, 0xcc, 0x72, 0x61, 0x8f, 0x84, 0x83, 0xaa, 0x15, 0x16, 0x33, 0x2f, 0x7b,
+	0x04, 0x5d, 0x2b, 0xae, 0x30, 0xcc, 0xb4, 0xba, 0x90, 0x96, 0xf7, 0x7d, 0xbc, 0x1d, 0xf4, 0x07,
+	0x21, 0x2e, 0x05, 0x56, 0xe8, 0x4b, 0xb4, 0x05, 0x65, 0xcb, 0xa7, 0xc0, 0x83, 0x39, 0xe9, 0x5b,
+	0x38, 0x10, 0x49, 0xa2, 0x22, 0x61, 0x31, 0xbc, 0x98, 0xa5, 0xb1, 0x09, 0xad, 0x0a, 0x8b, 0x9c,
+	0xf0, 0x6d, 0x52, 0xec, 0x17, 0x8c, 0x9f, 0x1c, 0xe1, 0x4c, 0x95, 0x49, 0xae, 0x5c, 0xbd, 0x9d,
+	0xda, 0xd5, 0xe3, 0xb0, 0x31, 0x47, 0x6d, 0x9c, 0x5b, 0xec, 0x30, 0x38, 0x5a, 0x1d, 0x15, 0x8f,
+	0x6c, 0x0f, 0x5a, 0xc6, 0x0a, 0x3b, 0x33, 0x7c, 0xd7, 0x2b, 0xfc, 0x13, 0x7b, 0x06, 0xeb, 0xc6,
+	0xaa, 0xe8, 0x8a, 0x0f, 0x0e, 0x57, 0x8f, 0xba, 0x27, 0xbb, 0xef, 0x5e, 0x29, 0x15, 0x5d, 0x8d,
+	0x3c, 0x63, 0xf8, 0x14, 0xd6, 0xe9, 0xd9, 0xbd, 0xca, 0x08, 0xf1, 0xb7, 0xc6, 0x5f, 0xa8, 0x0e,
+	0x21, 0xee, 0xca, 0x9c, 0xfc, 0x17, 0xc0, 0x6e, 0xed, 0x55, 0x86, 0x7a, 0x2e, 0x23, 0x64, 0x1a,
+	0xf8, 0xb2, 0x6f, 0x08, 0xf6, 0xac, 0xfe, 0xbf, 0x77, 0x7c, 0xa3, 0x1c, 0xdc, 0x9b, 0x6a, 0x8e,
+	0x83, 0xa6, 0xff, 0x2c, 0x5d, 0x7c, 0x4f, 0xa3, 0xca, 0x87, 0xc6, 0xc1, 0xbd, 0xa9, 0xe6, 0x38,
+	0xf8, 0x61, 0xfb, 0xcf, 0x7e, 0x95, 0x9d, 0x4d, 0x26, 0x2d, 0xfa, 0x14, 0x3b, 0xfd, 0x3f, 0x00,
+	0x00, 0xff, 0xff, 0xbe, 0xcb, 0x04, 0x9c, 0xa6, 0x09, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -353,7 +805,8 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type EventHistoryServiceClient interface {
-	ListEventHistory(ctx context.Context, in *ListEventHistoryReq, opts ...grpc.CallOption) (EventHistoryService_ListEventHistoryClient, error)
+	ListEventHistoryExchange(ctx context.Context, in *ListEventHistoryExchangeReq, opts ...grpc.CallOption) (EventHistoryService_ListEventHistoryExchangeClient, error)
+	ListEventHistoryStrategy(ctx context.Context, in *ListEventHistoryStrategyReq, opts ...grpc.CallOption) (EventHistoryService_ListEventHistoryStrategyClient, error)
 }
 
 type eventHistoryServiceClient struct {
@@ -364,12 +817,12 @@ func NewEventHistoryServiceClient(cc grpc.ClientConnInterface) EventHistoryServi
 	return &eventHistoryServiceClient{cc}
 }
 
-func (c *eventHistoryServiceClient) ListEventHistory(ctx context.Context, in *ListEventHistoryReq, opts ...grpc.CallOption) (EventHistoryService_ListEventHistoryClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_EventHistoryService_serviceDesc.Streams[0], "/eventhistory.EventHistoryService/ListEventHistory", opts...)
+func (c *eventHistoryServiceClient) ListEventHistoryExchange(ctx context.Context, in *ListEventHistoryExchangeReq, opts ...grpc.CallOption) (EventHistoryService_ListEventHistoryExchangeClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_EventHistoryService_serviceDesc.Streams[0], "/eventhistory.EventHistoryService/ListEventHistoryExchange", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &eventHistoryServiceListEventHistoryClient{stream}
+	x := &eventHistoryServiceListEventHistoryExchangeClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -379,17 +832,49 @@ func (c *eventHistoryServiceClient) ListEventHistory(ctx context.Context, in *Li
 	return x, nil
 }
 
-type EventHistoryService_ListEventHistoryClient interface {
-	Recv() (*ListEventHistoryRes, error)
+type EventHistoryService_ListEventHistoryExchangeClient interface {
+	Recv() (*ListEventHistoryExchangeRes, error)
 	grpc.ClientStream
 }
 
-type eventHistoryServiceListEventHistoryClient struct {
+type eventHistoryServiceListEventHistoryExchangeClient struct {
 	grpc.ClientStream
 }
 
-func (x *eventHistoryServiceListEventHistoryClient) Recv() (*ListEventHistoryRes, error) {
-	m := new(ListEventHistoryRes)
+func (x *eventHistoryServiceListEventHistoryExchangeClient) Recv() (*ListEventHistoryExchangeRes, error) {
+	m := new(ListEventHistoryExchangeRes)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *eventHistoryServiceClient) ListEventHistoryStrategy(ctx context.Context, in *ListEventHistoryStrategyReq, opts ...grpc.CallOption) (EventHistoryService_ListEventHistoryStrategyClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_EventHistoryService_serviceDesc.Streams[1], "/eventhistory.EventHistoryService/ListEventHistoryStrategy", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &eventHistoryServiceListEventHistoryStrategyClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type EventHistoryService_ListEventHistoryStrategyClient interface {
+	Recv() (*ListEventHistoryStrategyRes, error)
+	grpc.ClientStream
+}
+
+type eventHistoryServiceListEventHistoryStrategyClient struct {
+	grpc.ClientStream
+}
+
+func (x *eventHistoryServiceListEventHistoryStrategyClient) Recv() (*ListEventHistoryStrategyRes, error) {
+	m := new(ListEventHistoryStrategyRes)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -398,39 +883,64 @@ func (x *eventHistoryServiceListEventHistoryClient) Recv() (*ListEventHistoryRes
 
 // EventHistoryServiceServer is the server API for EventHistoryService service.
 type EventHistoryServiceServer interface {
-	ListEventHistory(*ListEventHistoryReq, EventHistoryService_ListEventHistoryServer) error
+	ListEventHistoryExchange(*ListEventHistoryExchangeReq, EventHistoryService_ListEventHistoryExchangeServer) error
+	ListEventHistoryStrategy(*ListEventHistoryStrategyReq, EventHistoryService_ListEventHistoryStrategyServer) error
 }
 
 // UnimplementedEventHistoryServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedEventHistoryServiceServer struct {
 }
 
-func (*UnimplementedEventHistoryServiceServer) ListEventHistory(req *ListEventHistoryReq, srv EventHistoryService_ListEventHistoryServer) error {
-	return status.Errorf(codes.Unimplemented, "method ListEventHistory not implemented")
+func (*UnimplementedEventHistoryServiceServer) ListEventHistoryExchange(req *ListEventHistoryExchangeReq, srv EventHistoryService_ListEventHistoryExchangeServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListEventHistoryExchange not implemented")
+}
+func (*UnimplementedEventHistoryServiceServer) ListEventHistoryStrategy(req *ListEventHistoryStrategyReq, srv EventHistoryService_ListEventHistoryStrategyServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListEventHistoryStrategy not implemented")
 }
 
 func RegisterEventHistoryServiceServer(s *grpc.Server, srv EventHistoryServiceServer) {
 	s.RegisterService(&_EventHistoryService_serviceDesc, srv)
 }
 
-func _EventHistoryService_ListEventHistory_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(ListEventHistoryReq)
+func _EventHistoryService_ListEventHistoryExchange_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ListEventHistoryExchangeReq)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(EventHistoryServiceServer).ListEventHistory(m, &eventHistoryServiceListEventHistoryServer{stream})
+	return srv.(EventHistoryServiceServer).ListEventHistoryExchange(m, &eventHistoryServiceListEventHistoryExchangeServer{stream})
 }
 
-type EventHistoryService_ListEventHistoryServer interface {
-	Send(*ListEventHistoryRes) error
+type EventHistoryService_ListEventHistoryExchangeServer interface {
+	Send(*ListEventHistoryExchangeRes) error
 	grpc.ServerStream
 }
 
-type eventHistoryServiceListEventHistoryServer struct {
+type eventHistoryServiceListEventHistoryExchangeServer struct {
 	grpc.ServerStream
 }
 
-func (x *eventHistoryServiceListEventHistoryServer) Send(m *ListEventHistoryRes) error {
+func (x *eventHistoryServiceListEventHistoryExchangeServer) Send(m *ListEventHistoryExchangeRes) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _EventHistoryService_ListEventHistoryStrategy_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ListEventHistoryStrategyReq)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(EventHistoryServiceServer).ListEventHistoryStrategy(m, &eventHistoryServiceListEventHistoryStrategyServer{stream})
+}
+
+type EventHistoryService_ListEventHistoryStrategyServer interface {
+	Send(*ListEventHistoryStrategyRes) error
+	grpc.ServerStream
+}
+
+type eventHistoryServiceListEventHistoryStrategyServer struct {
+	grpc.ServerStream
+}
+
+func (x *eventHistoryServiceListEventHistoryStrategyServer) Send(m *ListEventHistoryStrategyRes) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -440,8 +950,13 @@ var _EventHistoryService_serviceDesc = grpc.ServiceDesc{
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "ListEventHistory",
-			Handler:       _EventHistoryService_ListEventHistory_Handler,
+			StreamName:    "ListEventHistoryExchange",
+			Handler:       _EventHistoryService_ListEventHistoryExchange_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "ListEventHistoryStrategy",
+			Handler:       _EventHistoryService_ListEventHistoryStrategy_Handler,
 			ServerStreams: true,
 		},
 	},

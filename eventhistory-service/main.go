@@ -19,7 +19,7 @@ import (
 	eventhistorypb "github.com/vikjdk7/Algotrading-Golang/eventhistory-service/proto"
 )
 
-func (s *EventHistoryServiceServer) ListEventHistory(req *eventhistorypb.ListEventHistoryReq, stream eventhistorypb.EventHistoryService_ListEventHistoryServer) error {
+func (s *EventHistoryServiceServer) ListEventHistoryExchange(req *eventhistorypb.ListEventHistoryExchangeReq, stream eventhistorypb.EventHistoryService_ListEventHistoryExchangeServer) error {
 
 	userIdQuery := req.GetUserId()
 	if len(userIdQuery) == 0 {
@@ -43,7 +43,7 @@ func (s *EventHistoryServiceServer) ListEventHistory(req *eventhistorypb.ListEve
 			return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
 		}
 		// If no error is found send exchange over stream
-		stream.Send(&eventhistorypb.ListEventHistoryRes{
+		stream.Send(&eventhistorypb.ListEventHistoryExchangeRes{
 			EventHistoryExchange: &eventhistorypb.EventHistoryExchange{
 				OperationType: data.OperationType,
 				Timestamp:     data.Timestamp,
@@ -60,12 +60,94 @@ func (s *EventHistoryServiceServer) ListEventHistory(req *eventhistorypb.ListEve
 					ApiSecret:        data.OldValue.ApiSecret,
 				},
 				NewValue: &eventhistorypb.Exchange{
-					Id:               data.NewValue.ID.Hex(),
 					SelectedExchange: data.NewValue.SelectedExchange,
 					ExchangeName:     data.NewValue.ExchangeName,
 					ExchangeType:     data.NewValue.ExchangeType,
 					ApiKey:           data.NewValue.ApiKey,
 					ApiSecret:        data.NewValue.ApiSecret,
+				},
+			},
+		})
+	}
+	// Check if the cursor has any errors
+	if err := cursor.Err(); err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unkown cursor error: %v", err))
+	}
+	return nil
+}
+
+func (s *EventHistoryServiceServer) ListEventHistoryStrategy(req *eventhistorypb.ListEventHistoryStrategyReq, stream eventhistorypb.EventHistoryService_ListEventHistoryStrategyServer) error {
+
+	userIdQuery := req.GetUserId()
+	if len(userIdQuery) == 0 {
+		return status.Errorf(codes.InvalidArgument, fmt.Sprintf("Could not find UserId in Req"))
+	}
+
+	data := &EventHistoryStrategyItem{}
+	// collection.Find returns a cursor for our (empty) query
+	cursor, err := eventhistory_strategydb.Find(context.Background(), bson.M{"user_id": userIdQuery})
+	if err != nil {
+		return status.Errorf(codes.Internal, fmt.Sprintf("Unknown internal error: %v", err))
+	}
+	// An expression with defer will be called at the end of the function
+	defer cursor.Close(context.Background())
+	// cursor.Next() returns a boolean, if false there are no more items and loop will break
+	for cursor.Next(context.Background()) {
+		// Decode the data at the current pointer and write it to data
+		err := cursor.Decode(data)
+		// check error
+		if err != nil {
+			return status.Errorf(codes.Unavailable, fmt.Sprintf("Could not decode data: %v", err))
+		}
+		// If no error is found send exchange over stream
+		stream.Send(&eventhistorypb.ListEventHistoryStrategyRes{
+			EventHistoryStrategy: &eventhistorypb.EventHistoryStrategy{
+				OperationType: data.OperationType,
+				Timestamp:     data.Timestamp,
+				Db:            data.Db,
+				Collection:    data.Collection,
+				Name:          data.Name,
+				UserId:        data.UserId,
+				StrategyId:    data.StrategyId,
+				OldValue: &eventhistorypb.Strategy{
+					StrategyName:              data.OldValue.StrategyName,
+					SelectedExchange:          data.OldValue.SelectedExchange,
+					StrategyType:              data.OldValue.StrategyType,
+					StartOrderType:            data.OldValue.StartOrderType,
+					DealStartCondition:        data.OldValue.DealStartCondition,
+					BaseOrderSize:             data.OldValue.BaseOrderSize,
+					SafetyOrderSize:           data.OldValue.SafetyOrderSize,
+					MaxSafetyTradeCount:       data.OldValue.MaxSafetyTradeCount,
+					MaxActiveSafetyTradeCount: data.OldValue.MaxActiveSafetyTradeCount,
+					PriceDevation:             data.OldValue.PriceDevation,
+					SafetyOrderVolumeScale:    data.OldValue.SafetyOrderVolumeScale,
+					SafetyOrderStepScale:      data.OldValue.SafetyOrderStepScale,
+					TakeProfit:                data.OldValue.TakeProfit,
+					TargetProfit:              data.OldValue.TargetProfit,
+					AllocateFundsToStrategy:   data.OldValue.AllocateFundsToStrategy,
+					Version:                   data.OldValue.Version,
+					Status:                    data.OldValue.Status,
+					Stock:                     data.OldValue.Stock,
+				},
+				NewValue: &eventhistorypb.Strategy{
+					StrategyName:              data.NewValue.StrategyName,
+					SelectedExchange:          data.NewValue.SelectedExchange,
+					StrategyType:              data.NewValue.StrategyType,
+					StartOrderType:            data.NewValue.StartOrderType,
+					DealStartCondition:        data.NewValue.DealStartCondition,
+					BaseOrderSize:             data.NewValue.BaseOrderSize,
+					SafetyOrderSize:           data.NewValue.SafetyOrderSize,
+					MaxSafetyTradeCount:       data.NewValue.MaxSafetyTradeCount,
+					MaxActiveSafetyTradeCount: data.NewValue.MaxActiveSafetyTradeCount,
+					PriceDevation:             data.NewValue.PriceDevation,
+					SafetyOrderVolumeScale:    data.NewValue.SafetyOrderVolumeScale,
+					SafetyOrderStepScale:      data.NewValue.SafetyOrderStepScale,
+					TakeProfit:                data.NewValue.TakeProfit,
+					TargetProfit:              data.NewValue.TargetProfit,
+					AllocateFundsToStrategy:   data.NewValue.AllocateFundsToStrategy,
+					Version:                   data.NewValue.Version,
+					Status:                    data.NewValue.Status,
+					Stock:                     data.NewValue.Stock,
 				},
 			},
 		})
@@ -102,8 +184,49 @@ type ExchangeItem struct {
 	ApiSecret        string             `bson:"api_secret"`
 }
 
+type EventHistoryStrategyItem struct {
+	Id            primitive.ObjectID `bson:"_id,omitempty"`
+	OperationType string             `bson:"operation_type"`
+	Timestamp     string             `bson:"timestamp"`
+	Db            string             `bson:"db"`
+	Collection    string             `bson:"collection"`
+	Name          string             `bson:"name"`
+	UserId        string             `bson:"user_id"`
+	StrategyId    string             `bson:"strategy_id"`
+	OldValue      StrategyItem       `bson:"old_value"`
+	NewValue      StrategyItem       `bson:"new_value"`
+}
+
+type StrategyItem struct {
+	Id                        primitive.ObjectID      `bson:"_id,omitempty"`
+	StrategyName              string                  `bson:"strategy_name"`
+	SelectedExchange          string                  `bson:"selected_exchange"`
+	StrategyType              string                  `bson:"strategy_type"`
+	StartOrderType            string                  `bson:"start_order_type"`
+	DealStartCondition        string                  `bson:"deal_start_condition"`
+	BaseOrderSize             float64                 `bson:"base_order_size"`
+	SafetyOrderSize           float64                 `bson:"safety_order_size"`
+	MaxSafetyTradeCount       string                  `bson:"max_safety_trade_count"`
+	MaxActiveSafetyTradeCount string                  `bson:"max_active_safety_trade_count"`
+	PriceDevation             string                  `bson:"price_devation"`
+	SafetyOrderVolumeScale    string                  `bson:"safety_order_volume_scale"`
+	SafetyOrderStepScale      string                  `bson:"safety_order_step_scale"`
+	TakeProfit                string                  `bson:"take_profit"`
+	TargetProfit              string                  `bson:"target_profit"`
+	AllocateFundsToStrategy   string                  `bson:"allocate_funds_to_strategy"`
+	UserId                    string                  `bson:"user_id"`
+	Version                   int64                   `bson:"version"`
+	Status                    string                  `bson:"status"`
+	Stock                     []*eventhistorypb.Stock `bson:"stock"`
+}
+
+type StockItem struct {
+	StockName string `bson:"stock_name"`
+}
+
 var db *mongo.Client
 var eventhistory_exchangedb *mongo.Collection
+var eventhistory_strategydb *mongo.Collection
 var mongoCtx context.Context
 
 func main() {
@@ -154,7 +277,9 @@ func main() {
 		fmt.Println("Connected to Mongodb")
 	}
 	// Bind our collection to our global variable for use in other methods
-	eventhistory_exchangedb = db.Database("hedgina_algobot").Collection("eventhistory_exchange")
+	mongoDb := db.Database("hedgina_algobot")
+	eventhistory_exchangedb = mongoDb.Collection("eventhistory_exchange")
+	eventhistory_strategydb = mongoDb.Collection("eventhistory_strategy")
 
 	// Start the server in a child routine
 	go func() {

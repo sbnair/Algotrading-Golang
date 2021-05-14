@@ -3,15 +3,24 @@ package eventhistory;
 option go_package = "eventhistorypb";
 
 service EventHistoryService {
-    rpc ListEventHistory(ListEventHistoryReq) returns (stream ListEventHistoryRes);
+    rpc ListEventHistoryExchange(ListEventHistoryExchangeReq) returns (stream ListEventHistoryExchangeRes);
+    rpc ListEventHistoryStrategy(ListEventHistoryStrategyReq) returns (stream ListEventHistoryStrategyRes);
 }
 
-message ListEventHistoryReq {
+message ListEventHistoryExchangeReq {
     string user_id = 1;
 }
 
-message ListEventHistoryRes{
+message ListEventHistoryExchangeRes{
     EventHistoryExchange eventHistoryExchange = 1;
+}
+
+message ListEventHistoryStrategyReq {
+    string user_id = 1;
+}
+
+message ListEventHistoryStrategyRes {
+    EventHistoryStrategy eventHistoryStrategy = 1;
 }
 
 message EventHistoryExchange {
@@ -35,4 +44,44 @@ message Exchange {
     string user_id = 5;
     string api_key = 6;
     string api_secret= 7;
+}
+
+message EventHistoryStrategy {
+    string id = 1;
+    string operation_type = 2;
+    string timestamp = 3;
+    string db = 4;
+    string collection = 5;
+    string name = 6;
+    string user_id = 7;
+    string strategy_id = 8;
+    Strategy old_value = 9;
+    Strategy new_value = 10;
+}
+
+message Strategy {
+    string id = 1;
+    string strategy_name = 2;
+    string selected_exchange = 3;
+    string strategy_type = 4;
+    string start_order_type = 5;
+    string deal_start_condition = 6;
+    double base_order_size = 7;
+    double safety_order_size = 8;
+    string max_safety_trade_count = 9;
+    string max_active_safety_trade_count = 10;
+    string price_devation = 11;
+    string safety_order_volume_scale = 12;
+    string safety_order_step_scale = 13;
+    string take_profit = 14;
+    string target_profit = 15;
+    string allocate_funds_to_strategy = 16;
+    string user_id = 17;
+    int64 version = 18;   
+    string status = 19;
+    repeated Stock stock = 20;
+}
+
+message Stock {
+    string stock_name = 1;
 }
