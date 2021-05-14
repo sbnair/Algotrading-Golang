@@ -2,37 +2,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: eventhistory-service-app
+  name: cep-rule-service-app
   namespace: hedgina
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: eventhistory-service
+      app: cep-rule-service
   template:
     metadata:
       labels:
-        app: eventhistory-service
+        app: cep-rule-service
     spec:
       containers:
-      - name: eventhistory-service
-        image: neha190495/eventhistory-service:latest
+      - name: cep-rule-service
+        image: neha190495/cep-rule-service:latest
         imagePullPolicy: Always
         resources: {}
         ports:
-        - containerPort: 50055
+        - containerPort: 50056
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: eventhistory-service
+  name: cep-rule-service
   namespace: hedgina
 spec:
   type: LoadBalancer
   ports:
   - name: tcp
-    port: 50055
+    port: 50056
     protocol: TCP
-    targetPort: 50055
+    targetPort: 50056
   selector:
-    app: eventhistory-service
+    app: cep-rule-service
