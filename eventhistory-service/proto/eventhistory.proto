@@ -22,8 +22,9 @@ message EventHistoryExchange {
     string collection = 5;
     string name = 6;
     string user_id = 7;
-    Exchange old_value = 8;
-    Exchange new_value = 9;
+    string exchange_id = 8;
+    Exchange old_value = 9;
+    Exchange new_value = 10;
 }
 
 message Exchange {
