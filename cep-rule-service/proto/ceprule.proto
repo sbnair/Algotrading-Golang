@@ -1,0 +1,20 @@
+syntax = "proto3";
+package ceprule;
+option go_package = "ceprulepb";
+
+service CepRuleService{
+    rpc CalculateStrategyFundAllocation(CalculateStrategyFundAllocationReq) returns (CalculateStrategyFundAllocationRes);
+}
+
+message CalculateStrategyFundAllocationReq{
+    double base_order_size = 1;
+    double safety_order_size = 2;
+    double safety_order_volume_scale = 3;
+    double safety_order_step_scale = 4;
+    int64 total_no_deals = 5;
+    double max_active_safety_trade_count = 6;
+}
+
+message CalculateStrategyFundAllocationRes{
+    double total_fund_for_allocation = 1;
+}
