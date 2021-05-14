@@ -60,7 +60,7 @@ go run main.go update -i "607815df7f51e077fd7ac87a" -e "Alpaca" -n "Alpaca Excha
 ### For Strategy Service
 1. To create a Strategy
 ```
-go run main.go create -n "Strategy 1" -e "Alpaca" -b 10.0 -s 20.0 -t "5" -p "2%" -v "1%" -c "1%" -m "5%" -z "3%" -f "10000" -u "57bf425a34ce5ee85891b914" -d "G1,G2"
+go run main.go create -n "Strategy 1" -e "608d6c042ea48ebc779a3358" -b 10.0 -s 20.0 -t "5" -w "2" -p "2%" -v "1%" -c "1%" -m "5%" -z "3%" -f "10000" -u "57bf425a34ce5ee85891b914" -d "SAP,GOOGL"
 ```
 2. To list all the Strategies by User Id
 ```
@@ -81,7 +81,7 @@ go run main.go update -i "6086c3b8e33d324e030c78ed" -n "Strategy 1 Updated" -e "
 ### Strategy & Deals Bot
 1. To Start a Strategy Bot
 ```
-go run main.go startstrategybot -i "608d6d04c3271e63ee719eab" -d "G1,G2"
+go run main.go startstrategybot -i "608d6d04c3271e63ee719eab" -d "SAP"
 ```
 2. To List all Deals for a User
 ```
@@ -122,6 +122,16 @@ go run main.go listordersbyuser -u "57bf425a34ce5ee85891b914"
 4. Cancel an order
 ```
 go run main.go cancelorder -o "4db7a9b2-0e0d-4674-b442-2ae73be3a786" -e "60955018a020171d0214f053"
+```
+
+### For Event History Service
+1. List all Events History for Exchange
+```
+go run main.go listeventhistoryexchange -u "608d6b42ada75cc7e25e6b6a"
+```
+2. List all Events History for Strategy
+```
+go run main.go listeventhistorystrategy -u "608d6b42ada75cc7e25e6b6a"
 ```
 ## Run the User Authentication Service
 1. Git Clone
