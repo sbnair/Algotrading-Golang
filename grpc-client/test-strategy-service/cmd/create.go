@@ -36,7 +36,8 @@ var createCmd = &cobra.Command{
 		selected_exchange, err := cmd.Flags().GetString("selected_exchange")
 		base_order_size, err := cmd.Flags().GetFloat64("base_order_size")
 		safety_order_size, err := cmd.Flags().GetFloat64("safety_order_size")
-		max_safety_trade_acc, err := cmd.Flags().GetString("max_safety_trade_acc")
+		max_safety_trade_count, err := cmd.Flags().GetString("max_safety_trade_count")
+		max_active_safety_trade_count, err := cmd.Flags().GetString("max_active_safety_trade_count")
 		price_devation, err := cmd.Flags().GetString("price_devation")
 		safety_order_volume_scale, err := cmd.Flags().GetString("safety_order_volume_scale")
 		safety_order_step_scale, err := cmd.Flags().GetString("safety_order_step_scale")
@@ -60,19 +61,20 @@ var createCmd = &cobra.Command{
 		fmt.Println(deal)
 		// Create a strategy protobuffer message
 		strategy := &strategypb.Strategy{
-			StrategyName:            strategy_name,
-			SelectedExchange:        selected_exchange,
-			BaseOrderSize:           base_order_size,
-			SafetyOrderSize:         safety_order_size,
-			MaxSafetyTradeAcc:       max_safety_trade_acc,
-			PriceDevation:           price_devation,
-			SafetyOrderVolumeScale:  safety_order_volume_scale,
-			SafetyOrderStepScale:    safety_order_step_scale,
-			TakeProfit:              take_profit,
-			TargetProfit:            target_profit,
-			AllocateFundsToStrategy: allocate_funds_to_strategy,
-			UserId:                  user_id,
-			Stock:                   deal,
+			StrategyName:              strategy_name,
+			SelectedExchange:          selected_exchange,
+			BaseOrderSize:             base_order_size,
+			SafetyOrderSize:           safety_order_size,
+			MaxSafetyTradeCount:       max_safety_trade_count,
+			MaxActiveSafetyTradeCount: max_active_safety_trade_count,
+			PriceDevation:             price_devation,
+			SafetyOrderVolumeScale:    safety_order_volume_scale,
+			SafetyOrderStepScale:      safety_order_step_scale,
+			TakeProfit:                take_profit,
+			TargetProfit:              target_profit,
+			AllocateFundsToStrategy:   allocate_funds_to_strategy,
+			UserId:                    user_id,
+			Stock:                     deal,
 		}
 
 		//record starttime of request
@@ -109,7 +111,8 @@ func init() {
 	createCmd.Flags().Float64P("base_order_size", "b", 0.0, "Add base order size")
 	createCmd.Flags().Float64P("safety_order_size", "s", 0.0, "Add safety order size")
 
-	createCmd.Flags().StringP("max_safety_trade_acc", "t", "", "The maximum number of safety orders the bot can use for one deal.")
+	createCmd.Flags().StringP("max_safety_trade_count", "t", "", "The maximum number of safety orders the bot can use for one deal.")
+	createCmd.Flags().StringP("max_active_safety_trade_count", "w", "", "The maximum number of safety orders the bot can use for one deal.")
 	createCmd.Flags().StringP("price_devation", "p", "", "Add price_devation")
 	createCmd.Flags().StringP("safety_order_volume_scale", "v", "", "Add safety_order_volume_scale")
 	createCmd.Flags().StringP("safety_order_step_scale", "c", "", "Add safety_order_step_scale")
